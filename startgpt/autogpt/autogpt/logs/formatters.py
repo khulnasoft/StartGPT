@@ -8,7 +8,7 @@ from startgpt.core.runner.client_lib.logging import FancyConsoleFormatter
 from .utils import remove_color_codes
 
 
-class AutoGptFormatter(FancyConsoleFormatter):
+class StartGptFormatter(FancyConsoleFormatter):
     def __init__(self, *args, no_color: bool = False, **kwargs):
         super().__init__(*args, **kwargs)
         self.no_color = no_color

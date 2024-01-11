@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 from startgpt.core.configuration import SystemConfiguration, UserConfigurable
 from startgpt.core.runner.client_lib.logging import BelowLevelFilter
 
-from .formatters import AutoGptFormatter, StructuredLoggingFormatter
+from .formatters import StartGptFormatter, StructuredLoggingFormatter
 from .handlers import TTSHandler, TypingConsoleHandler
 
 LOG_DIR = Path(__file__).parent.parent.parent / "logs"
@@ -109,7 +109,7 @@ def configure_logging(
 
     if log_format in (LogFormatName.DEBUG, LogFormatName.SIMPLE):
         console_format_template = TEXT_LOG_FORMAT_MAP[log_format]
-        console_formatter = AutoGptFormatter(console_format_template)
+        console_formatter = StartGptFormatter(console_format_template)
     else:
         console_formatter = StructuredLoggingFormatter()
         console_format_template = SIMPLE_LOG_FORMAT
@@ -144,7 +144,7 @@ def configure_logging(
     if log_file_format is not None:
         if level < logging.ERROR:
             file_output_format_template = TEXT_LOG_FORMAT_MAP[log_file_format]
-            file_output_formatter = AutoGptFormatter(
+            file_output_formatter = StartGptFormatter(
                 file_output_format_template, no_color=True
             )
 
@@ -159,7 +159,7 @@ def configure_logging(
         error_log_handler = logging.FileHandler(log_dir / ERROR_LOG_FILE, "a", "utf-8")
         error_log_handler.setLevel(logging.ERROR)
         error_log_handler.setFormatter(
-            AutoGptFormatter(DEBUG_LOG_FORMAT, no_color=True)
+            StartGptFormatter(DEBUG_LOG_FORMAT, no_color=True)
         )
         log_handlers += [error_log_handler]
         user_friendly_output_logger.addHandler(error_log_handler)
