@@ -47,7 +47,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         draft: false
         generateReleaseNotes: false
-        tag: agbenchmark-v${{ steps.check-version.outputs.version }}
+        tag: start-gpt-v${{ steps.check-version.outputs.version }}
         commit: master
 
     - name: Build and publish
