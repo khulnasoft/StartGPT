@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "agbenchmark"
+name = "start-gpt"
 version = "0.0.10"
 description = "Benchmarking the performance of agents far and wide, regardless of how they are set up and how they work"
-authors = ["Silen Naihin <silen.naihin@gmail.com>"]
+authors = ["Md Sulaiman <infosulaimanbd@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{ include = "agbenchmark" }]
@@ -91,4 +91,4 @@ sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 skip_glob = [".tox", "__pycache__", "*.pyc", "venv*/*", "reports", "venv", "env", "node_modules", ".env", ".venv", "dist", "agent/*", "agbenchmark/challenges/*"]
 
 [tool.poetry.scripts]
-agbenchmark = "agbenchmark.__main__:cli"
+start-gpt = "agbenchmark.__main__:cli"
