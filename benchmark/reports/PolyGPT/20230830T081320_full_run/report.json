@@ -1,6 +1,6 @@
 {
     "command": "agbenchmark start",
-    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Auto-GPT-Benchmarks/tree/e1f82d14695b47b9d95bea98b46fbbbe9a48ca94",
+    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/e1f82d14695b47b9d95bea98b46fbbbe9a48ca94",
     "agent_git_commit_sha": "https://github.com/polywrap/PolyGPT/tree/d621adf5f54cc0f9a6d191139fb67ac3d1436d7b",
     "completion_time": "2023-08-30T08:32:52+00:00",
     "benchmark_start_time": "2023-08-30T08:13:20+00:00",

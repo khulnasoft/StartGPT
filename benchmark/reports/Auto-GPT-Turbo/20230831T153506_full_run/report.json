@@ -1,7 +1,7 @@
 {
     "command": "agbenchmark start",
-    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Auto-GPT-Benchmarks/tree/bea7a3c626a1afd29e6793e867cd6dee6c66473f",
-    "agent_git_commit_sha": "https://github.com/lc0rp/Auto-GPT-Turbo/tree/8469e09ae204f2d5f41d489b217551544597ee14",
+    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/bea7a3c626a1afd29e6793e867cd6dee6c66473f",
+    "agent_git_commit_sha": "https://github.com/lc0rp/Start-GPT-Turbo/tree/8469e09ae204f2d5f41d489b217551544597ee14",
     "completion_time": "2023-08-31T15:42:47+00:00",
     "benchmark_start_time": "2023-08-31T15:35:06+00:00",
     "metrics": {
@@ -184,7 +184,7 @@
             },
             "tests": {
                 "TestRevenueRetrieval_1.0": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/1_tesla_revenue/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/1_tesla_revenue/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -199,7 +199,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.1": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/2_specific/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/2_specific/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -214,7 +214,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.2": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/3_formatting/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/3_formatting/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"

@@ -1,6 +1,6 @@
 {
     "command": "agbenchmark start",
-    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Auto-GPT-Benchmarks/tree/99bbed24efca4a0676bc4f4bf1b027725be27b22",
+    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/99bbed24efca4a0676bc4f4bf1b027725be27b22",
     "agent_git_commit_sha": "https://github.com/AutoPackAI/beebot/tree/59d4e93c133612a0319d135bb0eb08bbcead9fa2",
     "completion_time": "2023-09-04T08:57:17+00:00",
     "benchmark_start_time": "2023-09-04T08:14:12+00:00",

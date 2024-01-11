@@ -1,6 +1,6 @@
 {
     "command": "agbenchmark start",
-    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Auto-GPT-Benchmarks/tree/d54bff62c13eaa4ae839db8d8eca881b046ea466",
+    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/d54bff62c13eaa4ae839db8d8eca881b046ea466",
     "agent_git_commit_sha": "https://github.com/SilenNaihin/mini-agi/tree/2fc70aa0032eec986dfb1020854a1b3b8aaf6780",
     "completion_time": "2023-08-18T08:35:30+00:00",
     "benchmark_start_time": "2023-08-18T08:14:02+00:00",
@@ -200,7 +200,7 @@
             },
             "tests": {
                 "TestRevenueRetrieval_1.0": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/mini-agi/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/mini-agi/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -215,7 +215,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.1": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/mini-agi/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/mini-agi/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -230,7 +230,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.2": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/mini-agi/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/mini-agi/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"

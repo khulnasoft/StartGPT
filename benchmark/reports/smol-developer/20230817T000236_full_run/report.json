@@ -1,6 +1,6 @@
 {
     "command": "agbenchmark start",
-    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Auto-GPT-Benchmarks/tree/6fa303509f53ba09c530e795c10fc101b04c2bf7",
+    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/6fa303509f53ba09c530e795c10fc101b04c2bf7",
     "agent_git_commit_sha": "https://github.com/e2b-dev/smol-developer/tree/a23d01369cea976e80b7889fdbf1096619471301",
     "completion_time": "2023-08-17T00:04:40+00:00",
     "benchmark_start_time": "2023-08-17T00:02:36+00:00",
@@ -205,7 +205,7 @@
             },
             "tests": {
                 "TestRevenueRetrieval_1.1": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/smol-developer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/smol-developer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -220,7 +220,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.2": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/smol-developer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/smol-developer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -235,7 +235,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.0": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/smol-developer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/smol-developer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"

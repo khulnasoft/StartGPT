@@ -198,7 +198,7 @@
             },
             "tests": {
                 "TestRevenueRetrieval_1.2": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -212,7 +212,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.1": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -226,7 +226,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.0": {
-                    "data_path": "/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"

@@ -144,7 +144,7 @@
             "metrics": {
                 "difficulty": "basic",
                 "success": false,
-                "fail_reason": "[Errno 2] No such file or directory: '/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/Auto-GPT/auto_gpt_workspace/result.txt'",
+                "fail_reason": "[Errno 2] No such file or directory: '/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/Start-GPT/auto_gpt_workspace/result.txt'",
                 "success_%": 0.0,
                 "run_time": "61.175 seconds"
             },

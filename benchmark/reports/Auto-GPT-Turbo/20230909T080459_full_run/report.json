@@ -1,7 +1,7 @@
 {
     "command": "agbenchmark start",
     "benchmark_git_commit_sha": null,
-    "agent_git_commit_sha": "https://github.com/lc0rp/Auto-GPT-Turbo/tree/8469e09ae204f2d5f41d489b217551544597ee14",
+    "agent_git_commit_sha": "https://github.com/lc0rp/Start-GPT-Turbo/tree/8469e09ae204f2d5f41d489b217551544597ee14",
     "completion_time": "2023-09-09T08:24:07+00:00",
     "benchmark_start_time": "2023-09-09T08:04:59+00:00",
     "metrics": {
@@ -187,7 +187,7 @@
             },
             "tests": {
                 "TestRevenueRetrieval_1.0": {
-                    "data_path": "/home/runner/work/Auto-GPT/Auto-GPT/benchmark/agent/Auto-GPT-Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/1_tesla_revenue/data.json",
+                    "data_path": "/home/runner/work/Start-GPT/Start-GPT/benchmark/agent/Start-GPT-Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/1_tesla_revenue/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -202,7 +202,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.1": {
-                    "data_path": "/home/runner/work/Auto-GPT/Auto-GPT/benchmark/agent/Auto-GPT-Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/2_specific/data.json",
+                    "data_path": "/home/runner/work/Start-GPT/Start-GPT/benchmark/agent/Start-GPT-Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/2_specific/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -217,7 +217,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.2": {
-                    "data_path": "/home/runner/work/Auto-GPT/Auto-GPT/benchmark/agent/Auto-GPT-Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/3_formatting/data.json",
+                    "data_path": "/home/runner/work/Start-GPT/Start-GPT/benchmark/agent/Start-GPT-Turbo/venv/lib/python3.10/site-packages/agbenchmark/challenges/verticals/synthesize/r2_search_suite_1/3_formatting/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"

@@ -72,7 +72,7 @@
             "metrics": {
                 "difficulty": "interface",
                 "success": false,
-                "fail_reason": "[Errno 2] No such file or directory: '/home/runner/work/Auto-GPT-Benchmarks/Auto-GPT-Benchmarks/agent/gpt-engineer/projects/my-new-project/workspace/file_to_check.txt'",
+                "fail_reason": "[Errno 2] No such file or directory: '/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/gpt-engineer/projects/my-new-project/workspace/file_to_check.txt'",
                 "success_%": 0.0,
                 "run_time": "82.747 seconds"
             },

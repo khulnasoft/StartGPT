@@ -1,6 +1,6 @@
-# This is the official challenge library for https://github.com/KhulnaSoft/Auto-GPT-Benchmarks
+# This is the official challenge library for https://github.com/KhulnaSoft/Start-GPT-Benchmarks
 
-The goal of this repo is to provide easy challenge creation for test driven development with the Auto-GPT-Benchmarks package. This is essentially a library to craft challenges using a dsl (jsons in this case).
+The goal of this repo is to provide easy challenge creation for test driven development with the Start-GPT-Benchmarks package. This is essentially a library to craft challenges using a dsl (jsons in this case).
 
 This is the up to date dependency graph: https://sapphire-denys-23.tiiny.site/
 
