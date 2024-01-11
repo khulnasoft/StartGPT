@@ -28,4 +28,4 @@ https://github.com/KhulnaSoft/Nexus/wiki/Contributing
   - [ ] Have you added/updated corresponding documentation? &ensp; `+4 pts`
   - [ ] Have you added/updated corresponding integration tests? &ensp; `+5 pts`
 - [ ] Have you changed the behavior of StartGPT? &ensp; `-5 pts`
-  - [ ] Have you also run `agbenchmark` to verify that these changes do not regress performance? &ensp; `+10 pts`
+  - [ ] Have you also run `startbenchmark` to verify that these changes do not regress performance? &ensp; `+10 pts`

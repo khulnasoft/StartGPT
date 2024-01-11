@@ -50,15 +50,15 @@ def _calculate_info_test_path(base_path: Path, benchmark_start_time: datetime) -
 
 class AgentBenchmarkConfig(BaseSettings, extra="allow"):
     """
-    Configuration model and loader for the AGBenchmark.
+    Configuration model and loader for the STARTBenchmark.
 
-    Projects that want to use AGBenchmark should contain an agbenchmark_config folder
+    Projects that want to use STARTBenchmark should contain an startbenchmark_config folder
     with a config.json file that - at minimum - specifies the `host` at which the
     subject application exposes an Agent Protocol compliant API.
     """
 
-    agbenchmark_config_dir: Path
-    """Path to the agbenchmark_config folder of the subject agent application."""
+    startbenchmark_config_dir: Path
+    """Path to the startbenchmark_config folder of the subject agent application."""
 
     categories: list[str] | None = None
     """Categories to benchmark the agent for. If omitted, all categories are assumed."""
@@ -71,33 +71,33 @@ class AgentBenchmarkConfig(BaseSettings, extra="allow"):
         config_dir = config_dir or cls.find_config_folder()
         with (config_dir / "config.json").open("r") as f:
             return cls(
-                agbenchmark_config_dir=config_dir,
+                startbenchmark_config_dir=config_dir,
                 **json.load(f),
             )
 
     @staticmethod
     def find_config_folder(for_dir: Path = Path.cwd()) -> Path:
         """
-        Find the closest ancestor folder containing an agbenchmark_config folder,
-        and returns the path of that agbenchmark_config folder.
+        Find the closest ancestor folder containing an startbenchmark_config folder,
+        and returns the path of that startbenchmark_config folder.
         """
         current_directory = for_dir
         while current_directory != Path("/"):
-            if (path := current_directory / "agbenchmark_config").exists():
+            if (path := current_directory / "startbenchmark_config").exists():
                 if (path / "config.json").is_file():
                     return path
             current_directory = current_directory.parent
         raise FileNotFoundError(
-            "No 'agbenchmark_config' directory found in the path hierarchy."
+            "No 'startbenchmark_config' directory found in the path hierarchy."
         )
 
     @property
     def config_file(self) -> Path:
-        return self.agbenchmark_config_dir / "config.json"
+        return self.startbenchmark_config_dir / "config.json"
 
     @property
     def reports_folder(self) -> Path:
-        return self.agbenchmark_config_dir / "reports"
+        return self.startbenchmark_config_dir / "reports"
 
     def get_report_dir(self, benchmark_start_time: datetime) -> Path:
         return _calculate_info_test_path(self.reports_folder, benchmark_start_time)
@@ -112,8 +112,8 @@ class AgentBenchmarkConfig(BaseSettings, extra="allow"):
 
     @property
     def challenges_already_beaten_file(self) -> Path:
-        return self.agbenchmark_config_dir / "challenges_already_beaten.json"
+        return self.startbenchmark_config_dir / "challenges_already_beaten.json"
 
     @property
     def temp_folder(self) -> Path:
-        return self.agbenchmark_config_dir / "temp_folder"
+        return self.startbenchmark_config_dir / "temp_folder"

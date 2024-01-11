@@ -12,7 +12,7 @@ files = [
 ]
 
 [[package]]
-name = "agbenchmark"
+name = "startbenchmark"
 version = "0.0.10"
 description = "Benchmarking the performance of agents far and wide, regardless of how they are set up and how they work"
 optional = true
@@ -314,7 +314,7 @@ uvicorn = "^0.23.2"
 webdriver-manager = "^4.0.1"
 
 [package.extras]
-benchmark = ["agbenchmark @ git+https://github.com/KhulnaSoft/StartGPT.git#subdirectory=benchmark"]
+benchmark = ["startbenchmark @ git+https://github.com/KhulnaSoft/StartGPT.git#subdirectory=benchmark"]
 
 [package.source]
 type = "git"
@@ -6716,7 +6716,7 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-benchmark = ["agbenchmark"]
+benchmark = ["startbenchmark"]
 
 [metadata]
 lock-version = "2.0"

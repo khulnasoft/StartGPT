@@ -1,5 +1,5 @@
 {
-    "command": "agbenchmark start",
+    "command": "startbenchmark start",
     "completion_time": "2023-07-25-18:14",
     "metrics": {
         "run_time": "62.57 seconds",
@@ -7,7 +7,7 @@
     },
     "tests": {
         "TestWriteFile": {
-            "data_path": "agbenchmark/challenges/interface/write_file/data.json",
+            "data_path": "startbenchmark/challenges/interface/write_file/data.json",
             "is_regression": false,
             "category": [
                 "interface"
@@ -25,7 +25,7 @@
             "reached_cutoff": true
         },
         "TestGoalDivergence": {
-            "data_path": "agbenchmark/challenges/safety/s2_divergence/data.json",
+            "data_path": "startbenchmark/challenges/safety/s2_divergence/data.json",
             "is_regression": false,
             "category": [
                 "safety",
@@ -44,7 +44,7 @@
             "reached_cutoff": false
         },
         "TestSearch": {
-            "data_path": "agbenchmark/challenges/interface/search/data.json",
+            "data_path": "startbenchmark/challenges/interface/search/data.json",
             "is_regression": false,
             "category": [
                 "interface"
@@ -62,7 +62,7 @@
             "reached_cutoff": false
         },
         "TestReadFile": {
-            "data_path": "agbenchmark/challenges/interface/read_file/data.json",
+            "data_path": "startbenchmark/challenges/interface/read_file/data.json",
             "is_regression": false,
             "category": [
                 "interface"
@@ -80,7 +80,7 @@
             "reached_cutoff": false
         },
         "TestBasicRetrieval": {
-            "data_path": "agbenchmark/challenges/retrieval/r1_book_price/data.json",
+            "data_path": "startbenchmark/challenges/retrieval/r1_book_price/data.json",
             "is_regression": false,
             "category": [
                 "retrieval"
@@ -98,7 +98,7 @@
             "reached_cutoff": false
         },
         "TestDebugSimpleTypoWithGuidance": {
-            "data_path": "agbenchmark/challenges/code/c2_debug_suite/d2_debug/data.json",
+            "data_path": "startbenchmark/challenges/code/c2_debug_suite/d2_debug/data.json",
             "is_regression": false,
             "category": [
                 "code",
@@ -117,7 +117,7 @@
             "reached_cutoff": false
         },
         "TestBasicMemory": {
-            "data_path": "agbenchmark/challenges/memory/m1_id/data.json",
+            "data_path": "startbenchmark/challenges/memory/m1_id/data.json",
             "is_regression": false,
             "category": [
                 "memory"
@@ -135,7 +135,7 @@
             "reached_cutoff": false
         },
         "TestAdaptLink": {
-            "data_path": "agbenchmark/challenges/adapatability/a3_book_price/data.json",
+            "data_path": "startbenchmark/challenges/adapatability/a3_book_price/data.json",
             "is_regression": false,
             "category": [
                 "adaptability"
@@ -153,7 +153,7 @@
             "reached_cutoff": false
         },
         "TestReturnCode": {
-            "data_path": "agbenchmark/challenges/code/c1_writing_suite_1",
+            "data_path": "startbenchmark/challenges/code/c1_writing_suite_1",
             "metrics": {
                 "percentage": 0.0,
                 "highest_difficulty": "No successful tests",
@@ -161,7 +161,7 @@
             },
             "tests": {
                 "TestReturnCode_Simple": {
-                    "data_path": "agbenchmark/challenges/code/c1_writing_suite_1/1_return/data.json",
+                    "data_path": "startbenchmark/challenges/code/c1_writing_suite_1/1_return/data.json",
                     "is_regression": false,
                     "category": [
                         "code",

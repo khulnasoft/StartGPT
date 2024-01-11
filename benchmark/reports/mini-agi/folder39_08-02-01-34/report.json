@@ -1,5 +1,5 @@
 {
-    "command": "agbenchmark start --test=TestWriteFile",
+    "command": "startbenchmark start --test=TestWriteFile",
     "git_commit_sha": "2fc70aa0032eec986dfb1020854a1b3b8aaf6780",
     "completion_time": "2023-08-02-01:34",
     "benchmark_start_time": "2023-08-02-01:34",
@@ -9,7 +9,7 @@
     },
     "tests": {
         "TestWriteFile": {
-            "data_path": "agbenchmark/challenges/interface/write_file/data.json",
+            "data_path": "startbenchmark/challenges/interface/write_file/data.json",
             "is_regression": true,
             "category": [
                 "interface"

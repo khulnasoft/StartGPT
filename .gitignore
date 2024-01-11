@@ -159,8 +159,8 @@ openai/
 # news
 CURRENT_BULLETIN.md
 
-# AgBenchmark
-agbenchmark/reports/
+# StartBenchmark
+startbenchmark/reports/
 
 # Nodejs
 package-lock.json

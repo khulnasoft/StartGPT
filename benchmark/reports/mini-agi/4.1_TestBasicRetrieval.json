@@ -1,5 +1,5 @@
 {
-  "command": "agbenchmark start --test TestBasicRetrieval",
+  "command": "startbenchmark start --test TestBasicRetrieval",
   "completion_time": "2023-07-17-13:31",
   "metrics": {
     "run_time": "26.05 seconds",
@@ -7,7 +7,7 @@
   },
   "tests": {
     "TestBasicRetrieval": {
-      "data_path": "agbenchmark/challenges/retrieval/r1",
+      "data_path": "startbenchmark/challenges/retrieval/r1",
       "is_regression": true,
       "reached_cutoff": false,
       "metrics": {

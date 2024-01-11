@@ -5,8 +5,8 @@ from typing import Optional, Sequence
 
 from dotenv import load_dotenv
 
-from agbenchmark.challenges import get_unique_categories
-from agbenchmark.config import AgentBenchmarkConfig
+from startbenchmark.challenges import get_unique_categories
+from startbenchmark.config import AgentBenchmarkConfig
 
 load_dotenv()
 
@@ -34,7 +34,7 @@ def run_benchmark(
     """
     import pytest
 
-    from agbenchmark.reports.ReportManager import SingletonReportManager
+    from startbenchmark.reports.ReportManager import SingletonReportManager
 
     validate_args(
         maintain=maintain,

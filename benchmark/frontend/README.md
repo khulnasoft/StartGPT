@@ -1,4 +1,4 @@
-# agbenchmark-frontend
+# startbenchmark-frontend
 
 Frontend for https://github.com/KhulnaSoft/Start-GPT-Benchmarks
 

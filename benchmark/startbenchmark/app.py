@@ -18,17 +18,17 @@ from fastapi import APIRouter, FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Extra, ValidationError
 
-from agbenchmark.config import AgentBenchmarkConfig
-from agbenchmark.reports.processing.report_types_v2 import (
+from startbenchmark.config import AgentBenchmarkConfig
+from startbenchmark.reports.processing.report_types_v2 import (
     BenchmarkRun,
     Metrics,
     RepositoryInfo,
     RunDetails,
     TaskInfo,
 )
-from agbenchmark.schema import TaskEvalRequestBody
-from agbenchmark.utils.data_types import ChallengeData
-from agbenchmark.utils.utils import write_pretty_json
+from startbenchmark.schema import TaskEvalRequestBody
+from startbenchmark.utils.data_types import ChallengeData
+from startbenchmark.utils.utils import write_pretty_json
 
 sys.path.append(str(Path(__file__).parent.parent))
 
@@ -71,7 +71,7 @@ while challenge_spec_files:
 task_informations = defaultdict(dict[str, Any])
 
 
-def find_agbenchmark_without_uvicorn():
+def find_startbenchmark_without_uvicorn():
     pids = []
     for process in psutil.process_iter(
         attrs=[
@@ -91,7 +91,7 @@ def find_agbenchmark_without_uvicorn():
             # Convert the process.info dictionary values to strings and concatenate them
             full_info = " ".join([str(v) for k, v in process.as_dict().items()])
 
-            if "agbenchmark" in full_info and "uvicorn" not in full_info:
+            if "startbenchmark" in full_info and "uvicorn" not in full_info:
                 pids.append(process.pid)
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
@@ -123,17 +123,17 @@ def stream_output(pipe):
         print(line, end="")
 
 
-def setup_fastapi_app(agbenchmark_config: AgentBenchmarkConfig) -> FastAPI:
-    from agbenchmark.agent_api_interface import (
+def setup_fastapi_app(startbenchmark_config: AgentBenchmarkConfig) -> FastAPI:
+    from startbenchmark.agent_api_interface import (
         copy_agent_artifacts_into_folder,
         upload_artifacts,
     )
-    from agbenchmark.agent_interface import copy_artifacts_into_temp_folder
-    from agbenchmark.generate_test import create_challenge_from_spec_file
-    from agbenchmark.main import run_benchmark
+    from startbenchmark.agent_interface import copy_artifacts_into_temp_folder
+    from startbenchmark.generate_test import create_challenge_from_spec_file
+    from startbenchmark.main import run_benchmark
 
     configuration = Configuration(
-        host=agbenchmark_config.host or "http://localhost:8000"
+        host=startbenchmark_config.host or "http://localhost:8000"
     )
     app = FastAPI()
     app.add_middleware(
@@ -147,15 +147,15 @@ def setup_fastapi_app(agbenchmark_config: AgentBenchmarkConfig) -> FastAPI:
 
     @router.post("/reports")
     def run_single_test(body: CreateReportRequest) -> dict:
-        pids = find_agbenchmark_without_uvicorn()
-        logger.info(f"pids already running with agbenchmark: {pids}")
+        pids = find_startbenchmark_without_uvicorn()
+        logger.info(f"pids already running with startbenchmark: {pids}")
 
         logger.debug(f"Request to /reports: {body.dict()}")
 
         # Start the benchmark in a separate thread
         benchmark_process = Process(
             target=lambda: run_benchmark(
-                config=agbenchmark_config,
+                config=startbenchmark_config,
                 tests=(body.test,),
                 mock=body.mock or False,
             )
@@ -175,7 +175,7 @@ def setup_fastapi_app(agbenchmark_config: AgentBenchmarkConfig) -> FastAPI:
             logger.debug(f"Benchmark finished running in {time.time() - start_time} s")
 
         # List all folders in the current working directory
-        path_reports = agbenchmark_config.reports_folder
+        path_reports = startbenchmark_config.reports_folder
         folders = [folder for folder in path_reports.iterdir() if folder.is_dir()]
 
         # Sort the folders based on their names
@@ -282,7 +282,7 @@ def setup_fastapi_app(agbenchmark_config: AgentBenchmarkConfig) -> FastAPI:
     @router.post("/agent/tasks/{task_id}/evaluations")
     async def create_evaluation(task_id: str) -> BenchmarkRun:
         challenge_info = CHALLENGES[task_informations[task_id]["eval_id"]]
-        workspace = agbenchmark_config.temp_folder
+        workspace = startbenchmark_config.temp_folder
         try:
             async with ApiClient(configuration) as api_client:
                 api_instance = AgentApi(api_client)
@@ -298,7 +298,7 @@ def setup_fastapi_app(agbenchmark_config: AgentBenchmarkConfig) -> FastAPI:
             eval_info = BenchmarkRun(
                 repository_info=RepositoryInfo(),
                 run_details=RunDetails(
-                    command=f"agbenchmark --test={challenge_info.name}",
+                    command=f"startbenchmark --test={challenge_info.name}",
                     benchmark_start_time=(
                         task_informations[task_id]["benchmark_start_time"]
                     ),

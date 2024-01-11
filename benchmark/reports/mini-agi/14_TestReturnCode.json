@@ -1,5 +1,5 @@
 {
-    "command": "agbenchmark start --suite TestReturnCode",
+    "command": "startbenchmark start --suite TestReturnCode",
     "completion_time": "2023-07-22-23:49",
     "metrics": {
         "run_time": "16.31 seconds",
@@ -7,7 +7,7 @@
     },
     "tests": {
         "TestReturnCode": {
-            "data_path": "agbenchmark/challenges/code/c1_writing_suite_1",
+            "data_path": "startbenchmark/challenges/code/c1_writing_suite_1",
             "metrics": {
                 "percentage": 0.0,
                 "highest_difficulty": "No successful tests",
@@ -15,7 +15,7 @@
             },
             "tests": {
                 "TestReturnCode_Simple": {
-                    "data_path": "agbenchmark/challenges/code/c1_writing_suite_1/1_return/data.json",
+                    "data_path": "startbenchmark/challenges/code/c1_writing_suite_1/1_return/data.json",
                     "is_regression": false,
                     "category": [
                         "code",
@@ -34,7 +34,7 @@
                     "reached_cutoff": false
                 },
                 "TestReturnCode_Write": {
-                    "data_path": "agbenchmark/challenges/code/c1_writing_suite_1/2_write/data.json",
+                    "data_path": "startbenchmark/challenges/code/c1_writing_suite_1/2_write/data.json",
                     "is_regression": false,
                     "category": [
                         "code",
@@ -46,14 +46,14 @@
                     "metrics": {
                         "difficulty": "novice",
                         "success": false,
-                        "fail_reason": "agbenchmark/challenges/test_all.py::TestReturnCode_Write::test_method[challenge_data0] depends on agbenchmark/challenges/test_all.py::TestReturnCode_Simple::test_method[challenge_data0]",
+                        "fail_reason": "startbenchmark/challenges/test_all.py::TestReturnCode_Write::test_method[challenge_data0] depends on startbenchmark/challenges/test_all.py::TestReturnCode_Simple::test_method[challenge_data0]",
                         "success_%": 0.0,
                         "run_time": "0.004 seconds"
                     },
                     "reached_cutoff": false
                 },
                 "TestReturnCode_Modify": {
-                    "data_path": "agbenchmark/challenges/code/c1_writing_suite_1/3_modify/data.json",
+                    "data_path": "startbenchmark/challenges/code/c1_writing_suite_1/3_modify/data.json",
                     "is_regression": false,
                     "category": [
                         "code",
@@ -65,14 +65,14 @@
                     "metrics": {
                         "difficulty": "intermediate",
                         "success": false,
-                        "fail_reason": "agbenchmark/challenges/test_all.py::TestReturnCode_Modify::test_method[challenge_data0] depends on agbenchmark/challenges/test_all.py::TestReturnCode_Write::test_method[challenge_data0]",
+                        "fail_reason": "startbenchmark/challenges/test_all.py::TestReturnCode_Modify::test_method[challenge_data0] depends on startbenchmark/challenges/test_all.py::TestReturnCode_Write::test_method[challenge_data0]",
                         "success_%": 0.0,
                         "run_time": "0.004 seconds"
                     },
                     "reached_cutoff": false
                 },
                 "TestReturnCode_Tests": {
-                    "data_path": "agbenchmark/challenges/code/c1_writing_suite_1/4_tests/data.json",
+                    "data_path": "startbenchmark/challenges/code/c1_writing_suite_1/4_tests/data.json",
                     "is_regression": false,
                     "category": [
                         "code",
@@ -84,7 +84,7 @@
                     "metrics": {
                         "difficulty": "advanced",
                         "success": false,
-                        "fail_reason": "agbenchmark/challenges/test_all.py::TestReturnCode_Tests::test_method[challenge_data0] depends on agbenchmark/challenges/test_all.py::TestReturnCode_Modify::test_method[challenge_data0]",
+                        "fail_reason": "startbenchmark/challenges/test_all.py::TestReturnCode_Tests::test_method[challenge_data0] depends on startbenchmark/challenges/test_all.py::TestReturnCode_Modify::test_method[challenge_data0]",
                         "success_%": 0.0,
                         "run_time": "0.004 seconds"
                     },

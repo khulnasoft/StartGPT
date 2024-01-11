@@ -2,7 +2,7 @@
 
 1. `pip install start-gpt-benchmarks`
 2. Add boilerplate code to run and kill agent
-3. `agbenchmark`
+3. `startbenchmark`
    - `--category challenge_category` to run tests in a specific category
    - `--mock` to only run mock tests if they exists for each test
    - `--noreg` to skip any tests that have passed in the past. When you run without this flag and a previous challenge that passed fails, it will now not be regression tests
@@ -11,7 +11,7 @@
 
 ## Contributing
 
-##### Diagrams: https://whimsical.com/agbenchmark-5n4hXBq1ZGzBwRsK4TVY7x
+##### Diagrams: https://whimsical.com/startbenchmark-5n4hXBq1ZGzBwRsK4TVY7x
 
 ### To run the existing mocks
 
@@ -22,7 +22,7 @@
 5. `cp .env_example .env`
 6. `git submodule update --init --remote --recursive`
 7. `uvicorn server:app --reload`
-8. `agbenchmark --mock`
+8. `startbenchmark --mock`
    Keep config the same and watch the logs :)
 
 ### To run with mini-agi
@@ -31,7 +31,7 @@
 2. `pip install -r requirements.txt`
 3. `cp .env_example .env`, set `PROMPT_USER=false` and add your `OPENAI_API_KEY=`. Sset `MODEL="gpt-3.5-turbo"` if you don't have access to `gpt-4` yet. Also make sure you have Python 3.10^ installed
 4. set `AGENT_NAME=mini-agi` in `.env` file and where you want your `REPORT_LOCATION` to be
-5. Make sure to follow the commands above, and remove mock flag `agbenchmark`
+5. Make sure to follow the commands above, and remove mock flag `startbenchmark`
 
 - To add requirements `poetry add requirement`.
 
@@ -47,7 +47,7 @@ Share your progress :)
 
 Manually created, existing challenges within Start-Gpt, https://osu-nlp-group.github.io/Mind2Web/
 
-## How do I add new agents to agbenchmark ?
+## How do I add new agents to startbenchmark ?
 
 Example with smol developer.
 
@@ -61,7 +61,7 @@ https://github.com/KhulnaSoft/Start-GPT-Benchmarks/pull/48/files
 
 ## How do I run agent in different environments?
 
-**To just use as the benchmark for your agent**. `pip install` the package and run `agbenchmark`
+**To just use as the benchmark for your agent**. `pip install` the package and run `startbenchmark`
 
 **For internal Start-GPT ci runs**, specify the `AGENT_NAME` you want you use and set the `HOME_ENV`.
 Ex. `AGENT_NAME=mini-agi`

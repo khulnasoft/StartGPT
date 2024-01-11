@@ -1,4 +1,4 @@
-from agbenchmark.utils.dependencies.graphs import is_circular
+from startbenchmark.utils.dependencies.graphs import is_circular
 
 
 def test_is_circular():

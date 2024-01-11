@@ -1,5 +1,5 @@
 {
-    "command": "agbenchmark start --suite TestRevenueRetrieval",
+    "command": "startbenchmark start --suite TestRevenueRetrieval",
     "completion_time": "2023-07-22-19:18",
     "metrics": {
         "run_time": "40.3 seconds",
@@ -7,7 +7,7 @@
     },
     "tests": {
         "TestRevenueRetrieval": {
-            "data_path": "agbenchmark/challenges/retrieval/r2_search_suite_1",
+            "data_path": "startbenchmark/challenges/retrieval/r2_search_suite_1",
             "task": "Write tesla's exact revenue in 2022 into a .txt file. Use the US notation, with a precision rounded to the nearest million dollars (for instance, $31,578 billion).",
             "category": [
                 "retrieval"
@@ -19,7 +19,7 @@
             },
             "tests": {
                 "TestRevenueRetrieval_1.0": {
-                    "data_path": "agbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
+                    "data_path": "startbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
                     "is_regression": true,
                     "answer": "It was $81.462 billion in 2022.",
                     "description": "A no guardrails search for info",
@@ -30,7 +30,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.1": {
-                    "data_path": "agbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
+                    "data_path": "startbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
                     "is_regression": false,
                     "answer": "It was $81.462 billion in 2022.",
                     "description": "This one checks the accuracy of the information over r2",
@@ -41,7 +41,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.2": {
-                    "data_path": "agbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
+                    "data_path": "startbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
                     "is_regression": false,
                     "answer": "It was $81.462 billion in 2022. In millions the answer is 81,462.",
                     "description": "Advanced version of the r2.1 challenge that also asks for specific formatting.",

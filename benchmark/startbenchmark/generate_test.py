@@ -5,8 +5,8 @@ import os
 from collections import deque
 from pathlib import Path
 
-from agbenchmark.utils.challenge import Challenge
-from agbenchmark.utils.data_types import ChallengeData
+from startbenchmark.utils.challenge import Challenge
+from startbenchmark.utils.data_types import ChallengeData
 
 DATA_CATEGORY = {}
 

@@ -6,9 +6,9 @@ from typing import Optional
 
 from agent_protocol_client import AgentApi, ApiClient, Configuration, TaskRequestBody
 
-from agbenchmark.agent_interface import get_list_of_file_paths
-from agbenchmark.config import AgentBenchmarkConfig
-from agbenchmark.utils.data_types import ChallengeData
+from startbenchmark.agent_interface import get_list_of_file_paths
+from startbenchmark.config import AgentBenchmarkConfig
+from startbenchmark.utils.data_types import ChallengeData
 
 LOG = logging.getLogger(__name__)
 

@@ -181,7 +181,7 @@ class AgentProtocolServer:
         execute_command, execute_command_args, execute_result = None, None, None
         execute_approved = False
 
-        # HACK: only for compatibility with AGBenchmark
+        # HACK: only for compatibility with STARTBenchmark
         if step_request.input == "y":
             step_request.input = ""
 

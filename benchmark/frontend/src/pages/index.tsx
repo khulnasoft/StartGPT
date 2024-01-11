@@ -26,7 +26,7 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>agbenchmark</title>
+        <title>startbenchmark</title>
         <meta
           name="description"
           content="The best way to evaluate your agents"

@@ -1,5 +1,5 @@
 {
-    "command": "agbenchmark start",
+    "command": "startbenchmark start",
     "completion_time": "2023-07-31-21:02",
     "benchmark_start_time": "2023-07-31-21:02",
     "metrics": {

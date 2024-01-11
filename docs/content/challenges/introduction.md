@@ -23,12 +23,12 @@ We look forward to your contributions and the exciting solutions that the commun
 
 !!! warning
     
-    We're slowly transitioning to agbenchmark. agbenchmark is a simpler way to improve StartGPT. Simply run:
+    We're slowly transitioning to startbenchmark. startbenchmark is a simpler way to improve StartGPT. Simply run:
     
     ```
-    agbenchmark
+    startbenchmark
     ```
     
     and beat as many challenges as possible.
 
-For more agbenchmark options, look at the [readme](https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/master/agbenchmark).
+For more startbenchmark options, look at the [readme](https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/master/startbenchmark).

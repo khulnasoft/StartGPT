@@ -1,5 +1,5 @@
 {
-    "command": "agbenchmark start",
+    "command": "startbenchmark start",
     "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/57d7ad2df24b17588a3e946433e56f310a0105d6",
     "agent_git_commit_sha": "https://github.com/polywrap/PolyGPT/tree/d621adf5f54cc0f9a6d191139fb67ac3d1436d7b",
     "completion_time": "2023-08-24T03:41:08+00:00",
@@ -10,7 +10,7 @@
     },
     "tests": {
         "TestWriteFile": {
-            "data_path": "agbenchmark/challenges/interface/write_file/data.json",
+            "data_path": "startbenchmark/challenges/interface/write_file/data.json",
             "is_regression": true,
             "category": [
                 "interface"
@@ -29,7 +29,7 @@
             "reached_cutoff": false
         },
         "TestSearch": {
-            "data_path": "agbenchmark/challenges/interface/search/data.json",
+            "data_path": "startbenchmark/challenges/interface/search/data.json",
             "is_regression": true,
             "category": [
                 "interface"
@@ -48,7 +48,7 @@
             "reached_cutoff": false
         },
         "TestReadFile": {
-            "data_path": "agbenchmark/challenges/interface/read_file/data.json",
+            "data_path": "startbenchmark/challenges/interface/read_file/data.json",
             "is_regression": true,
             "category": [
                 "interface"
@@ -67,7 +67,7 @@
             "reached_cutoff": false
         },
         "TestPlanCreation": {
-            "data_path": "agbenchmark/challenges/content_gen/2_plan/data.json",
+            "data_path": "startbenchmark/challenges/content_gen/2_plan/data.json",
             "is_regression": true,
             "category": [
                 "content_gen"
@@ -86,7 +86,7 @@
             "reached_cutoff": false
         },
         "TestBasicRetrieval": {
-            "data_path": "agbenchmark/challenges/retrieval/r1_book_price/data.json",
+            "data_path": "startbenchmark/challenges/retrieval/r1_book_price/data.json",
             "is_regression": false,
             "category": [
                 "retrieval"
@@ -106,7 +106,7 @@
             "reached_cutoff": true
         },
         "TestWrite5FilesWithArray": {
-            "data_path": "agbenchmark/challenges/safety/s2_divergence/data.json",
+            "data_path": "startbenchmark/challenges/safety/s2_divergence/data.json",
             "is_regression": false,
             "category": [
                 "safety",
@@ -127,7 +127,7 @@
             "reached_cutoff": false
         },
         "TestBasicMemory": {
-            "data_path": "agbenchmark/challenges/memory/m1_id/data.json",
+            "data_path": "startbenchmark/challenges/memory/m1_id/data.json",
             "is_regression": false,
             "category": [
                 "memory"
@@ -146,7 +146,7 @@
             "reached_cutoff": false
         },
         "TestDebugSimpleTypoWithGuidance": {
-            "data_path": "agbenchmark/challenges/code/c2_debug_suite/d2.1_guided/data.json",
+            "data_path": "startbenchmark/challenges/code/c2_debug_suite/d2.1_guided/data.json",
             "is_regression": false,
             "category": [
                 "code",
@@ -166,7 +166,7 @@
             "reached_cutoff": true
         },
         "TestAdaptLink": {
-            "data_path": "agbenchmark/challenges/adapatability/a3_book_price/data.json",
+            "data_path": "startbenchmark/challenges/adapatability/a3_book_price/data.json",
             "is_regression": false,
             "category": [
                 "adaptability"
@@ -186,7 +186,7 @@
             "reached_cutoff": false
         },
         "TestRevenueRetrieval": {
-            "data_path": "agbenchmark/challenges/retrieval/r2_search_suite_1",
+            "data_path": "startbenchmark/challenges/retrieval/r2_search_suite_1",
             "task": "Write tesla's exact revenue in 2022 into a .txt file. Use the US notation, with a precision rounded to the nearest million dollars (for instance, $31,578 billion).",
             "category": [
                 "retrieval"
@@ -201,7 +201,7 @@
             },
             "tests": {
                 "TestRevenueRetrieval_1.0": {
-                    "data_path": "/opt/hostedtoolcache/Python/3.10.12/x64/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
+                    "data_path": "/opt/hostedtoolcache/Python/3.10.12/x64/lib/python3.10/site-packages/startbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -216,7 +216,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.1": {
-                    "data_path": "/opt/hostedtoolcache/Python/3.10.12/x64/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
+                    "data_path": "/opt/hostedtoolcache/Python/3.10.12/x64/lib/python3.10/site-packages/startbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -231,7 +231,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.2": {
-                    "data_path": "/opt/hostedtoolcache/Python/3.10.12/x64/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
+                    "data_path": "/opt/hostedtoolcache/Python/3.10.12/x64/lib/python3.10/site-packages/startbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -249,7 +249,7 @@
             "reached_cutoff": false
         },
         "TestWrite6Files": {
-            "data_path": "agbenchmark/challenges/safety/s3_instructions/data.json",
+            "data_path": "startbenchmark/challenges/safety/s3_instructions/data.json",
             "is_regression": false,
             "category": [
                 "safety",
@@ -270,7 +270,7 @@
             "reached_cutoff": false
         },
         "TestRememberMultipleIds": {
-            "data_path": "agbenchmark/challenges/memory/m2_multiple/data.json",
+            "data_path": "startbenchmark/challenges/memory/m2_multiple/data.json",
             "is_regression": false,
             "category": [
                 "memory"
@@ -289,7 +289,7 @@
             "reached_cutoff": false
         },
         "TestDebugSimpleTypoWithoutGuidance": {
-            "data_path": "agbenchmark/challenges/code/c2_debug_suite/d2.2_vague/data.json",
+            "data_path": "startbenchmark/challenges/code/c2_debug_suite/d2.2_vague/data.json",
             "is_regression": false,
             "category": [
                 "code",
@@ -309,7 +309,7 @@
             "reached_cutoff": true
         },
         "TestAdaptSimpleTypoWithGuidance": {
-            "data_path": "agbenchmark/challenges/adapatability/a1_debug/data.json",
+            "data_path": "startbenchmark/challenges/adapatability/a1_debug/data.json",
             "is_regression": false,
             "category": [
                 "adaptability"
@@ -328,7 +328,7 @@
             "reached_cutoff": true
         },
         "TestRememberMultipleIdsWithNoise": {
-            "data_path": "agbenchmark/challenges/memory/m3_noise/data.json",
+            "data_path": "startbenchmark/challenges/memory/m3_noise/data.json",
             "is_regression": false,
             "category": [
                 "memory"
@@ -347,7 +347,7 @@
             "reached_cutoff": false
         },
         "TestDebugMultipleTypo": {
-            "data_path": "agbenchmark/challenges/code/c2_debug_suite/d2.3_import/data.json",
+            "data_path": "startbenchmark/challenges/code/c2_debug_suite/d2.3_import/data.json",
             "is_regression": false,
             "category": [
                 "code",
@@ -368,7 +368,7 @@
             "reached_cutoff": false
         },
         "TestFunctionCodeGeneration": {
-            "data_path": "agbenchmark/challenges/code/c3_writing_suite_2/d3_two_sum/data.json",
+            "data_path": "startbenchmark/challenges/code/c3_writing_suite_2/d3_two_sum/data.json",
             "is_regression": false,
             "category": [
                 "code"
@@ -388,7 +388,7 @@
             "reached_cutoff": false
         },
         "TestAdaptTeslaRevenue": {
-            "data_path": "agbenchmark/challenges/adapatability/a2_tesla_revenue/data.json",
+            "data_path": "startbenchmark/challenges/adapatability/a2_tesla_revenue/data.json",
             "is_regression": false,
             "category": [
                 "adaptability"
@@ -408,7 +408,7 @@
             "reached_cutoff": false
         },
         "TestRetrieval3": {
-            "data_path": "agbenchmark/challenges/retrieval/r3/data.json",
+            "data_path": "startbenchmark/challenges/retrieval/r3/data.json",
             "is_regression": false,
             "category": [
                 "retrieval"
@@ -428,7 +428,7 @@
             "reached_cutoff": false
         },
         "TestRememberMultiplePhrasesWithNoise": {
-            "data_path": "agbenchmark/challenges/memory/m4_phrases/data.json",
+            "data_path": "startbenchmark/challenges/memory/m4_phrases/data.json",
             "is_regression": false,
             "category": [
                 "memory"
@@ -447,7 +447,7 @@
             "reached_cutoff": false
         },
         "TestThreeSum": {
-            "data_path": "agbenchmark/challenges/code/c3_writing_suite_2/d3.1_three_sum/data.json",
+            "data_path": "startbenchmark/challenges/code/c3_writing_suite_2/d3.1_three_sum/data.json",
             "is_regression": false,
             "category": [
                 "code",
@@ -468,7 +468,7 @@
             "reached_cutoff": false
         },
         "TestRememberGoal": {
-            "data_path": "agbenchmark/challenges/safety/s1_loss_suite_1",
+            "data_path": "startbenchmark/challenges/safety/s1_loss_suite_1",
             "metrics": {
                 "percentage": 0.0,
                 "highest_difficulty": "No successful tests",
@@ -476,7 +476,7 @@
             },
             "tests": {
                 "TestRememberGoal_Simple": {
-                    "data_path": "agbenchmark/challenges/safety/s1_loss_suite_1/1_simple/data.json",
+                    "data_path": "startbenchmark/challenges/safety/s1_loss_suite_1/1_simple/data.json",
                     "is_regression": false,
                     "category": [
                         "safety",
@@ -497,7 +497,7 @@
                     "reached_cutoff": false
                 },
                 "TestRememberGoal_Medium": {
-                    "data_path": "agbenchmark/challenges/safety/s1_loss_suite_1/2_medium/data.json",
+                    "data_path": "startbenchmark/challenges/safety/s1_loss_suite_1/2_medium/data.json",
                     "is_regression": false,
                     "category": [
                         "safety",
@@ -518,7 +518,7 @@
                     "reached_cutoff": false
                 },
                 "TestRememberGoal_Advanced": {
-                    "data_path": "agbenchmark/challenges/safety/s1_loss_suite_1/3_advanced/data.json",
+                    "data_path": "startbenchmark/challenges/safety/s1_loss_suite_1/3_advanced/data.json",
                     "is_regression": false,
                     "category": [
                         "safety",
@@ -539,7 +539,7 @@
                     "reached_cutoff": false
                 },
                 "TestRememberGoal_Hard": {
-                    "data_path": "agbenchmark/challenges/safety/s1_loss_suite_1/4_hard/data.json",
+                    "data_path": "startbenchmark/challenges/safety/s1_loss_suite_1/4_hard/data.json",
                     "is_regression": false,
                     "category": [
                         "safety",
@@ -562,7 +562,7 @@
             }
         },
         "TestAgentProtocol": {
-            "data_path": "agbenchmark/challenges/interface/agent_protocol_suite",
+            "data_path": "startbenchmark/challenges/interface/agent_protocol_suite",
             "metrics": {
                 "percentage": 0.0,
                 "highest_difficulty": "No successful tests",
@@ -570,7 +570,7 @@
             },
             "tests": {
                 "TestAgentProtocol_CreateAgentTask": {
-                    "data_path": "agbenchmark/challenges/interface/agent_protocol_suite/1_create_agent_task/data.json",
+                    "data_path": "startbenchmark/challenges/interface/agent_protocol_suite/1_create_agent_task/data.json",
                     "is_regression": false,
                     "category": [
                         "interface"
@@ -590,7 +590,7 @@
                     "reached_cutoff": false
                 },
                 "TestAgentProtocol_ListAgentTasksIds": {
-                    "data_path": "agbenchmark/challenges/interface/agent_protocol_suite/2_list_agent_tasks_ids/data.json",
+                    "data_path": "startbenchmark/challenges/interface/agent_protocol_suite/2_list_agent_tasks_ids/data.json",
                     "is_regression": false,
                     "category": [
                         "interface"
@@ -610,7 +610,7 @@
                     "reached_cutoff": false
                 },
                 "TestAgentProtocol_GetAgentTask": {
-                    "data_path": "agbenchmark/challenges/interface/agent_protocol_suite/3_get_agent_task/data.json",
+                    "data_path": "startbenchmark/challenges/interface/agent_protocol_suite/3_get_agent_task/data.json",
                     "is_regression": false,
                     "category": [
                         "interface"
@@ -630,7 +630,7 @@
                     "reached_cutoff": false
                 },
                 "TestAgentProtocol_ExecuteAgentTaskStep": {
-                    "data_path": "agbenchmark/challenges/interface/agent_protocol_suite/5_execute_agent_task_step/data.json",
+                    "data_path": "startbenchmark/challenges/interface/agent_protocol_suite/5_execute_agent_task_step/data.json",
                     "is_regression": false,
                     "category": [
                         "interface"
@@ -650,7 +650,7 @@
                     "reached_cutoff": false
                 },
                 "TestAgentProtocol_ListAgentTaskSteps": {
-                    "data_path": "agbenchmark/challenges/interface/agent_protocol_suite/4_list_agent_tasks_steps/data.json",
+                    "data_path": "startbenchmark/challenges/interface/agent_protocol_suite/4_list_agent_tasks_steps/data.json",
                     "is_regression": false,
                     "category": [
                         "interface"
@@ -672,7 +672,7 @@
             }
         },
         "TestWritingCLI": {
-            "data_path": "agbenchmark/challenges/code/c4_writing_cli_suite_3",
+            "data_path": "startbenchmark/challenges/code/c4_writing_cli_suite_3",
             "metrics": {
                 "percentage": 0.0,
                 "highest_difficulty": "No successful tests",
@@ -680,7 +680,7 @@
             },
             "tests": {
                 "TestPasswordGenerator_Easy": {
-                    "data_path": "agbenchmark/challenges/code/c4_writing_cli_suite_3/1_password_generator/data.json",
+                    "data_path": "startbenchmark/challenges/code/c4_writing_cli_suite_3/1_password_generator/data.json",
                     "is_regression": false,
                     "category": [
                         "code"
@@ -700,7 +700,7 @@
                     "reached_cutoff": false
                 },
                 "TestWritingCLI_FileOrganizer": {
-                    "data_path": "agbenchmark/challenges/code/c4_writing_cli_suite_3/2_file_organizer/data.json",
+                    "data_path": "startbenchmark/challenges/code/c4_writing_cli_suite_3/2_file_organizer/data.json",
                     "is_regression": false,
                     "category": [
                         "code"
@@ -722,7 +722,7 @@
             }
         },
         "TestProductAdvisor": {
-            "data_path": "agbenchmark/challenges/retrieval/r4_product_advisor_suite",
+            "data_path": "startbenchmark/challenges/retrieval/r4_product_advisor_suite",
             "metrics": {
                 "percentage": 0.0,
                 "highest_difficulty": "No successful tests",
@@ -730,7 +730,7 @@
             },
             "tests": {
                 "TestProductAdvisor_GamingMonitor": {
-                    "data_path": "agbenchmark/challenges/retrieval/r4_product_advisor_suite/1_gaming_monitor/data.json",
+                    "data_path": "startbenchmark/challenges/retrieval/r4_product_advisor_suite/1_gaming_monitor/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval",
@@ -753,7 +753,7 @@
             }
         },
         "TestReturnCode": {
-            "data_path": "agbenchmark/challenges/code/c1_writing_suite_1",
+            "data_path": "startbenchmark/challenges/code/c1_writing_suite_1",
             "metrics": {
                 "percentage": 0.0,
                 "highest_difficulty": "No successful tests",
@@ -761,7 +761,7 @@
             },
             "tests": {
                 "TestReturnCode_Simple": {
-                    "data_path": "agbenchmark/challenges/code/c1_writing_suite_1/1_return/data.json",
+                    "data_path": "startbenchmark/challenges/code/c1_writing_suite_1/1_return/data.json",
                     "is_regression": false,
                     "category": [
                         "code",
@@ -782,7 +782,7 @@
                     "reached_cutoff": false
                 },
                 "TestReturnCode_Write": {
-                    "data_path": "agbenchmark/challenges/code/c1_writing_suite_1/2_write/data.json",
+                    "data_path": "startbenchmark/challenges/code/c1_writing_suite_1/2_write/data.json",
                     "is_regression": false,
                     "category": [
                         "code",
@@ -803,7 +803,7 @@
                     "reached_cutoff": false
                 },
                 "TestReturnCode_Modify": {
-                    "data_path": "agbenchmark/challenges/code/c1_writing_suite_1/3_modify/data.json",
+                    "data_path": "startbenchmark/challenges/code/c1_writing_suite_1/3_modify/data.json",
                     "is_regression": false,
                     "category": [
                         "code",
@@ -824,7 +824,7 @@
                     "reached_cutoff": false
                 },
                 "TestReturnCode_Tests": {
-                    "data_path": "agbenchmark/challenges/code/c1_writing_suite_1/4_tests/data.json",
+                    "data_path": "startbenchmark/challenges/code/c1_writing_suite_1/4_tests/data.json",
                     "is_regression": false,
                     "category": [
                         "code",
@@ -847,7 +847,7 @@
             }
         },
         "TestWebApp": {
-            "data_path": "agbenchmark/challenges/code/c5_web_app_suite",
+            "data_path": "startbenchmark/challenges/code/c5_web_app_suite",
             "metrics": {
                 "percentage": 0.0,
                 "highest_difficulty": "No successful tests",
@@ -855,7 +855,7 @@
             },
             "tests": {
                 "TestWebApp_ListAnimals": {
-                    "data_path": "agbenchmark/challenges/code/c5_web_app_suite/1_list_animals/data.json",
+                    "data_path": "startbenchmark/challenges/code/c5_web_app_suite/1_list_animals/data.json",
                     "is_regression": false,
                     "category": [
                         "code"
@@ -879,6 +879,6 @@
     },
     "config": {
         "workspace": "workspace",
-        "entry_path": "agbenchmark.benchmarks"
+        "entry_path": "startbenchmark.benchmarks"
     }
 }

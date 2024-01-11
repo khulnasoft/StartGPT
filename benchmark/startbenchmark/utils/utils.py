@@ -8,7 +8,7 @@ from typing import Any, Optional
 
 from dotenv import load_dotenv
 
-from agbenchmark.utils.data_types import DIFFICULTY_MAP, DifficultyLevel
+from startbenchmark.utils.data_types import DIFFICULTY_MAP, DifficultyLevel
 
 load_dotenv()
 
@@ -46,14 +46,14 @@ def get_test_path(json_file: str | Path) -> str:
     if isinstance(json_file, str):
         json_file = Path(json_file)
 
-    # Find the index of "agbenchmark" in the path parts
+    # Find the index of "startbenchmark" in the path parts
     try:
-        agbenchmark_index = json_file.parts.index("benchmark")
+        startbenchmark_index = json_file.parts.index("benchmark")
     except ValueError:
         raise ValueError("Invalid challenge location.")
 
-    # Create the path from "agbenchmark" onwards
-    challenge_location = Path(*json_file.parts[agbenchmark_index:])
+    # Create the path from "startbenchmark" onwards
+    challenge_location = Path(*json_file.parts[startbenchmark_index:])
 
     formatted_location = replace_backslash(str(challenge_location))
     if isinstance(formatted_location, str):

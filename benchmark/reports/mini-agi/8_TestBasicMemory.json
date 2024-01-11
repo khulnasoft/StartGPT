@@ -1,5 +1,5 @@
 {
-  "command": "agbenchmark start --test TestBasicMemory",
+  "command": "startbenchmark start --test TestBasicMemory",
   "completion_time": "2023-07-17-18:18",
   "metrics": {
     "run_time": "62.11 seconds",
@@ -7,7 +7,7 @@
   },
   "tests": {
     "TestBasicMemory": {
-      "data_path": "agbenchmark/challenges/memory/m1",
+      "data_path": "startbenchmark/challenges/memory/m1",
       "is_regression": false,
       "task": "Follow the instructions in the instructions_1.txt file",
       "answer": "2314",

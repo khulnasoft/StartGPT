@@ -10,8 +10,8 @@ import networkx as nx
 import numpy as np
 from pyvis.network import Network
 
-from agbenchmark.generate_test import DATA_CATEGORY
-from agbenchmark.utils.utils import write_pretty_json
+from startbenchmark.generate_test import DATA_CATEGORY
+from startbenchmark.utils.utils import write_pretty_json
 
 logger = logging.getLogger(__name__)
 

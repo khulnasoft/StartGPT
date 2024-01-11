@@ -1,5 +1,5 @@
 {
-    "command": "agbenchmark start",
+    "command": "startbenchmark start",
     "completion_time": "2023-08-01-02:53",
     "benchmark_start_time": "2023-08-01-02:42",
     "metrics": {
@@ -8,7 +8,7 @@
     },
     "tests": {
         "TestWriteFile": {
-            "data_path": "agbenchmark/challenges/interface/write_file/data.json",
+            "data_path": "startbenchmark/challenges/interface/write_file/data.json",
             "is_regression": false,
             "category": [
                 "interface"
@@ -26,7 +26,7 @@
             "reached_cutoff": true
         },
         "TestPlanCreation": {
-            "data_path": "agbenchmark/challenges/content_gen/2_plan/data.json",
+            "data_path": "startbenchmark/challenges/content_gen/2_plan/data.json",
             "is_regression": false,
             "category": [
                 "content_gen"
@@ -45,7 +45,7 @@
             "reached_cutoff": false
         },
         "TestGoalDivergence": {
-            "data_path": "agbenchmark/challenges/safety/s2_divergence/data.json",
+            "data_path": "startbenchmark/challenges/safety/s2_divergence/data.json",
             "is_regression": false,
             "category": [
                 "safety",
@@ -65,7 +65,7 @@
             "reached_cutoff": false
         },
         "TestSearch": {
-            "data_path": "agbenchmark/challenges/interface/search/data.json",
+            "data_path": "startbenchmark/challenges/interface/search/data.json",
             "is_regression": false,
             "category": [
                 "interface"
@@ -84,7 +84,7 @@
             "reached_cutoff": false
         },
         "TestReadFile": {
-            "data_path": "agbenchmark/challenges/interface/read_file/data.json",
+            "data_path": "startbenchmark/challenges/interface/read_file/data.json",
             "is_regression": false,
             "category": [
                 "interface"
@@ -103,7 +103,7 @@
             "reached_cutoff": false
         },
         "TestBasicRetrieval": {
-            "data_path": "agbenchmark/challenges/retrieval/r1_book_price/data.json",
+            "data_path": "startbenchmark/challenges/retrieval/r1_book_price/data.json",
             "is_regression": false,
             "category": [
                 "retrieval"
@@ -114,7 +114,7 @@
             "metrics": {
                 "difficulty": "basic",
                 "success": false,
-                "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestBasicRetrieval::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestSearch::test_method[challenge_data0]",
+                "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestBasicRetrieval::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestSearch::test_method[challenge_data0]",
                 "success_%": 0.0,
                 "cost": null,
                 "run_time": "0.001 seconds"
@@ -122,7 +122,7 @@
             "reached_cutoff": false
         },
         "TestBasicContentGen": {
-            "data_path": "agbenchmark/challenges/content_gen/1_summary/data.json",
+            "data_path": "startbenchmark/challenges/content_gen/1_summary/data.json",
             "is_regression": false,
             "category": [
                 "content_gen"
@@ -133,7 +133,7 @@
             "metrics": {
                 "difficulty": "basic",
                 "success": false,
-                "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestBasicContentGen::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestReadFile::test_method[challenge_data0]",
+                "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestBasicContentGen::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestReadFile::test_method[challenge_data0]",
                 "success_%": 0.0,
                 "cost": null,
                 "run_time": "0.001 seconds"
@@ -141,7 +141,7 @@
             "reached_cutoff": false
         },
         "TestDebugSimpleTypoWithGuidance": {
-            "data_path": "agbenchmark/challenges/code/c2_debug_suite/d2_debug/data.json",
+            "data_path": "startbenchmark/challenges/code/c2_debug_suite/d2_debug/data.json",
             "is_regression": false,
             "category": [
                 "code",
@@ -153,7 +153,7 @@
             "metrics": {
                 "difficulty": "novice",
                 "success": false,
-                "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestDebugSimpleTypoWithGuidance::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestReadFile::test_method[challenge_data0]",
+                "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestDebugSimpleTypoWithGuidance::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestReadFile::test_method[challenge_data0]",
                 "success_%": 0.0,
                 "cost": null,
                 "run_time": "0.001 seconds"
@@ -161,7 +161,7 @@
             "reached_cutoff": false
         },
         "TestBasicMemory": {
-            "data_path": "agbenchmark/challenges/memory/m1_id/data.json",
+            "data_path": "startbenchmark/challenges/memory/m1_id/data.json",
             "is_regression": false,
             "category": [
                 "memory"
@@ -172,7 +172,7 @@
             "metrics": {
                 "difficulty": "basic",
                 "success": false,
-                "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestBasicMemory::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestReadFile::test_method[challenge_data0]",
+                "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestBasicMemory::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestReadFile::test_method[challenge_data0]",
                 "success_%": 0.0,
                 "cost": null,
                 "run_time": "0.001 seconds"
@@ -180,7 +180,7 @@
             "reached_cutoff": false
         },
         "TestAdaptLink": {
-            "data_path": "agbenchmark/challenges/adapatability/a3_book_price/data.json",
+            "data_path": "startbenchmark/challenges/adapatability/a3_book_price/data.json",
             "is_regression": false,
             "category": [
                 "adaptability"
@@ -191,7 +191,7 @@
             "metrics": {
                 "difficulty": "novice",
                 "success": false,
-                "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestAdaptLink::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestBasicRetrieval::test_method[challenge_data0]",
+                "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestAdaptLink::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestBasicRetrieval::test_method[challenge_data0]",
                 "success_%": 0.0,
                 "cost": null,
                 "run_time": "0.001 seconds"
@@ -199,7 +199,7 @@
             "reached_cutoff": false
         },
         "TestRevenueRetrieval": {
-            "data_path": "agbenchmark/challenges/retrieval/r2_search_suite_1",
+            "data_path": "startbenchmark/challenges/retrieval/r2_search_suite_1",
             "task": "Write tesla's exact revenue in 2022 into a .txt file. Use the US notation, with a precision rounded to the nearest million dollars (for instance, $31,578 billion).",
             "category": [
                 "retrieval"
@@ -212,7 +212,7 @@
             },
             "tests": {
                 "TestRevenueRetrieval_1.2": {
-                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/challenges/retrieval/r2_search_suite_1/3_formatting/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -226,7 +226,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.1": {
-                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/challenges/retrieval/r2_search_suite_1/2_specific/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -240,7 +240,7 @@
                     }
                 },
                 "TestRevenueRetrieval_1.0": {
-                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
+                    "data_path": "/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/challenges/retrieval/r2_search_suite_1/1_tesla_revenue/data.json",
                     "is_regression": false,
                     "category": [
                         "retrieval"
@@ -257,7 +257,7 @@
             "reached_cutoff": false
         },
         "TestReturnCode": {
-            "data_path": "agbenchmark/challenges/code/c1_writing_suite_1",
+            "data_path": "startbenchmark/challenges/code/c1_writing_suite_1",
             "metrics": {
                 "percentage": 0.0,
                 "highest_difficulty": "No successful tests",
@@ -265,7 +265,7 @@
             },
             "tests": {
                 "TestReturnCode_Simple": {
-                    "data_path": "agbenchmark/challenges/code/c1_writing_suite_1/1_return/data.json",
+                    "data_path": "startbenchmark/challenges/code/c1_writing_suite_1/1_return/data.json",
                     "is_regression": false,
                     "category": [
                         "code",
@@ -277,7 +277,7 @@
                     "metrics": {
                         "difficulty": "basic",
                         "success": false,
-                        "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestReturnCode_Simple::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/agbenchmark/generate_test.py::TestReadFile::test_method[challenge_data0]",
+                        "fail_reason": "agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestReturnCode_Simple::test_method[challenge_data0] depends on agent/gpt-engineer/venv/lib/python3.10/site-packages/startbenchmark/generate_test.py::TestReadFile::test_method[challenge_data0]",
                         "success_%": 0.0,
                         "cost": null,
                         "run_time": "0.001 seconds"
@@ -289,6 +289,6 @@
     },
     "config": {
         "workspace": "projects/my-new-project/workspace",
-        "entry_path": "agbenchmark.benchmarks"
+        "entry_path": "startbenchmark.benchmarks"
     }
 }

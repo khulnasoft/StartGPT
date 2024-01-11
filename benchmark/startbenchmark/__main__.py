@@ -9,8 +9,8 @@ import click
 from click_default_group import DefaultGroup
 from dotenv import load_dotenv
 
-from agbenchmark.config import AgentBenchmarkConfig
-from agbenchmark.utils.logging import configure_logging
+from startbenchmark.config import AgentBenchmarkConfig
+from startbenchmark.utils.logging import configure_logging
 
 load_dotenv()
 
@@ -54,7 +54,7 @@ def cli(
 @cli.command(hidden=True)
 def start():
     raise DeprecationWarning(
-        "`agbenchmark start` is deprecated. Use `agbenchmark run` instead."
+        "`startbenchmark start` is deprecated. Use `startbenchmark run` instead."
     )
 
 
@@ -116,10 +116,10 @@ def run(
 
     Options marked with (+) can be specified multiple times, to select multiple items.
     """
-    from agbenchmark.main import run_benchmark, validate_args
+    from startbenchmark.main import run_benchmark, validate_args
 
-    agbenchmark_config = AgentBenchmarkConfig.load()
-    logger.debug(f"agbenchmark_config: {agbenchmark_config.agbenchmark_config_dir}")
+    startbenchmark_config = AgentBenchmarkConfig.load()
+    logger.debug(f"startbenchmark_config: {startbenchmark_config.startbenchmark_config_dir}")
     try:
         validate_args(
             maintain=maintain,
@@ -142,7 +142,7 @@ def run(
         with open("backend/backend_stdout.txt", "w") as f:
             sys.stdout = f
             exit_code = run_benchmark(
-                config=agbenchmark_config,
+                config=startbenchmark_config,
                 maintain=maintain,
                 improve=improve,
                 explore=explore,
@@ -160,7 +160,7 @@ def run(
 
     else:
         exit_code = run_benchmark(
-            config=agbenchmark_config,
+            config=startbenchmark_config,
             maintain=maintain,
             improve=improve,
             explore=explore,
@@ -183,7 +183,7 @@ def serve(port: Optional[int] = None):
     """Serve the benchmark frontend and API on port 8080."""
     import uvicorn
 
-    from agbenchmark.app import setup_fastapi_app
+    from startbenchmark.app import setup_fastapi_app
 
     config = AgentBenchmarkConfig.load()
     app = setup_fastapi_app(config)
@@ -195,7 +195,7 @@ def serve(port: Optional[int] = None):
 
 @cli.command()
 def config():
-    """Displays info regarding the present AGBenchmark config."""
+    """Displays info regarding the present STARTBenchmark config."""
     try:
         config = AgentBenchmarkConfig.load()
     except FileNotFoundError as e:
@@ -209,13 +209,13 @@ def config():
 
 @cli.command()
 def version():
-    """Print version info for the AGBenchmark application."""
+    """Print version info for the STARTBenchmark application."""
     import toml
 
     package_root = Path(__file__).resolve().parent.parent
     pyproject = toml.load(package_root / "pyproject.toml")
     version = pyproject["tool"]["poetry"]["version"]
-    click.echo(f"AGBenchmark version {version}")
+    click.echo(f"STARTBenchmark version {version}")
 
 
 if __name__ == "__main__":

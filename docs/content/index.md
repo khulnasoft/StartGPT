@@ -5,7 +5,7 @@ Welcome to the StartGPT Documentation.
 The StartGPT project consists of four main components:
 
 * The [Agent](#agent) &ndash; also known as just "StartGPT"
-* The [Benchmark](#benchmark) &ndash; AKA `agbenchmark`
+* The [Benchmark](#benchmark) &ndash; AKA `startbenchmark`
 * The [Forge](#forge)
 * The [Frontend](#frontend)
 
@@ -37,11 +37,11 @@ We continue to develop this project with the goal of providing access to AI assi
 
 **[🗒️ Readme](https://github.com/KhulnaSoft/StartGPT/blob/master/benchmark/README.md)**
 
-Measure your agent's performance! The `agbenchmark` can be used with any agent that supports the agent protocol, and the integration with the project's [CLI] makes it even easier to use with StartGPT and forge-based agents. The benchmark offers a stringent testing environment. Our framework allows for autonomous, objective performance evaluations, ensuring your agents are primed for real-world action.
+Measure your agent's performance! The `startbenchmark` can be used with any agent that supports the agent protocol, and the integration with the project's [CLI] makes it even easier to use with StartGPT and forge-based agents. The benchmark offers a stringent testing environment. Our framework allows for autonomous, objective performance evaluations, ensuring your agents are primed for real-world action.
 
 <!-- TODO: insert visual demonstrating the benchmark -->
 
-- 📦 [**`agbenchmark`**](https://pypi.org/project/agbenchmark/) on Pypi
+- 📦 [**`startbenchmark`**](https://pypi.org/project/startbenchmark/) on Pypi
 
 - 🔌 **Agent Protocol Standardization** - StartGPT uses the agent protocol from the AI Engineer Foundation to ensure compatibility with many agents, both from within and outside the project.
 

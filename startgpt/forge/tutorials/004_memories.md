@@ -17,7 +17,7 @@
 - Implementing Learning Mechanisms using Task and Artifact Schemas
 
 ## Section 4: Testing and Optimizing Memory Integration
-- Employing AGBenchmark for Memory Testing
+- Employing STARTBenchmark for Memory Testing
 - Optimizing Memory for Enhanced Performance and Efficiency
 
 ## Section 5: Best Practices in Memory Integration

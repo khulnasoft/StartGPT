@@ -160,17 +160,17 @@ openai/
 # news
 CURRENT_BULLETIN.md
 
-agbenchmark_config/workspace
-agbenchmark_config/reports
+startbenchmark_config/workspace
+startbenchmark_config/reports
 *.sqlite
 .agbench
-.agbenchmark
+.startbenchmark
 .benchmarks
 .mypy_cache
 .pytest_cache
 .vscode
 ig_*
 agent.db
-agbenchmark_config/updates.json
-agbenchmark_config/challenges_already_beaten.json
-agbenchmark_config/temp_folder/*
+startbenchmark_config/updates.json
+startbenchmark_config/challenges_already_beaten.json
+startbenchmark_config/temp_folder/*

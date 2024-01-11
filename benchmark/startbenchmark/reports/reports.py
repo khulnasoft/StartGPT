@@ -7,11 +7,11 @@ from typing import Any, Dict
 
 import pytest
 
-from agbenchmark.config import AgentBenchmarkConfig
-from agbenchmark.reports.ReportManager import SingletonReportManager
-from agbenchmark.utils.data_types import ChallengeData, DifficultyLevel
-from agbenchmark.utils.get_data_from_helicone import get_data_from_helicone
-from agbenchmark.utils.utils import calculate_success_percentage
+from startbenchmark.config import AgentBenchmarkConfig
+from startbenchmark.reports.ReportManager import SingletonReportManager
+from startbenchmark.utils.data_types import ChallengeData, DifficultyLevel
+from startbenchmark.utils.get_data_from_helicone import get_data_from_helicone
+from startbenchmark.utils.utils import calculate_success_percentage
 
 logger = logging.getLogger(__name__)
 
@@ -185,8 +185,8 @@ def update_challenges_already_beaten(
 
 
 def session_finish(
-    agbenchmark_config: AgentBenchmarkConfig, suite_reports: dict
+    startbenchmark_config: AgentBenchmarkConfig, suite_reports: dict
 ) -> None:
     SingletonReportManager().INTERNAL_INFO_MANAGER.save()
-    SingletonReportManager().INFO_MANAGER.end_info_report(agbenchmark_config)
+    SingletonReportManager().INFO_MANAGER.end_info_report(startbenchmark_config)
     SingletonReportManager().REGRESSION_MANAGER.save()

@@ -56,8 +56,8 @@ jobs:
         run: |
           ./run agent start ${{ matrix.agent-name }}
           cd startgpts/${{ matrix.agent-name }}
-          poetry run agbenchmark --mock
-          poetry run agbenchmark --test=WriteFile
+          poetry run startbenchmark --mock
+          poetry run startbenchmark --test=WriteFile
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           AGENT_NAME: ${{ matrix.agent-name }}

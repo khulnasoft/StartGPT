@@ -65,11 +65,11 @@ jobs:
       - name: Check for unused imports and pass statements
         working-directory: ./benchmark/
         run: |
-          cmd="poetry run autoflake --remove-all-unused-imports --recursive --ignore-init-module-imports --ignore-pass-after-docstring agbenchmark"
+          cmd="poetry run autoflake --remove-all-unused-imports --recursive --ignore-init-module-imports --ignore-pass-after-docstring startbenchmark"
           $cmd --check || (echo "You have unused imports or pass statements, please run '${cmd} --in-place'" && exit 1)
         if: success() || failure()
 
-  tests-agbenchmark:
+  tests-startbenchmark:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -99,9 +99,9 @@ jobs:
           sleep 10
           cd startgpts/${{ matrix.agent-name }}
           set +e # Ignore non-zero exit codes and continue execution
-          echo "Running the following command: poetry run agbenchmark --maintain --mock"
+          echo "Running the following command: poetry run startbenchmark --maintain --mock"
 
-          poetry run agbenchmark --maintain --mock
+          poetry run startbenchmark --maintain --mock
           EXIT_CODE=$?
           set -e  # Stop ignoring non-zero exit codes
           # Check if the exit code was 5, and if so, exit with 0 instead
@@ -109,28 +109,28 @@ jobs:
             echo "regression_tests.json is empty."
           fi
 
-          echo "Running the following command: poetry run agbenchmark --mock"
-          poetry run agbenchmark --mock
+          echo "Running the following command: poetry run startbenchmark --mock"
+          poetry run startbenchmark --mock
 
-          echo "Running the following command: poetry run agbenchmark --mock --category=data"
-          poetry run agbenchmark --mock --category=data
+          echo "Running the following command: poetry run startbenchmark --mock --category=data"
+          poetry run startbenchmark --mock --category=data
 
-          echo "Running the following command: poetry run agbenchmark --mock --category=coding"
-          poetry run agbenchmark --mock --category=coding
+          echo "Running the following command: poetry run startbenchmark --mock --category=coding"
+          poetry run startbenchmark --mock --category=coding
 
-          echo "Running the following command: poetry run agbenchmark --test=WriteFile"
-          poetry run agbenchmark --test=WriteFile
+          echo "Running the following command: poetry run startbenchmark --test=WriteFile"
+          poetry run startbenchmark --test=WriteFile
           cd ../../benchmark
           poetry install
           echo "Adding the BUILD_SKILL_TREE environment variable. This will attempt to add new elements in the skill tree. If new elements are added, the CI fails because they should have been pushed"
           export BUILD_SKILL_TREE=true
 
-          poetry run agbenchmark --mock
+          poetry run startbenchmark --mock
           poetry run pytest -vv -s tests
           
-          CHANGED=$(git diff --name-only | grep -E '(agbenchmark/challenges)|(../frontend/assets)') || echo "No diffs"
+          CHANGED=$(git diff --name-only | grep -E '(startbenchmark/challenges)|(../frontend/assets)') || echo "No diffs"
           if [ ! -z "$CHANGED" ]; then
-            echo "There are unstaged changes please run agbenchmark and commit those changes since they are needed."
+            echo "There are unstaged changes please run startbenchmark and commit those changes since they are needed."
             echo "$CHANGED"
             exit 1
           else

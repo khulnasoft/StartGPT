@@ -6,11 +6,11 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from agbenchmark.config import AgentBenchmarkConfig
-from agbenchmark.reports.processing.graphs import save_single_radar_chart
-from agbenchmark.reports.processing.process_report import get_agent_category
-from agbenchmark.reports.processing.report_types import Report
-from agbenchmark.utils.utils import get_highest_success_difficulty
+from startbenchmark.config import AgentBenchmarkConfig
+from startbenchmark.reports.processing.graphs import save_single_radar_chart
+from startbenchmark.reports.processing.process_report import get_agent_category
+from startbenchmark.reports.processing.report_types import Report
+from startbenchmark.utils.utils import get_highest_success_difficulty
 
 
 class SingletonReportManager:

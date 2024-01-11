@@ -8,7 +8,7 @@
 
 data/*
 logs/*
-agbenchmark_config/logs/*
-agbenchmark_config/reports/*
+startbenchmark_config/logs/*
+startbenchmark_config/reports/*
 
 *.png

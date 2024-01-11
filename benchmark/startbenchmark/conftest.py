@@ -10,30 +10,30 @@ from typing import Any, Generator
 
 import pytest
 
-from agbenchmark.config import AgentBenchmarkConfig
-from agbenchmark.reports.reports import (
+from startbenchmark.config import AgentBenchmarkConfig
+from startbenchmark.reports.reports import (
     finalize_reports,
     generate_single_call_report,
     session_finish,
 )
-from agbenchmark.utils.challenge import Challenge
-from agbenchmark.utils.data_types import Category
+from startbenchmark.utils.challenge import Challenge
+from startbenchmark.utils.data_types import Category
 
 GLOBAL_TIMEOUT = (
     1500  # The tests will stop after 25 minutes so we can send the reports.
 )
 
-agbenchmark_config = AgentBenchmarkConfig.load()
+startbenchmark_config = AgentBenchmarkConfig.load()
 logger = logging.getLogger(__name__)
 
-pytest_plugins = ["agbenchmark.utils.dependencies"]
+pytest_plugins = ["startbenchmark.utils.dependencies"]
 collect_ignore = ["challenges"]
 suite_reports: dict[str, list] = {}
 
 
 @pytest.fixture(scope="module")
 def config() -> AgentBenchmarkConfig:
-    return agbenchmark_config
+    return startbenchmark_config
 
 
 @pytest.fixture(autouse=True)
@@ -44,14 +44,14 @@ def temp_folder() -> Generator[Path, None, None]:
     """
 
     # create output directory if it doesn't exist
-    if not os.path.exists(agbenchmark_config.temp_folder):
-        os.makedirs(agbenchmark_config.temp_folder, exist_ok=True)
+    if not os.path.exists(startbenchmark_config.temp_folder):
+        os.makedirs(startbenchmark_config.temp_folder, exist_ok=True)
 
-    yield agbenchmark_config.temp_folder
+    yield startbenchmark_config.temp_folder
     # teardown after test function completes
     if not os.getenv("KEEP_TEMP_FOLDER_FILES"):
-        for filename in os.listdir(agbenchmark_config.temp_folder):
-            file_path = os.path.join(agbenchmark_config.temp_folder, filename)
+        for filename in os.listdir(startbenchmark_config.temp_folder):
+            file_path = os.path.join(startbenchmark_config.temp_folder, filename)
             try:
                 if os.path.isfile(file_path) or os.path.islink(file_path):
                     os.unlink(file_path)
@@ -64,7 +64,7 @@ def temp_folder() -> Generator[Path, None, None]:
 def pytest_addoption(parser: pytest.Parser) -> None:
     """
     Pytest hook that adds command-line options to the `pytest` command.
-    The added options are specific to agbenchmark and control its behavior:
+    The added options are specific to startbenchmark and control its behavior:
     * `--mock` is used to run the tests in mock mode.
     * `--host` is used to specify the host for the tests.
     * `--category` is used to run only tests of a specific category.
@@ -120,7 +120,7 @@ def check_regression(request: pytest.FixtureRequest) -> None:
     """
     test_name = request.node.parent.name
     with contextlib.suppress(FileNotFoundError):
-        regression_report = agbenchmark_config.regression_tests_file
+        regression_report = startbenchmark_config.regression_tests_file
         data = json.loads(regression_report.read_bytes())
         challenge_location = getattr(request.node.parent.cls, "CHALLENGE_LOCATION", "")
 
@@ -190,7 +190,7 @@ def pytest_runtest_makereport(item: pytest.Item, call: pytest.CallInfo) -> None:
         )
 
     if call.when == "teardown":
-        finalize_reports(agbenchmark_config, item, challenge_data)
+        finalize_reports(startbenchmark_config, item, challenge_data)
 
 
 def timeout_monitor(start_time: int) -> None:
@@ -226,7 +226,7 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
 
     Finalizes and saves the test reports.
     """
-    session_finish(agbenchmark_config, suite_reports)
+    session_finish(startbenchmark_config, suite_reports)
 
 
 @pytest.fixture
@@ -255,14 +255,14 @@ def pytest_collection_modifyitems(
         items: The collected test items to be modified.
         config: The active pytest configuration.
     """
-    regression_file = agbenchmark_config.regression_tests_file
+    regression_file = startbenchmark_config.regression_tests_file
     regression_tests: dict[str, Any] = (
         json.loads(regression_file.read_bytes()) if regression_file.is_file() else {}
     )
 
     try:
         challenges_beaten_in_the_past = json.loads(
-            agbenchmark_config.challenges_already_beaten_file.read_bytes()
+            startbenchmark_config.challenges_already_beaten_file.read_bytes()
         )
     except FileNotFoundError:
         challenges_beaten_in_the_past = {}

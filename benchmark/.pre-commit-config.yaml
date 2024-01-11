@@ -31,6 +31,6 @@ repos:
     hooks:
       - id: autoflake
         name: autoflake
-        entry: autoflake --remove-all-unused-imports --recursive --ignore-init-module-imports --ignore-pass-after-docstring --in-place agbenchmark
+        entry: autoflake --remove-all-unused-imports --recursive --ignore-init-module-imports --ignore-pass-after-docstring --in-place startbenchmark
         language: python
         types: [ python ]

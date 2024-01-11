@@ -13,10 +13,10 @@ import openai
 import pytest
 from colorama import Fore, Style
 
-from agbenchmark.agent_api_interface import run_api_agent
-from agbenchmark.config import AgentBenchmarkConfig
-from agbenchmark.utils.data_types import ChallengeData, Ground
-from agbenchmark.utils.prompts import (
+from startbenchmark.agent_api_interface import run_api_agent
+from startbenchmark.config import AgentBenchmarkConfig
+from startbenchmark.utils.data_types import ChallengeData, Ground
+from startbenchmark.utils.prompts import (
     END_PROMPT,
     FEW_SHOT_EXAMPLES,
     PROMPT_MAP,
@@ -89,7 +89,7 @@ class Challenge(ABC):
         assert is_score_100
 
     async def run_challenge(self, config: AgentBenchmarkConfig, cutoff: int) -> None:
-        from agbenchmark.agent_interface import copy_artifacts_into_temp_folder
+        from startbenchmark.agent_interface import copy_artifacts_into_temp_folder
 
         if not self.data.task:
             return
