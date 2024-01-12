@@ -100,7 +100,7 @@ pytest-integration = "*"
 pytest-mock = "*"
 pytest-recording = "*"
 pytest-xdist = "*"
-vcrpy = {git = "https://github.com/KhulnaSoft/vcrpy.git", rev = "master"}
+vcrpy = {git = "https://github.com/Significant-Gravitas/vcrpy.git", rev = "master"}
 
 
 [build-system]
