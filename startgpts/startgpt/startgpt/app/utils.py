@@ -131,7 +131,7 @@ def markdown_to_ansi_style(markdown: str):
 def get_legal_warning() -> str:
     legal_text = """
 ## DISCLAIMER AND INDEMNIFICATION AGREEMENT
-### PLEASE READ THIS DISCLAIMER AND INDEMNIFICATION AGREEMENT CAREFULLY BEFORE USING THE AUTOGPT SYSTEM. BY USING THE AUTOGPT SYSTEM, YOU AGREE TO BE BOUND BY THIS AGREEMENT.
+### PLEASE READ THIS DISCLAIMER AND INDEMNIFICATION AGREEMENT CAREFULLY BEFORE USING THE STARTGPT SYSTEM. BY USING THE STARTGPT SYSTEM, YOU AGREE TO BE BOUND BY THIS AGREEMENT.
 
 ## Introduction
 StartGPT (the "System") is a project that connects a GPT-like artificial intelligence system to the internet and allows it to automate tasks. While the System is designed to be useful and efficient, there may be instances where the System could perform actions that may cause harm or have unintended consequences.

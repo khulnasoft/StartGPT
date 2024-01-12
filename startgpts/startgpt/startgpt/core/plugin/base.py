@@ -43,7 +43,7 @@ class PluginStorageFormat(str, enum.Enum):
     # PYPI = "pypi"                          # Maybe later
 
     # Long term solution, requires design
-    # AUTOGPT_PLUGIN_SERVICE = "startgpt_plugin_service"
+    # STARTGPT_PLUGIN_SERVICE = "startgpt_plugin_service"
 
     # Feature for later maybe, automatically find plugin.
     # AUTO = "auto"

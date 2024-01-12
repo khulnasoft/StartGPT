@@ -8,7 +8,7 @@
 PRODUCT_NAME = auto_gpt_flutter_client
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.autoGptFlutterClient
+PRODUCT_BUNDLE_IDENTIFIER = com.example.startGptFlutterClient
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.
