@@ -1,6 +1,7 @@
 name: StartGPT Python CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master, development, ci-test* ]
     paths:
