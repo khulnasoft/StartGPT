@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "startbenchmark"
-version = "0.0.10"
+version = "0.0.11"
 description = "Benchmarking the performance of agents far and wide, regardless of how they are set up and how they work"
 authors = ["Md Sulaiman <infosulaimanbd@gmail.com>"]
 license = "MIT"
