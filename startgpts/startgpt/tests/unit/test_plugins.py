@@ -9,7 +9,7 @@ from startgpt.plugins.plugins_config import PluginsConfig
 
 PLUGINS_TEST_DIR = "tests/unit/data/test_plugins"
 PLUGIN_TEST_ZIP_FILE = "Start-GPT-Plugin-Test-master.zip"
-PLUGIN_TEST_INIT_PY = "Start-GPT-Plugin-Test-master/src/start_gpt_vicuna/__init__.py"
+PLUGIN_TEST_INIT_PY = "Start-GPT-Plugin-Test-master/src/auto_gpt_vicuna/__init__.py"
 PLUGIN_TEST_OPENAI = "https://weathergpt.vercel.app/"
 
 
@@ -21,20 +21,20 @@ def test_scan_plugins_openai(config: Config):
     )
 
     # Test that the function returns the correct number of plugins
-    result = scan_plugins(config)
+    result = scan_plugins(config, debug=True)
     assert len(result) == 1
 
 
 def test_scan_plugins_generic(config: Config):
     # Test that the function returns the correct number of plugins
     plugins_config = config.plugins_config
-    plugins_config.plugins["start_gpt_guanaco"] = PluginConfig(
-        name="start_gpt_guanaco", enabled=True
+    plugins_config.plugins["auto_gpt_guanaco"] = PluginConfig(
+        name="auto_gpt_guanaco", enabled=True
     )
     plugins_config.plugins["StartGPTPVicuna"] = PluginConfig(
         name="StartGPTPVicuna", enabled=True
     )
-    result = scan_plugins(config)
+    result = scan_plugins(config, debug=True)
     plugin_class_names = [plugin.__class__.__name__ for plugin in result]
 
     assert len(result) == 2
@@ -45,13 +45,13 @@ def test_scan_plugins_generic(config: Config):
 def test_scan_plugins_not_enabled(config: Config):
     # Test that the function returns the correct number of plugins
     plugins_config = config.plugins_config
-    plugins_config.plugins["start_gpt_guanaco"] = PluginConfig(
-        name="start_gpt_guanaco", enabled=True
+    plugins_config.plugins["auto_gpt_guanaco"] = PluginConfig(
+        name="auto_gpt_guanaco", enabled=True
     )
-    plugins_config.plugins["start_gpt_vicuna"] = PluginConfig(
-        name="start_gptp_vicuna", enabled=False
+    plugins_config.plugins["auto_gpt_vicuna"] = PluginConfig(
+        name="auto_gptp_vicuna", enabled=False
     )
-    result = scan_plugins(config)
+    result = scan_plugins(config, debug=True)
     plugin_class_names = [plugin.__class__.__name__ for plugin in result]
 
     assert len(result) == 1
@@ -65,16 +65,13 @@ def test_inspect_zip_for_modules():
 
 
 def test_create_base_config(config: Config):
-    """
-    Test the backwards-compatibility shim to convert old plugin allow/deny list
-    to a config file.
-    """
+    """Test the backwards-compatibility shim to convert old plugin allow/deny list to a config file"""
     config.plugins_allowlist = ["a", "b"]
     config.plugins_denylist = ["c", "d"]
 
     os.remove(config.plugins_config_file)
     plugins_config = PluginsConfig.load_config(
-        plugins_config_file=config.plugins_config_file,
+        plugins_config_file=config.workdir / config.plugins_config_file,
         plugins_denylist=config.plugins_denylist,
         plugins_allowlist=config.plugins_allowlist,
     )
@@ -99,9 +96,7 @@ def test_create_base_config(config: Config):
 
 
 def test_load_config(config: Config):
-    """
-    Test that the plugin config is loaded correctly from the plugins_config.yaml file.
-    """
+    """Test that the plugin config is loaded correctly from the plugins_config.yaml file"""
     # Create a test config and write it to disk
     test_config = {
         "a": {"enabled": True, "config": {"api_key": "1234"}},
@@ -112,7 +107,7 @@ def test_load_config(config: Config):
 
     # Load the config from disk
     plugins_config = PluginsConfig.load_config(
-        plugins_config_file=config.plugins_config_file,
+        plugins_config_file=config.workdir / config.plugins_config_file,
         plugins_denylist=config.plugins_denylist,
         plugins_allowlist=config.plugins_allowlist,
     )

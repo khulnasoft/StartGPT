@@ -5,17 +5,15 @@ from typing import Any, ClassVar
 import inflection
 from pydantic import Field
 
+from startgpt.core.ability.schema import AbilityResult
 from startgpt.core.configuration import SystemConfiguration
 from startgpt.core.planning.simple import LanguageModelConfiguration
-from startgpt.core.plugin.base import PluginLocation
-from startgpt.core.resource.model_providers import CompletionModelFunction
-from startgpt.core.utils.json_schema import JSONSchema
-
-from .schema import AbilityResult
 
 
 class AbilityConfiguration(SystemConfiguration):
     """Struct for model configuration."""
+
+    from startgpt.core.plugin.base import PluginLocation
 
     location: PluginLocation
     packages_required: list[str] = Field(default_factory=list)
@@ -34,34 +32,40 @@ class Ability(abc.ABC):
         """The name of the ability."""
         return inflection.underscore(cls.__name__)
 
-    @property
     @classmethod
     @abc.abstractmethod
     def description(cls) -> str:
         """A detailed description of what the ability does."""
         ...
 
-    @property
     @classmethod
     @abc.abstractmethod
-    def parameters(cls) -> dict[str, JSONSchema]:
+    def arguments(cls) -> dict:
+        """A dict of arguments in standard json schema format."""
         ...
+
+    @classmethod
+    def required_arguments(cls) -> list[str]:
+        """A list of required arguments."""
+        return []
 
     @abc.abstractmethod
     async def __call__(self, *args: Any, **kwargs: Any) -> AbilityResult:
         ...
 
     def __str__(self) -> str:
-        return pformat(self.spec)
+        return pformat(self.dump())
 
-    @property
-    @classmethod
-    def spec(cls) -> CompletionModelFunction:
-        return CompletionModelFunction(
-            name=cls.name(),
-            description=cls.description,
-            parameters=cls.parameters,
-        )
+    def dump(self) -> dict:
+        return {
+            "name": self.name(),
+            "description": self.description(),
+            "parameters": {
+                "type": "object",
+                "properties": self.arguments(),
+                "required": self.required_arguments(),
+            },
+        }
 
 
 class AbilityRegistry(abc.ABC):
@@ -76,7 +80,7 @@ class AbilityRegistry(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def dump_abilities(self) -> list[CompletionModelFunction]:
+    def dump_abilities(self) -> list[dict]:
         ...
 
     @abc.abstractmethod

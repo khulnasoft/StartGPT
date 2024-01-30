@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "startbenchmark"
-version = "0.0.11"
+version = "0.0.9"
 description = "Benchmarking the performance of agents far and wide, regardless of how they are set up and how they work"
-authors = ["Md Sulaiman <infosulaimanbd@gmail.com>"]
+authors = ["Silen Naihin <silen.naihin@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{ include = "startbenchmark" }]
@@ -31,9 +31,7 @@ fastapi = "^0.99.0"
 python-multipart = "^0.0.6"
 toml = "^0.10.2"
 helicone = "^1.0.9"
-httpx = "^0.24.0"
-agent-protocol-client = "^1.1.0"
-click-default-group = "^1.2.4"
+agent-protocol-client= { path = "ap_client_lib" }
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^3.9.2"
@@ -57,6 +55,7 @@ testpaths = [
 ]
 asyncio_mode = "auto"
 markers = [
+    "retrieval",
     "interface",
     "code",
     "memory",

@@ -1,12 +1,10 @@
 import logging
-import os.path
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
-from pydantic import BaseModel, Field
-
-from startgpt.commands.file_operations_utils import decode_textual_file
+from startgpt.commands.file_operations_utils import read_textual_file
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +28,7 @@ class ContextItem(ABC):
         """The content represented by the context item"""
         ...
 
-    def fmt(self) -> str:
+    def __str__(self) -> str:
         return (
             f"{self.description} (source: {self.source})\n"
             "```\n"
@@ -39,7 +37,8 @@ class ContextItem(ABC):
         )
 
 
-class FileContextItem(BaseModel, ContextItem):
+@dataclass
+class FileContextItem(ContextItem):
     file_path_in_workspace: Path
     workspace_path: Path
 
@@ -57,12 +56,11 @@ class FileContextItem(BaseModel, ContextItem):
 
     @property
     def content(self) -> str:
-        # TODO: use workspace.open_file()
-        with open(self.file_path, "rb") as file:
-            return decode_textual_file(file, os.path.splitext(file.name)[1], logger)
+        return read_textual_file(self.file_path, logger)
 
 
-class FolderContextItem(BaseModel, ContextItem):
+@dataclass
+class FolderContextItem(ContextItem):
     path_in_workspace: Path
     workspace_path: Path
 
@@ -89,7 +87,8 @@ class FolderContextItem(BaseModel, ContextItem):
         return "\n".join(items)
 
 
-class StaticContextItem(BaseModel, ContextItem):
-    item_description: str = Field(alias="description")
-    item_source: Optional[str] = Field(alias="source")
-    item_content: str = Field(alias="content")
+@dataclass
+class StaticContextItem(ContextItem):
+    description: str
+    source: Optional[str]
+    content: str

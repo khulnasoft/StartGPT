@@ -166,9 +166,5 @@ cython_debug/
 .DS_Store
 ```
 secrets.json
-startbenchmark_config/challenges_already_beaten.json
+challenges_already_beaten.json
 startbenchmark_config/challenges/pri_*
-startbenchmark_config/updates.json
-startbenchmark_config/reports/*
-startbenchmark_config/reports/success_rate.json
-startbenchmark_config/reports/regression_tests.json

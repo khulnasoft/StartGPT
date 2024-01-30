@@ -1,6 +1,7 @@
 ## Original ignores
 startgpt/keys.py
 startgpt/*.json
+auto_gpt_workspace/*
 *.mpeg
 .env
 azure.yaml
@@ -8,7 +9,7 @@ ai_settings.yaml
 last_run_ai_settings.yaml
 .vscode
 .idea/*
-start-gpt.json
+auto-gpt.json
 log.txt
 log-ingestion.txt
 /logs
@@ -16,7 +17,6 @@ log-ingestion.txt
 *.mp3
 mem.sqlite3
 venvStartGPT
-data/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -160,6 +160,9 @@ openai/
 
 # news
 CURRENT_BULLETIN.md
+
+# startbenchmark
+startbenchmark_config/reports/
 
 # Nodejs
 package-lock.json

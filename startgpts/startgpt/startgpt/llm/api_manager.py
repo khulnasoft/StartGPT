@@ -6,8 +6,7 @@ from typing import List, Optional
 import openai
 from openai import Model
 
-from startgpt.core.resource.model_providers.openai import OPEN_AI_MODELS
-from startgpt.core.resource.model_providers.schema import ChatModelInfo
+from startgpt.llm.base import CompletionModelInfo
 from startgpt.singleton import Singleton
 
 logger = logging.getLogger(__name__)
@@ -38,13 +37,15 @@ class ApiManager(metaclass=Singleton):
         model (str): The model used for the API call.
         """
         # the .model property in API responses can contain version suffixes like -v2
+        from startgpt.llm.providers.openai import OPEN_AI_MODELS
+
         model = model[:-3] if model.endswith("-v2") else model
         model_info = OPEN_AI_MODELS[model]
 
         self.total_prompt_tokens += prompt_tokens
         self.total_completion_tokens += completion_tokens
         self.total_cost += prompt_tokens * model_info.prompt_token_cost / 1000
-        if isinstance(model_info, ChatModelInfo):
+        if isinstance(model_info, CompletionModelInfo):
             self.total_cost += (
                 completion_tokens * model_info.completion_token_cost / 1000
             )

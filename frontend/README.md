@@ -26,12 +26,12 @@ Flutter comes with Dart, to install Flutter, follow the instructions here: https
 
 1. **Clone the repo:**
 ```
-git clone https://github.com/KhulnaSoft/StartGPT.git
+git clone https://github.com/khulnasoft/Start-GPT.git
 ```
 
 2. **Navigate to the project directory:**
 ```
-cd StartGPT/frontend
+cd Start-GPT/frontend
 ```
 
 3. **Get Flutter packages:**
@@ -41,8 +41,6 @@ flutter pub get
 
 4. **Run the app:**
 ```
-#For chromium users on linux:
-#export CHROME_EXECUTABLE=/usr/bin/chromium
 flutter run -d chrome --web-port 5000
 ```
 
@@ -62,3 +60,4 @@ The app features a responsive design that adapts to different screen sizes and o
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+

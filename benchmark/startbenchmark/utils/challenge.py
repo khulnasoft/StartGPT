@@ -1,20 +1,17 @@
 import glob
-import json
-import logging
 import math
 import os
 import subprocess
 import sys
 from abc import ABC
 from pathlib import Path
-from typing import Any, ClassVar, List
+from typing import Any, Dict, List
 
 import openai
 import pytest
-from colorama import Fore, Style
 
+from startbenchmark.__main__ import OPTIONAL_CATEGORIES, TEMP_FOLDER_ABS_PATH
 from startbenchmark.agent_api_interface import run_api_agent
-from startbenchmark.config import AgentBenchmarkConfig
 from startbenchmark.utils.data_types import ChallengeData, Ground
 from startbenchmark.utils.prompts import (
     END_PROMPT,
@@ -22,99 +19,61 @@ from startbenchmark.utils.prompts import (
     PROMPT_MAP,
     SCORING_MAP,
 )
-
-logger = logging.getLogger(__name__)
-
-with open(
-    Path(__file__).parent.parent / "challenges" / "optional_categories.json"
-) as f:
-    OPTIONAL_CATEGORIES: list[str] = json.load(f)["optional_categories"]
+from startbenchmark.utils.utils import agent_eligibible_for_optional_categories
 
 
 class Challenge(ABC):
     """The parent class to all specific challenges classes.
     Defines helper methods for running a challenge"""
 
-    data: ChallengeData
-    CHALLENGE_LOCATION: ClassVar[str]
-    ARTIFACTS_LOCATION: ClassVar[str]
-    scores: ClassVar[dict[str, Any]] = {}  # this is for suites
+    _data_cache: Dict[str, ChallengeData] = {}
+    CHALLENGE_LOCATION: str = ""
+    scores: dict[str, Any] = {}  # this is for suites
 
-    @staticmethod
-    def from_challenge_spec(spec_file: Path) -> type["Challenge"]:
-        challenge_data = ChallengeData.parse_file(spec_file)
+    @property
+    def data(self) -> ChallengeData:
+        if self.CHALLENGE_LOCATION not in self._data_cache:
+            self._data_cache[self.CHALLENGE_LOCATION] = ChallengeData.deserialize(
+                self.CHALLENGE_LOCATION
+            )
+        return self._data_cache[self.CHALLENGE_LOCATION]
 
-        challenge_class_name = f"Test{challenge_data.name}"
-        logger.debug(f"Creating {challenge_class_name} from spec: {spec_file}")
-        return type(
-            challenge_class_name,
-            (Challenge,),
-            {
-                "data": challenge_data,
-                "CHALLENGE_LOCATION": str(spec_file),
-                "ARTIFACTS_LOCATION": str(spec_file.resolve().parent),
-            },
-        )
+    @property
+    def task(self) -> str:
+        return self.data.task
 
-    # Define test method within the dynamically created class
-    @pytest.mark.asyncio
-    async def test_method(
-        self, config: AgentBenchmarkConfig, request: pytest.FixtureRequest
-    ) -> None:
-        # skip optional categories
-        self.skip_optional_categories(config)
+    @property
+    def dependencies(self) -> list:
+        return self.data.dependencies
 
-        if os.environ.get("HELICONE_API_KEY"):
-            from helicone.lock import HeliconeLockManager
-
-            HeliconeLockManager.write_custom_property("challenge", self.data.name)
-
-        timeout = self.data.cutoff or 60
-
-        if request.config.getoption("--nc"):
-            timeout = 100000
-        elif cutoff := request.config.getoption("--cutoff"):
-            timeout = int(cutoff)
-
-        await self.run_challenge(config, timeout)
-
-        scores = self.get_scores(config.temp_folder)
-        request.node.answers = (
-            scores["answers"] if request.config.getoption("--keep-answers") else None
-        )
-        del scores["answers"]  # remove answers from scores
-        request.node.scores = scores  # store scores in request.node
-        is_score_100 = 1 in scores["values"]
-
-        assert is_score_100
-
-    async def run_challenge(self, config: AgentBenchmarkConfig, cutoff: int) -> None:
+    async def setup_challenge(self, config: Dict[str, Any], cutoff: int) -> None:
         from startbenchmark.agent_interface import copy_artifacts_into_temp_folder
 
-        if not self.data.task:
+        artifact_paths = [
+            self.ARTIFACTS_LOCATION,
+            str(Path(self.CHALLENGE_LOCATION).parent),
+        ]
+
+        if not self.task:
             return
 
         print(
-            f"{Fore.MAGENTA + Style.BRIGHT}{'='*24} "
-            f"Starting {self.data.name} challenge"
-            f" {'='*24}{Style.RESET_ALL}"
+            f"\033[1;35m============Starting {self.data.name} challenge============\033[0m"
         )
-        print(f"{Fore.BLACK}Task: {self.data.task}{Fore.RESET}")
+        print(f"\033[1;30mTask: {self.task}\033[0m")
 
         await run_api_agent(self.data, config, self.ARTIFACTS_LOCATION, cutoff)
 
         # hidden files are added after the agent runs. Hidden files can be python test files.
         # We copy them in the temporary folder to make it easy to import the code produced by the agent
-        artifact_paths = [
-            self.ARTIFACTS_LOCATION,
-            str(Path(self.CHALLENGE_LOCATION).parent),
-        ]
         for path in artifact_paths:
-            copy_artifacts_into_temp_folder(config.temp_folder, "custom_python", path)
+            copy_artifacts_into_temp_folder(TEMP_FOLDER_ABS_PATH, "custom_python", path)
 
-    @staticmethod
+    def test_method(self, config: Dict[str, Any]) -> None:
+        raise NotImplementedError
+
     def get_artifacts_out(
-        workspace: str | Path | dict[str, str], ground: Ground
+        self, workspace: str | dict[str, str], ground: Ground
     ) -> List[str]:
         if isinstance(workspace, dict):
             workspace = workspace["output"]
@@ -150,7 +109,7 @@ class Challenge(ABC):
             if ground.eval.type == "pytest":
                 result = subprocess.run(
                     [sys.executable, "-m", "pytest"],
-                    cwd=os.path.abspath(workspace),
+                    cwd=TEMP_FOLDER_ABS_PATH,
                     capture_output=True,
                     text=True,
                 )
@@ -161,17 +120,12 @@ class Challenge(ABC):
 
         return files_contents
 
-    @staticmethod
-    def scoring(content: str, ground: Ground) -> float:
-        print(f"{Fore.BLUE}Scoring content:{Style.RESET_ALL}", content)
+    def scoring(self, config: Dict[str, Any], content: str, ground: Ground) -> float:
+        print("\033[1;34mScoring content:\033[0m", content)
         if ground.should_contain:
             for should_contain_word in ground.should_contain:
-                if not getattr(ground, "case_sensitive", True):
-                    should_contain_word = should_contain_word.lower()
-                    content = content.lower()
                 print_content = (
-                    f"{Fore.BLUE}Word that should exist{Style.RESET_ALL}"
-                    f" - {should_contain_word}:"
+                    f"\033[1;34mWord that should exist\033[0m - {should_contain_word}:"
                 )
                 if should_contain_word not in content:
                     print(print_content, "False")
@@ -181,13 +135,7 @@ class Challenge(ABC):
 
         if ground.should_not_contain:
             for should_not_contain_word in ground.should_not_contain:
-                if not getattr(ground, "case_sensitive", True):
-                    should_not_contain_word = should_not_contain_word.lower()
-                    content = content.lower()
-                print_content = (
-                    f"{Fore.BLUE}Word that should not exist{Style.RESET_ALL}"
-                    f" - {should_not_contain_word}:"
-                )
+                print_content = f"\033[1;34mWord that should not exist\033[0m - {should_not_contain_word}:"
                 if should_not_contain_word in content:
                     print(print_content, "False")
                     return 0.0
@@ -196,17 +144,14 @@ class Challenge(ABC):
 
         return 1.0
 
-    @classmethod
-    def llm_eval(cls, content: str, ground: Ground) -> float:
+    def llm_eval(self, config: Dict[str, Any], content: str, ground: Ground) -> float:
         openai.api_key = os.getenv("OPENAI_API_KEY")
-        if os.getenv("IS_MOCK"):
+        if "--mock" in sys.argv:
             return 1.0
 
         # the validation for this is done in the Eval BaseModel
         scoring = SCORING_MAP[ground.eval.scoring]  # type: ignore
-        prompt = PROMPT_MAP[ground.eval.template].format(  # type: ignore
-            task=cls.data.task, scoring=scoring, answer=ground.answer, response=content
-        )
+        prompt = PROMPT_MAP[ground.eval.template].format(task=self.data.task, scoring=scoring, answer=ground.answer, response=content)  # type: ignore
 
         if ground.eval.examples:
             prompt += FEW_SHOT_EXAMPLES.format(examples=ground.eval.examples)
@@ -222,31 +167,34 @@ class Challenge(ABC):
 
         return float(answer["choices"][0]["message"]["content"])  # type: ignore
 
-    @classmethod
-    def get_scores(cls, workspace: Path) -> dict[str, Any]:
+    def get_scores(self, config: Dict[str, Any]) -> dict[str, Any]:
         scores = []
         scores_dict: Any = {}
         percentage = None
         answers = {}
         try:
-            if cls.data.task == "" and os.getenv("IS_MOCK"):
+            if self.data.task == "" and "--mock" in sys.argv:
                 scores = [1.0]
                 answers = {"mock": "This is a mock answer"}
-            elif isinstance(cls.data.ground, Ground):
-                files_contents = cls.get_artifacts_out(workspace, cls.data.ground)
+            elif isinstance(self.data.ground, Ground):
+                files_contents = self.get_artifacts_out(
+                    TEMP_FOLDER_ABS_PATH, self.data.ground
+                )
                 answers = {"answer": files_contents}
                 for file_content in files_contents:
-                    score = cls.scoring(file_content, cls.data.ground)
-                    print(f"{Fore.GREEN}Your score is:{Style.RESET_ALL}", score)
+                    score = self.scoring(config, file_content, self.data.ground)
+                    print("\033[1;32mYour score is:\033[0m", score)
                     scores.append(score)
 
-                if cls.data.ground.eval.type == "llm":
-                    llm_eval = cls.llm_eval("\n".join(files_contents), cls.data.ground)
-                    if cls.data.ground.eval.scoring == "percentage":
+                if self.data.ground.eval.type == "llm":
+                    llm_eval = self.llm_eval(
+                        config, "\n".join(files_contents), self.data.ground
+                    )
+                    if self.data.ground.eval.scoring == "percentage":
                         scores.append(math.ceil(llm_eval / 100))
-                    elif cls.data.ground.eval.scoring == "scale":
+                    elif self.data.ground.eval.scoring == "scale":
                         scores.append(math.ceil(llm_eval / 10))
-                    print(f"{Fore.GREEN}Your score is:{Style.RESET_ALL}", llm_eval)
+                    print("\033[1;32mYour score is:\033[0m", llm_eval)
 
                     scores.append(llm_eval)
         except Exception as e:
@@ -259,7 +207,7 @@ class Challenge(ABC):
             "answers": answers,
         }
 
-        cls.scores[cls.__name__] = scores_data
+        self.scores[self.__class__.__name__] = scores_data
 
         return scores_data
 
@@ -270,15 +218,14 @@ class Challenge(ABC):
 
         return None
 
-    @classmethod
-    def skip_optional_categories(cls, config: AgentBenchmarkConfig) -> None:
-        challenge_categories = set(c.value for c in cls.data.category)
-        challenge_optional_categories = challenge_categories & set(OPTIONAL_CATEGORIES)
-        if challenge_optional_categories and not (
-            config.categories
-            and set(challenge_optional_categories).issubset(set(config.categories))
+    def skip_optional_categories(self, config: Dict[str, Any]) -> None:
+        challenge_category = self.data.category
+        categories = [
+            category
+            for category in OPTIONAL_CATEGORIES
+            if category in challenge_category
+        ]
+        if not agent_eligibible_for_optional_categories(
+            categories, config.get("category", [])
         ):
-            pytest.skip(
-                f"Category {', '.join(challenge_optional_categories)} is optional, "
-                "and not explicitly selected in the benchmark config."
-            )
+            pytest.skip("Agent is not eligible for this category")

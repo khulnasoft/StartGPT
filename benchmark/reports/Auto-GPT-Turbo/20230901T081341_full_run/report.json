@@ -1,6 +1,6 @@
 {
     "command": "startbenchmark start",
-    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/41909f0de7aa4221a3077e76f4ffc17303fbf371",
+    "benchmark_git_commit_sha": "https://github.com/khulnasoft/Start-GPT-Benchmarks/tree/41909f0de7aa4221a3077e76f4ffc17303fbf371",
     "agent_git_commit_sha": "https://github.com/lc0rp/Start-GPT-Turbo/tree/8469e09ae204f2d5f41d489b217551544597ee14",
     "completion_time": "2023-09-01T08:24:30+00:00",
     "benchmark_start_time": "2023-09-01T08:13:41+00:00",
@@ -415,7 +415,7 @@
         }
     },
     "config": {
-        "workspace": "start_gpt_workspace",
+        "workspace": "auto_gpt_workspace",
         "entry_path": "startbenchmark.benchmarks",
         "keep_workspace_files": false
     }

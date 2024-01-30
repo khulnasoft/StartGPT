@@ -1,19 +1,18 @@
-name: StartGPT Docker CI
+name: Start-GPT Docker CI
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ master, development ]
+    branches: [ master ]
     paths:
-      - '.github/workflows/startgpt-docker-ci.yml'
       - 'startgpts/startgpt/**'
       - '!startgpts/startgpt/tests/vcr_cassettes'
+      - '!startgpts/startgpt/tests/challenges/current_score.json'
   pull_request:
-    branches: [ master, development, release-* ]
+    branches: [ master, release-*, stable ]
     paths:
-      - '.github/workflows/startgpt-docker-ci.yml'
       - 'startgpts/startgpt/**'
       - '!startgpts/startgpt/tests/vcr_cassettes'
+      - '!startgpts/startgpt/tests/challenges/current_score.json'
 
 concurrency:
   group: ${{ format('startgpt-docker-ci-{0}', github.head_ref && format('pr-{0}', github.event.pull_request.number) || github.sha) }}
@@ -24,9 +23,7 @@ defaults:
     working-directory: startgpts/startgpt
 
 env:
-  IMAGE_NAME: start-gpt
-  DEPLOY_IMAGE_NAME: ${{ secrets.DOCKER_USER }}/start-gpt
-  DEV_IMAGE_TAG: latest-dev
+  IMAGE_NAME: auto-gpt
 
 jobs:
   build:
@@ -66,10 +63,10 @@ jobs:
 
         build_type: ${{ matrix.build-type }}
 
-        prod_branch: master
-        dev_branch: development
+        prod_branch: stable
+        dev_branch: master
         repository: ${{ github.repository }}
-        base_branch: ${{ github.ref_name != 'master' && github.ref_name != 'development' && 'development' || 'master' }}
+        base_branch: ${{ github.ref_name != 'master' && github.ref_name != 'stable' && 'master' || 'stable' }}
 
         current_ref: ${{ github.ref_name }}
         commit_hash: ${{ github.event.after }}
@@ -90,26 +87,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
-    services:
-      minio:
-        image: minio/minio:edge-cicd
-        options: >
-          --name=minio
-          --health-interval=10s --health-timeout=5s --health-retries=3
-          --health-cmd="curl -f http://localhost:9000/minio/health/live"
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
         with:
           submodules: true
-
-      - name: Log in to Docker hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -120,9 +102,7 @@ jobs:
         with:
           context: startgpts/startgpt
           build-args: BUILD_TYPE=dev  # include pytest
-          tags: >
-            ${{ env.IMAGE_NAME }},
-            ${{ env.DEPLOY_IMAGE_NAME }}:${{ env.DEV_IMAGE_TAG }}
+          tags: ${{ env.IMAGE_NAME }}
           load: true                  # save to docker images
           # cache layers in GitHub Actions cache to speed up builds
           cache-from: type=gha,scope=startgpt-docker-dev
@@ -134,30 +114,23 @@ jobs:
           CI: true
           PLAIN_OUTPUT: True
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          S3_ENDPOINT_URL: http://minio:9000
-          AWS_ACCESS_KEY_ID: minioadmin
-          AWS_SECRET_ACCESS_KEY: minioadmin
         run: |
           set +e
-          docker run --env CI --env OPENAI_API_KEY \
-            --network container:minio \
-            --env S3_ENDPOINT_URL --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY \
-            --entrypoint poetry ${{ env.IMAGE_NAME }} run \
+          test_output=$(
+            docker run --env CI --env OPENAI_API_KEY ${{ env.IMAGE_NAME }} run \
             pytest -v --cov=startgpt --cov-branch --cov-report term-missing \
-            --numprocesses=4 --durations=10 \
-            tests/unit tests/integration 2>&1 | tee test_output.txt
+              --numprocesses=4 --durations=10 \
+              tests/unit tests/integration 2>&1
+          )
+          test_failure=$?
 
-          test_failure=${PIPESTATUS[0]}
+          echo "$test_output"
 
           cat << $EOF >> $GITHUB_STEP_SUMMARY
           # Tests $([ $test_failure = 0 ] && echo '✅' || echo '❌')
           \`\`\`
-          $(cat test_output.txt)
+          $test_output
           \`\`\`
           $EOF
 
           exit $test_failure
-
-      - if: github.event_name == 'push' && github.ref_name == 'master'
-        name: Push image to Docker Hub
-        run: docker push ${{ env.DEPLOY_IMAGE_NAME }}:${{ env.DEV_IMAGE_TAG }}

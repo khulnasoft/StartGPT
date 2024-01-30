@@ -23,7 +23,7 @@ from sqlalchemy.orm import DeclarativeBase, joinedload, relationship, sessionmak
 
 from .errors import NotFoundError
 from .forge_log import ForgeLogger
-from .model import Artifact, Pagination, Status, Step, StepRequestBody, Task
+from .schema import Artifact, Pagination, Status, Step, StepRequestBody, Task, TaskInput
 
 LOG = ForgeLogger(__name__)
 
@@ -54,7 +54,6 @@ class StepModel(Base):
     name = Column(String)
     input = Column(String)
     status = Column(String)
-    output = Column(String)
     is_last = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     modified_at = Column(
@@ -62,7 +61,6 @@ class StepModel(Base):
     )
 
     additional_input = Column(JSON)
-    additional_output = Column(JSON)
     artifacts = relationship("ArtifactModel", back_populates="step")
 
 
@@ -113,11 +111,9 @@ def convert_to_step(step_model: StepModel, debug_enabled: bool = False) -> Step:
         name=step_model.name,
         input=step_model.input,
         status=status,
-        output=step_model.output,
         artifacts=step_artifacts,
         is_last=step_model.is_last == 1,
         additional_input=step_model.additional_input,
-        additional_output=step_model.additional_output,
     )
 
 
@@ -144,7 +140,7 @@ class AgentDB:
         self.Session = sessionmaker(bind=self.engine)
 
     async def create_task(
-        self, input: Optional[str], additional_input: Optional[dict] = {}
+        self, input: Optional[str], additional_input: Optional[TaskInput] = {}
     ) -> Task:
         if self.debug_enabled:
             LOG.debug("Creating new task")
@@ -154,7 +150,9 @@ class AgentDB:
                 new_task = TaskModel(
                     task_id=str(uuid.uuid4()),
                     input=input,
-                    additional_input=additional_input if additional_input else {},
+                    additional_input=additional_input.json()
+                    if additional_input
+                    else {},
                 )
                 session.add(new_task)
                 session.commit()
@@ -259,7 +257,7 @@ class AgentDB:
             LOG.error(f"Unexpected error while creating step: {e}")
             raise
 
-    async def get_task(self, task_id: str) -> Task:
+    async def get_task(self, task_id: int) -> Task:
         """Get a task by its id"""
         if self.debug_enabled:
             LOG.debug(f"Getting task with task_id: {task_id}")
@@ -284,7 +282,7 @@ class AgentDB:
             LOG.error(f"Unexpected error while getting task: {e}")
             raise
 
-    async def get_step(self, task_id: str, step_id: str) -> Step:
+    async def get_step(self, task_id: int, step_id: int) -> Step:
         if self.debug_enabled:
             LOG.debug(f"Getting step with task_id: {task_id} and step_id: {step_id}")
         try:
@@ -315,10 +313,8 @@ class AgentDB:
         self,
         task_id: str,
         step_id: str,
-        status: Optional[str] = None,
-        output: Optional[str] = None,
-        additional_input: Optional[Dict[str, Any]] = None,
-        additional_output: Optional[Dict[str, Any]] = None,
+        status: str,
+        additional_input: Optional[Dict[str, Any]] = {},
     ) -> Step:
         if self.debug_enabled:
             LOG.debug(f"Updating step with task_id: {task_id} and step_id: {step_id}")
@@ -329,14 +325,8 @@ class AgentDB:
                     .filter_by(task_id=task_id, step_id=step_id)
                     .first()
                 ):
-                    if status is not None:
-                        step.status = status
-                    if additional_input is not None:
-                        step.additional_input = additional_input
-                    if output is not None:
-                        step.output = output
-                    if additional_output is not None:
-                        step.additional_output = additional_output
+                    step.status = status
+                    step.additional_input = additional_input
                     session.commit()
                     return await self.get_step(task_id, step_id)
                 else:

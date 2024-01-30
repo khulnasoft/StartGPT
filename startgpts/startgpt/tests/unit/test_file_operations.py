@@ -1,3 +1,7 @@
+"""
+This set of unit tests is designed to test the file operations that autoGPT has access to.
+"""
+
 import hashlib
 import os
 import re
@@ -11,9 +15,9 @@ import startgpt.commands.file_operations as file_ops
 from startgpt.agents.agent import Agent
 from startgpt.agents.utils.exceptions import DuplicateOperationError
 from startgpt.config import Config
-from startgpt.file_workspace import FileWorkspace
 from startgpt.memory.vector.memory_item import MemoryItem
 from startgpt.memory.vector.utils import Embedding
+from startgpt.workspace import Workspace
 
 
 @pytest.fixture()
@@ -26,7 +30,7 @@ def mock_MemoryItem_from_text(
     mocker: MockerFixture, mock_embedding: Embedding, config: Config
 ):
     mocker.patch.object(
-        file_ops.MemoryItemFactory,
+        file_ops.MemoryItem,
         "from_text",
         new=lambda content, source_type, config, metadata: MemoryItem(
             raw_content=content,
@@ -46,7 +50,7 @@ def test_file_name():
 
 
 @pytest.fixture
-def test_file_path(test_file_name: Path, workspace: FileWorkspace):
+def test_file_path(test_file_name: Path, workspace: Workspace):
     return workspace.get_path(test_file_name)
 
 
@@ -63,18 +67,18 @@ def test_file_with_content_path(test_file: TextIOWrapper, file_content, agent: A
     test_file.write(file_content)
     test_file.close()
     file_ops.log_operation(
-        "write", Path(test_file.name), agent, file_ops.text_checksum(file_content)
+        "write", test_file.name, agent, file_ops.text_checksum(file_content)
     )
     return Path(test_file.name)
 
 
 @pytest.fixture()
-def test_directory(workspace: FileWorkspace):
+def test_directory(workspace: Workspace):
     return workspace.get_path("test_directory")
 
 
 @pytest.fixture()
-def test_nested_file(workspace: FileWorkspace):
+def test_nested_file(workspace: Workspace):
     return workspace.get_path("nested/test_file.txt")
 
 
@@ -132,46 +136,42 @@ def test_is_duplicate_operation(agent: Agent, mocker: MockerFixture):
     # Test cases with write operations
     assert (
         file_ops.is_duplicate_operation(
-            "write", Path("path/to/file1.txt"), agent, "checksum1"
+            "write", "path/to/file1.txt", agent, "checksum1"
         )
         is True
     )
     assert (
         file_ops.is_duplicate_operation(
-            "write", Path("path/to/file1.txt"), agent, "checksum2"
+            "write", "path/to/file1.txt", agent, "checksum2"
         )
         is False
     )
     assert (
         file_ops.is_duplicate_operation(
-            "write", Path("path/to/file3.txt"), agent, "checksum3"
+            "write", "path/to/file3.txt", agent, "checksum3"
         )
         is False
     )
     # Test cases with append operations
     assert (
         file_ops.is_duplicate_operation(
-            "append", Path("path/to/file1.txt"), agent, "checksum1"
+            "append", "path/to/file1.txt", agent, "checksum1"
         )
         is False
     )
     # Test cases with delete operations
     assert (
-        file_ops.is_duplicate_operation("delete", Path("path/to/file1.txt"), agent)
-        is False
+        file_ops.is_duplicate_operation("delete", "path/to/file1.txt", agent) is False
     )
-    assert (
-        file_ops.is_duplicate_operation("delete", Path("path/to/file3.txt"), agent)
-        is True
-    )
+    assert file_ops.is_duplicate_operation("delete", "path/to/file3.txt", agent) is True
 
 
 # Test logging a file operation
 def test_log_operation(agent: Agent):
-    file_ops.log_operation("log_test", Path("path/to/test"), agent=agent)
-    with open(agent.file_manager.file_ops_log_path, "r", encoding="utf-8") as f:
+    file_ops.log_operation("log_test", "path/to/test", agent=agent)
+    with open(agent.config.file_logger_path, "r", encoding="utf-8") as f:
         content = f.read()
-    assert "log_test: path/to/test\n" in content
+    assert f"log_test: path/to/test\n" in content
 
 
 def test_text_checksum(file_content: str):
@@ -182,12 +182,10 @@ def test_text_checksum(file_content: str):
 
 
 def test_log_operation_with_checksum(agent: Agent):
-    file_ops.log_operation(
-        "log_test", Path("path/to/test"), agent=agent, checksum="ABCDEF"
-    )
-    with open(agent.file_manager.file_ops_log_path, "r", encoding="utf-8") as f:
+    file_ops.log_operation("log_test", "path/to/test", agent=agent, checksum="ABCDEF")
+    with open(agent.config.file_logger_path, "r", encoding="utf-8") as f:
         content = f.read()
-    assert "log_test: path/to/test #ABCDEF\n" in content
+    assert f"log_test: path/to/test #ABCDEF\n" in content
 
 
 def test_read_file(
@@ -206,59 +204,55 @@ def test_read_file_not_found(agent: Agent):
         file_ops.read_file(filename, agent=agent)
 
 
-@pytest.mark.asyncio
-async def test_write_to_file_relative_path(test_file_name: Path, agent: Agent):
+def test_write_to_file_relative_path(test_file_name: Path, agent: Agent):
     new_content = "This is new content.\n"
-    await file_ops.write_to_file(test_file_name, new_content, agent=agent)
+    file_ops.write_to_file(str(test_file_name), new_content, agent=agent)
     with open(agent.workspace.get_path(test_file_name), "r", encoding="utf-8") as f:
         content = f.read()
     assert content == new_content
 
 
-@pytest.mark.asyncio
-async def test_write_to_file_absolute_path(test_file_path: Path, agent: Agent):
+def test_write_to_file_absolute_path(test_file_path: Path, agent: Agent):
     new_content = "This is new content.\n"
-    await file_ops.write_to_file(test_file_path, new_content, agent=agent)
+    file_ops.write_to_file(str(test_file_path), new_content, agent=agent)
     with open(test_file_path, "r", encoding="utf-8") as f:
         content = f.read()
     assert content == new_content
 
 
-@pytest.mark.asyncio
-async def test_write_file_logs_checksum(test_file_name: Path, agent: Agent):
+def test_write_file_logs_checksum(test_file_name: Path, agent: Agent):
     new_content = "This is new content.\n"
     new_checksum = file_ops.text_checksum(new_content)
-    await file_ops.write_to_file(test_file_name, new_content, agent=agent)
-    with open(agent.file_manager.file_ops_log_path, "r", encoding="utf-8") as f:
+    file_ops.write_to_file(str(test_file_name), new_content, agent=agent)
+    with open(agent.config.file_logger_path, "r", encoding="utf-8") as f:
         log_entry = f.read()
     assert log_entry == f"write: {test_file_name} #{new_checksum}\n"
 
 
-@pytest.mark.asyncio
-async def test_write_file_fails_if_content_exists(test_file_name: Path, agent: Agent):
+def test_write_file_fails_if_content_exists(test_file_name: Path, agent: Agent):
     new_content = "This is new content.\n"
     file_ops.log_operation(
         "write",
-        test_file_name,
+        str(test_file_name),
         agent=agent,
         checksum=file_ops.text_checksum(new_content),
     )
     with pytest.raises(DuplicateOperationError):
-        await file_ops.write_to_file(test_file_name, new_content, agent=agent)
+        file_ops.write_to_file(str(test_file_name), new_content, agent=agent)
 
 
-@pytest.mark.asyncio
-async def test_write_file_succeeds_if_content_different(
+def test_write_file_succeeds_if_content_different(
     test_file_with_content_path: Path, agent: Agent
 ):
     new_content = "This is different content.\n"
-    await file_ops.write_to_file(test_file_with_content_path, new_content, agent=agent)
+    file_ops.write_to_file(
+        str(test_file_with_content_path), new_content, agent=agent
+    )
 
 
-@pytest.mark.asyncio
-async def test_append_to_file(test_nested_file: Path, agent: Agent):
+def test_append_to_file(test_nested_file: Path, agent: Agent):
     append_text = "This is appended text.\n"
-    await file_ops.write_to_file(test_nested_file, append_text, agent=agent)
+    file_ops.write_to_file(test_nested_file, append_text, agent=agent)
 
     file_ops.append_to_file(test_nested_file, append_text, agent=agent)
 
@@ -272,17 +266,9 @@ def test_append_to_file_uses_checksum_from_appended_file(
     test_file_name: Path, agent: Agent
 ):
     append_text = "This is appended text.\n"
-    file_ops.append_to_file(
-        agent.workspace.get_path(test_file_name),
-        append_text,
-        agent=agent,
-    )
-    file_ops.append_to_file(
-        agent.workspace.get_path(test_file_name),
-        append_text,
-        agent=agent,
-    )
-    with open(agent.file_manager.file_ops_log_path, "r", encoding="utf-8") as f:
+    file_ops.append_to_file(test_file_name, append_text, agent=agent)
+    file_ops.append_to_file(test_file_name, append_text, agent=agent)
+    with open(agent.config.file_logger_path, "r", encoding="utf-8") as f:
         log_contents = f.read()
 
     digest = hashlib.md5()
@@ -296,7 +282,7 @@ def test_append_to_file_uses_checksum_from_appended_file(
     )
 
 
-def test_list_files(workspace: FileWorkspace, test_directory: Path, agent: Agent):
+def test_list_files(workspace: Workspace, test_directory: Path, agent: Agent):
     # Case 1: Create files A and B, search for A, and ensure we don't return A and B
     file_a = workspace.get_path("file_a.txt")
     file_b = workspace.get_path("file_b.txt")

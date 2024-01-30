@@ -1,6 +1,6 @@
 {
     "command": "startbenchmark start",
-    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/9ed77593b3bef8e72f021f14642e7d306a0a2e41",
+    "benchmark_git_commit_sha": "https://github.com/khulnasoft/Start-GPT-Benchmarks/tree/9ed77593b3bef8e72f021f14642e7d306a0a2e41",
     "agent_git_commit_sha": "https://github.com/SilenNaihin/mini-agi/tree/2fc70aa0032eec986dfb1020854a1b3b8aaf6780",
     "completion_time": "2023-08-22T08:35:10+00:00",
     "benchmark_start_time": "2023-08-22T08:13:56+00:00",

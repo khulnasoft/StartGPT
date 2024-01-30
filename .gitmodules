@@ -1,3 +1,0 @@
-[submodule "startgpts/startgpt/tests/vcr_cassettes"]
-	path = startgpts/startgpt/tests/vcr_cassettes
-	url = https://github.com/KhulnaSoft/Start-GPT-test-cassettes

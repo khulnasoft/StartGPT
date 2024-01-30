@@ -1,17 +1,16 @@
 import logging
-from typing import ClassVar
 
 from startgpt.core.ability.base import Ability, AbilityConfiguration
 from startgpt.core.ability.schema import AbilityResult
 from startgpt.core.planning.simple import LanguageModelConfiguration
 from startgpt.core.plugin.simple import PluginLocation, PluginStorageFormat
 from startgpt.core.resource.model_providers import (
-    ChatMessage,
-    ChatModelProvider,
+    LanguageModelMessage,
+    LanguageModelProvider,
+    MessageRole,
     ModelProviderName,
     OpenAIModelName,
 )
-from startgpt.core.utils.json_schema import JSONSchema
 
 
 class QueryLanguageModel(Ability):
@@ -31,36 +30,49 @@ class QueryLanguageModel(Ability):
         self,
         logger: logging.Logger,
         configuration: AbilityConfiguration,
-        language_model_provider: ChatModelProvider,
+        language_model_provider: LanguageModelProvider,
     ):
         self._logger = logger
         self._configuration = configuration
         self._language_model_provider = language_model_provider
 
-    description: ClassVar[str] = (
-        "Query a language model."
-        " A query should be a question and any relevant context."
-    )
+    @classmethod
+    def description(cls) -> str:
+        return "Query a language model. A query should be a question and any relevant context."
 
-    parameters: ClassVar[dict[str, JSONSchema]] = {
-        "query": JSONSchema(
-            type=JSONSchema.Type.STRING,
-            description=(
-                "A query for a language model. "
-                "A query should contain a question and any relevant context."
-            ),
-        )
-    }
+    @classmethod
+    def arguments(cls) -> dict:
+        return {
+            "query": {
+                "type": "string",
+                "description": "A query for a language model. A query should contain a question and any relevant context.",
+            },
+        }
+
+    @classmethod
+    def required_arguments(cls) -> list[str]:
+        return ["query"]
 
     async def __call__(self, query: str) -> AbilityResult:
-        model_response = await self._language_model_provider.create_chat_completion(
-            model_prompt=[ChatMessage.user(query)],
+        messages = [
+            LanguageModelMessage(
+                content=query,
+                role=MessageRole.USER,
+            ),
+        ]
+        model_response = await self._language_model_provider.create_language_completion(
+            model_prompt=messages,
             functions=[],
             model_name=self._configuration.language_model_required.model_name,
+            completion_parser=self._parse_response,
         )
         return AbilityResult(
             ability_name=self.name(),
             ability_args={"query": query},
             success=True,
-            message=model_response.response["content"],
+            message=model_response.content["content"],
         )
+
+    @staticmethod
+    def _parse_response(response_content: dict) -> dict:
+        return {"content": response_content["content"]}

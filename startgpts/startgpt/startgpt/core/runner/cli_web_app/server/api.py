@@ -1,14 +1,19 @@
 import logging
+from pathlib import Path
 
 from agent_protocol import StepHandler, StepResult
 
 from startgpt.agents import Agent
 from startgpt.app.main import UserFeedback
 from startgpt.commands import COMMAND_CATEGORIES
-from startgpt.config import AIProfile, ConfigBuilder
+from startgpt.config import AIConfig, ConfigBuilder
 from startgpt.logs.helpers import user_friendly_output
+from startgpt.memory.vector import get_memory
 from startgpt.models.command_registry import CommandRegistry
 from startgpt.prompts.prompt import DEFAULT_TRIGGERING_PROMPT
+from startgpt.workspace import Workspace
+
+PROJECT_DIR = Path().resolve()
 
 
 async def task_handler(task_input) -> StepHandler:
@@ -64,11 +69,11 @@ async def interaction_step(
             )
             return
 
-    next_command_name, next_command_args, assistant_reply_dict = agent.propose_action()
+    next_command_name, next_command_args, assistant_reply_dict = agent.think()
 
     return {
         "config": agent.config,
-        "ai_profile": agent.ai_profile,
+        "ai_config": agent.ai_config,
         "result": result,
         "assistant_reply_dict": assistant_reply_dict,
         "next_step_command_name": next_command_name,
@@ -77,21 +82,25 @@ async def interaction_step(
 
 
 def bootstrap_agent(task, continuous_mode) -> Agent:
-    config = ConfigBuilder.build_config_from_env()
-    config.logging.level = logging.DEBUG
-    config.logging.plain_console_output = True
+    config = ConfigBuilder.build_config_from_env(workdir=PROJECT_DIR)
+    config.debug_mode = True
     config.continuous_mode = continuous_mode
     config.temperature = 0
+    config.plain_output = True
     command_registry = CommandRegistry.with_command_modules(COMMAND_CATEGORIES, config)
     config.memory_backend = "no_memory"
-    ai_profile = AIProfile(
-        ai_name="StartGPT",
+    config.workspace_path = Workspace.init_workspace_directory(config)
+    config.file_logger_path = Workspace.build_file_logger_path(config.workspace_path)
+    ai_config = AIConfig(
+        ai_name="Start-GPT",
         ai_role="a multi-purpose AI assistant.",
         ai_goals=[task],
     )
+    ai_config.command_registry = command_registry
     return Agent(
+        memory=get_memory(config),
         command_registry=command_registry,
-        ai_profile=ai_profile,
+        ai_config=ai_config,
         config=config,
         triggering_prompt=DEFAULT_TRIGGERING_PROMPT,
     )

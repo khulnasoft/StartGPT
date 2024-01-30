@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "agpt"
-version = "0.5.0"
+version = "0.4.7"
 authors = [
   "Significant Gravitas <support@agpt.co>",
 ]
 readme = "README.md"
 description = "An open-source attempt to make GPT-4 autonomous"
-homepage = "https://github.com/KhulnaSoft/StartGPT/tree/master/startgpts/startgpt"
+homepage = "https://github.com/khulnasoft/Start-GPT/tree/master/startgpts/startgpt"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -16,33 +16,26 @@ packages = [{ include = "startgpt" }]
 
 
 [tool.poetry.scripts]
-startgpt = "startgpt.app.cli:cli"
-serve = "startgpt.app.cli:serve"
+startgpt = "startgpt.app.cli:main"
 
 
 [tool.poetry.dependencies]
 python = "^3.10"
-start-gpt-plugin-template = {git = "https://github.com/KhulnaSoft/Start-GPT-Plugin-Template", rev = "0.1.0"}
-# startgpt-forge = { path = "../forge" }
-startgpt-forge = {git = "https://github.com/KhulnaSoft/StartGPT.git", subdirectory = "startgpts/forge"}
+agent-protocol = "^0.2.3"
 beautifulsoup4 = "^4.12.2"
-boto3 = "^1.33.6"
 charset-normalizer = "^3.1.0"
 click = "*"
 colorama = "^0.4.6"
 distro = "^1.8.0"
 docker = "*"
-duckduckgo-search = "^4.0.0"
+duckduckgo-search = "^3.0.2"
 en-core-web-sm = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0-py3-none-any.whl"}
-fastapi = "*"
 ftfy = "^6.1.1"
-gitpython = "^3.1.32"
 google-api-python-client = "*"
 gTTS = "^2.3.1"
-hypercorn = "^0.14.4"
 inflection = "*"
 jsonschema = "*"
-numpy = "*"
+markdown = "*"
 openai = "^0.27.10"
 orjson = "^3.8.10"
 Pillow = "*"
@@ -51,7 +44,7 @@ playsound = "~1.2.2"
 prompt_toolkit = "^3.0.38"
 pydantic = "*"
 pylatexenc = "*"
-pypdf = "^3.1.0"
+PyPDF2 = "*"
 python-docx = "*"
 python-dotenv = "^1.0.0"
 pyyaml = "^6.0"
@@ -60,38 +53,33 @@ redis = "*"
 requests = "*"
 selenium = "^4.11.2"
 spacy = "^3.0.0"
-tiktoken = "^0.5.0"
+tiktoken = "^0.3.3"
 webdriver-manager = "*"
 
+# web server
+fastapi = "*"
+uvicorn = "*"
+
 # OpenAI and Generic plugins import
-openapi-python-client = "^0.14.0"
-
-# Benchmarking
-# startbenchmark = { path = "../../benchmark", optional = true }
-startbenchmark = {git = "https://github.com/KhulnaSoft/StartGPT.git", subdirectory = "benchmark", optional = true}
-google-cloud-logging = "^3.8.0"
-google-cloud-storage = "^2.13.0"
-psycopg2-binary = "^2.9.9"
-
-[tool.poetry.extras]
-benchmark = ["startbenchmark"]
+openapi-python-client = "^0.13.4"
 
 [tool.poetry.group.dev.dependencies]
+auto-gpt-plugin-template = {git = "https://github.com/khulnasoft/Start-GPT-Plugin-Template", rev = "0.1.0"}
 black = "*"
-boto3-stubs = {extras = ["s3"], version = "^1.33.6"}
+coverage = "*"
 flake8 = "*"
 gitpython = "^3.1.32"
 isort = "*"
 mypy = "*"
+numpy = "*"
 pre-commit = "*"
 types-beautifulsoup4 = "*"
 types-colorama = "*"
 types-Markdown = "*"
 types-Pillow = "*"
 
-# Testing
+# Testing dependencies
 asynctest = "*"
-coverage = "*"
 pytest = "*"
 pytest-asyncio = "*"
 pytest-benchmark = "*"
@@ -100,7 +88,10 @@ pytest-integration = "*"
 pytest-mock = "*"
 pytest-recording = "*"
 pytest-xdist = "*"
-vcrpy = {git = "https://github.com/Significant-Gravitas/vcrpy.git", rev = "master"}
+vcrpy = {git = "https://github.com/khulnasoft/vcrpy.git", rev = "master"}
+
+[tool.poetry.group.benchmark.dependencies]
+startbenchmark = "0.0.9"
 
 
 [build-system]
@@ -113,7 +104,7 @@ line-length = 88
 target-version = ['py310']
 include = '\.pyi?$'
 packages = ["startgpt"]
-extend-exclude = '.+/(dist|.venv|venv|build|data)/.+'
+extend-exclude = '.+/(dist|.venv|venv|build)/.+'
 
 
 [tool.isort]
@@ -131,27 +122,17 @@ sections = [
     "FIRSTPARTY",
     "LOCALFOLDER"
 ]
-extend_skip = [
-    "startbenchmark_config/temp_folder/",
-    "data/",
-]
+skip = '''
+    .tox
+    __pycache__
+    *.pyc
+    .env
+    venv*/*
+    .venv/*
+    reports/*
+    dist/*
 
-
-[tool.mypy]
-follow_imports = 'skip'
-check_untyped_defs = true
-disallow_untyped_calls = true
-files = [
-    'startgpt/**/*.py',
-    'tests/**/*.py'
-]
-
-[[tool.mypy.overrides]]
-module = [
-    'requests.*',
-    'yaml.*'
-]
-ignore_missing_imports = true
+'''
 
 
 [tool.pytest.ini_options]

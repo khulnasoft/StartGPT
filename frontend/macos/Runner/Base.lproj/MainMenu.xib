@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useStartlayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
@@ -179,10 +179,10 @@
                                                 <action selector="toggleGrammarChecking:" target="-1" id="muD-Qn-j4w"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Correct Spelling Automatically" id="78Y-hA-62v">
+                                        <menuItem title="Correct Spelling Startmatically" id="78Y-hA-62v">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="toggleAutomaticSpellingCorrection:" target="-1" id="2lM-Qi-WAP"/>
+                                                <action selector="toggleStartmaticSpellingCorrection:" target="-1" id="2lM-Qi-WAP"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -208,31 +208,31 @@
                                         <menuItem title="Smart Quotes" id="hQb-2v-fYv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="toggleAutomaticQuoteSubstitution:" target="-1" id="ptq-xd-QOA"/>
+                                                <action selector="toggleStartmaticQuoteSubstitution:" target="-1" id="ptq-xd-QOA"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Smart Dashes" id="rgM-f4-ycn">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="toggleAutomaticDashSubstitution:" target="-1" id="oCt-pO-9gS"/>
+                                                <action selector="toggleStartmaticDashSubstitution:" target="-1" id="oCt-pO-9gS"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Smart Links" id="cwL-P1-jid">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="toggleAutomaticLinkDetection:" target="-1" id="Gip-E3-Fov"/>
+                                                <action selector="toggleStartmaticLinkDetection:" target="-1" id="Gip-E3-Fov"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Data Detectors" id="tRr-pd-1PS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="toggleAutomaticDataDetection:" target="-1" id="R1I-Nq-Kbl"/>
+                                                <action selector="toggleStartmaticDataDetection:" target="-1" id="R1I-Nq-Kbl"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Text Replacement" id="HFQ-gK-NFA">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="toggleAutomaticTextReplacement:" target="-1" id="DvP-Fe-Py6"/>
+                                                <action selector="toggleStartmaticTextReplacement:" target="-1" id="DvP-Fe-Py6"/>
                                             </connections>
                                         </menuItem>
                                     </items>

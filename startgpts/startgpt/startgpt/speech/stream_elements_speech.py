@@ -2,29 +2,28 @@ from __future__ import annotations
 
 import logging
 import os
+from typing import TYPE_CHECKING
 
 import requests
 from playsound import playsound
 
-from startgpt.core.configuration import SystemConfiguration, UserConfigurable
+if TYPE_CHECKING:
+    from startgpt.config import Config
+
 from startgpt.speech.base import VoiceBase
 
 logger = logging.getLogger(__name__)
 
 
-class StreamElementsConfig(SystemConfiguration):
-    voice: str = UserConfigurable(default="Brian", from_env="STREAMELEMENTS_VOICE")
-
-
 class StreamElementsSpeech(VoiceBase):
     """Streamelements speech module for startgpt"""
 
-    def _setup(self, config: StreamElementsConfig) -> None:
+    def _setup(self, config: Config) -> None:
         """Setup the voices, API key, etc."""
         self.config = config
 
     def _speech(self, text: str, voice: str, _: int = 0) -> bool:
-        voice = self.config.voice
+        voice = self.config.streamelements_voice
         """Speak text using the streamelements API
 
         Args:

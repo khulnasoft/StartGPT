@@ -1,16 +1,16 @@
 name: Feature request 🚀
-description: Suggest a new idea for StartGPT!
+description: Suggest a new idea for Start-GPT!
 labels: ['status: needs triage']
 body:
   - type: markdown
     attributes:
       value: |
-        First, check out our [wiki page on Contributing](https://github.com/KhulnaSoft/Nexus/wiki/Contributing)
+        First, check out our [wiki page on Contributing](https://github.com/khulnasoft/Nexus/wiki/Contributing)
         Please provide a searchable summary of the issue in the title above ⬆️.
   - type: checkboxes
     attributes:
       label: Duplicates
-      description: Please [search the history](https://github.com/KhulnaSoft/StartGPT/issues) to see if an issue already exists for the same problem.
+      description: Please [search the history](https://github.com/Torantulino/Start-GPT/issues) to see if an issue already exists for the same problem.
       options:
         - label: I have searched the existing issues
           required: true

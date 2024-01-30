@@ -1,4 +1,4 @@
-name: start_gpt_flutter_client
+name: auto_gpt_flutter_client
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -40,14 +40,6 @@ dependencies:
   http: ^1.1.0
   shared_preferences: ^2.2.1
   graphview: ^1.2.0
-  firebase_core: ^2.15.1
-  firebase_auth: ^4.9.0
-  firebase_analytics: ^10.5.0
-  google_sign_in: ^6.1.5
-  uuid: ^4.0.0
-  url_launcher: ^6.1.14
-  fluttertoast: ^8.2.2
-  flutter_markdown: ^0.6.18
 
 dev_dependencies:
   flutter_test:
@@ -73,15 +65,6 @@ flutter:
 
   assets:
   - assets/tree_structure.json
-  - assets/images/google_logo.svg.png
-  - assets/images/github_logo.svg.png
-  - assets/images/startgpt_logo.png
-  - assets/images/discord_logo.png
-  - assets/images/twitter_logo.png
-  - assets/general_tree_structure.json
-  - assets/coding_tree_structure.json
-  - assets/data_tree_structure.json
-  - assets/scrape_synthesize_tree_structure.json
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

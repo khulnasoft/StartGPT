@@ -3,7 +3,7 @@ from pathlib import Path
 import click
 import yaml
 
-from startgpt.core.runner.cli_app.main import run_start_gpt
+from startgpt.core.runner.cli_app.main import run_auto_gpt
 from startgpt.core.runner.client_lib.shared_click_commands import (
     DEFAULT_SETTINGS_FILE,
     make_settings,
@@ -33,13 +33,13 @@ startgpt.add_command(make_settings)
 )
 @coroutine
 async def run(settings_file: str, pdb: bool) -> None:
-    """Run the StartGPT agent."""
-    click.echo("Running StartGPT agent...")
-    settings_file: Path = Path(settings_file)
+    """Run the Start-GPT agent."""
+    click.echo("Running Start-GPT agent...")
+    settings_file = Path(settings_file)
     settings = {}
     if settings_file.exists():
         settings = yaml.safe_load(settings_file.read_text())
-    main = handle_exceptions(run_start_gpt, with_debugger=pdb)
+    main = handle_exceptions(run_auto_gpt, with_debugger=pdb)
     await main(settings)
 
 

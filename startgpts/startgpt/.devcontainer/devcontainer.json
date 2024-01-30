@@ -1,7 +1,7 @@
 {
   "dockerComposeFile": "./docker-compose.yml",
-  "service": "start-gpt",
-  "workspaceFolder": "/workspace/StartGPT",
+  "service": "auto-gpt",
+  "workspaceFolder": "/workspace/Start-GPT",
   "shutdownAction": "stopCompose",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
@@ -52,5 +52,5 @@
   "remoteUser": "vscode",
 
   // Add the freshly containerized repo to the list of safe repositories
-  "postCreateCommand": "git config --global --add safe.directory /workspace/StartGPT && poetry install"
+  "postCreateCommand": "git config --global --add safe.directory /workspace/Start-GPT && poetry install"
 }

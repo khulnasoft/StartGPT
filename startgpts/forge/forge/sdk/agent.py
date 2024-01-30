@@ -1,20 +1,19 @@
+import asyncio
 import os
-import pathlib
-from io import BytesIO
 from uuid import uuid4
 
-import uvicorn
 from fastapi import APIRouter, FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse, StreamingResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from hypercorn.asyncio import serve
+from hypercorn.config import Config
 
 from .db import AgentDB
 from .errors import NotFoundError
 from .forge_log import ForgeLogger
 from .middlewares import AgentMiddleware
 from .routes.agent_protocol import base_router
-from .model import *
+from .schema import *
 from .workspace import Workspace
 
 LOG = ForgeLogger(__name__)
@@ -25,13 +24,14 @@ class Agent:
         self.db = database
         self.workspace = workspace
 
-    def get_agent_app(self, router: APIRouter = base_router):
+    def start(self, port: int = 8000, router: APIRouter = base_router):
         """
         Start the agent server.
         """
-
+        config = Config()
+        config.bind = [f"localhost:{port}"]
         app = FastAPI(
-            title="StartGPT Forge",
+            title="Start-GPT Forge",
             description="Modified version of The Agent Protocol.",
             version="v0.4",
         )
@@ -40,10 +40,6 @@ class Agent:
         origins = [
             "http://localhost:5000",
             "http://127.0.0.1:5000",
-            "http://localhost:8000",
-            "http://127.0.0.1:8000",
-            "http://localhost:8080",
-            "http://127.0.0.1:8080",
             # Add any other origins you want to whitelist
         ]
 
@@ -55,31 +51,13 @@ class Agent:
             allow_headers=["*"],
         )
 
-        app.include_router(router, prefix="/ap/v1")
-        script_dir = os.path.dirname(os.path.realpath(__file__))
-        frontend_path = pathlib.Path(
-            os.path.join(script_dir, "../../../../frontend/build/web")
-        ).resolve()
-
-        if os.path.exists(frontend_path):
-            app.mount("/app", StaticFiles(directory=frontend_path), name="app")
-
-            @app.get("/", include_in_schema=False)
-            async def root():
-                return RedirectResponse(url="/app/index.html", status_code=307)
-
-        else:
-            LOG.warning(
-                f"Frontend not found. {frontend_path} does not exist. The frontend will not be served"
-            )
+        app.include_router(router)
         app.add_middleware(AgentMiddleware, agent=self)
+        config.loglevel = "ERROR"
+        config.bind = [f"0.0.0.0:{port}"]
 
-        return app
-
-    def start(self, port):
-        uvicorn.run(
-            "forge.app:app", host="localhost", port=port, log_level="error", reload=True
-        )
+        LOG.info(f"Agent server starting on http://{config.bind[0]}")
+        asyncio.run(serve(app, config))
 
     async def create_task(self, task_request: TaskRequestBody) -> Task:
         """
@@ -195,22 +173,19 @@ class Agent:
         """
         try:
             artifact = await self.db.get_artifact(artifact_id)
-            if artifact.file_name not in artifact.relative_path:
-                file_path = os.path.join(artifact.relative_path, artifact.file_name)
-            else:
-                file_path = artifact.relative_path
+            file_path = os.path.join(artifact.relative_path, artifact.file_name)
             retrieved_artifact = self.workspace.read(task_id=task_id, path=file_path)
+            path = artifact.file_name
+            with open(path, "wb") as f:
+                f.write(retrieved_artifact)
         except NotFoundError as e:
             raise
         except FileNotFoundError as e:
             raise
         except Exception as e:
             raise
-
-        return StreamingResponse(
-            BytesIO(retrieved_artifact),
-            media_type="application/octet-stream",
-            headers={
-                "Content-Disposition": f"attachment; filename={artifact.file_name}"
-            },
+        return FileResponse(
+            # Note: mimetype is guessed in the FileResponse constructor
+            path=path,
+            filename=artifact.file_name,
         )

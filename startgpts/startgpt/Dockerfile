@@ -6,7 +6,7 @@ FROM python:3.10-slim AS startgpt-base
 
 # Install browsers
 RUN apt-get update && apt-get install -y \
-    chromium-driver ca-certificates gcc \
+    chromium-driver firefox-esr ca-certificates gcc \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install utilities
@@ -19,7 +19,6 @@ ENV PIP_NO_CACHE_DIR=yes \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     POETRY_HOME="/opt/poetry" \
-    POETRY_VIRTUALENVS_PATH="/venv" \
     POETRY_VIRTUALENVS_IN_PROJECT=0 \
     POETRY_NO_INTERACTION=1
 
@@ -32,19 +31,17 @@ WORKDIR /app
 COPY pyproject.toml poetry.lock ./
 
 # Set the entrypoint
-ENTRYPOINT ["poetry", "run", "startgpt"]
-CMD []
+ENTRYPOINT ["poetry"]
+CMD ["run", "startgpt", "--install-plugin-deps"]
 
 # dev build -> include everything
 FROM startgpt-base as startgpt-dev
-RUN poetry install --no-cache --no-root \
-    && rm -rf $(poetry env info --path)/src
+RUN poetry install --no-root
 ONBUILD COPY . ./
 
 # release build -> include bare minimum
 FROM startgpt-base as startgpt-release
-RUN poetry install --no-cache --no-root --without dev \
-    && rm -rf $(poetry env info --path)/src
+RUN poetry install --no-root --without dev,benchmark
 ONBUILD COPY startgpt/ ./startgpt
 ONBUILD COPY scripts/ ./scripts
 ONBUILD COPY plugins/ ./plugins

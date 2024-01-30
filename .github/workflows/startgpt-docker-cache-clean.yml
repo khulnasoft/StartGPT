@@ -1,13 +1,12 @@
 name: Purge Start-GPT Docker CI cache
 
 on:
-  workflow_dispatch:
   schedule:
     - cron: 20 4 * * 1,4
 
 env:
-  BASE_BRANCH: development
-  IMAGE_NAME: start-gpt
+  BASE_BRANCH: master
+  IMAGE_NAME: auto-gpt
 
 jobs:
   build:
@@ -26,7 +25,6 @@ jobs:
       name: Build image
       uses: docker/build-push-action@v3
       with:
-        context: startgpts/startgpt
         build-args: BUILD_TYPE=${{ matrix.build-type }}
         load: true    # save to docker images
         # use GHA cache as read-only
@@ -39,10 +37,10 @@ jobs:
 
         build_type: ${{ matrix.build-type }}
 
-        prod_branch: master
-        dev_branch: development
+        prod_branch: stable
+        dev_branch: master
         repository: ${{ github.repository }}
-        base_branch: ${{ github.ref_name != 'master' && github.ref_name != 'development' && 'development' || 'master' }}
+        base_branch: ${{ github.ref_name != 'master' && github.ref_name != 'stable' && 'master' || 'stable' }}
 
         current_ref: ${{ github.ref_name }}
         commit_hash: ${{ github.sha }}

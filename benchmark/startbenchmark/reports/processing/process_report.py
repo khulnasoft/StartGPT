@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 from pathlib import Path
 from typing import Any
@@ -9,8 +8,6 @@ from startbenchmark.reports.processing.get_files import (
 )
 from startbenchmark.reports.processing.report_types import Report, Test
 from startbenchmark.utils.data_types import STRING_DIFFICULTY_MAP
-
-logger = logging.getLogger(__name__)
 
 
 def get_reports_data(report_path: str) -> dict[str, Any]:
@@ -63,7 +60,7 @@ def all_agent_categories(reports_data: dict[str, Any]) -> dict[str, Any]:
     for name, report in reports_data.items():
         categories = get_agent_category(report)
         if categories:  # only add to all_categories if categories is not empty
-            logger.debug(f"Adding {name}: {categories}")
+            print(f"Adding {name}: {categories}")
             all_categories[name] = categories
 
     return all_categories

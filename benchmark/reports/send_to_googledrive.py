@@ -3,7 +3,6 @@ import json
 import os
 import re
 from datetime import datetime, timedelta
-
 import gspread
 import pandas as pd
 from dotenv import load_dotenv

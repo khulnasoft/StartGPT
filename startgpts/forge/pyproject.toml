@@ -1,11 +1,10 @@
 [tool.poetry]
-name = "StartGPT-Forge"
+name = "Start-GPT-Forge"
 version = "0.1.0"
 description = ""
 authors = ["Craig Swift <craigswift13@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{ include = "forge" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -16,21 +15,10 @@ sqlalchemy = "^2.0.19"
 aiohttp = "^3.8.5"
 colorlog = "^6.7.0"
 chromadb = "^0.4.10"
+startbenchmark = { path = "../../benchmark" }
+hypercorn = "^0.14.4"
 python-multipart = "^0.0.6"
 toml = "^0.10.2"
-jinja2 = "^3.1.3"
-uvicorn = "^0.23.2"
-litellm = "^0.1.821"
-duckduckgo-search = "^4.0.0"
-selenium = "^4.13.0"
-bs4 = "^0.0.1"
-# startbenchmark = { path = "../../benchmark", optional = true }
-startbenchmark = {git = "https://github.com/KhulnaSoft/StartGPT.git", subdirectory = "benchmark", optional = true}
-webdriver-manager = "^4.0.1"
-google-cloud-storage = "^2.13.0"
-
-[tool.poetry.extras]
-benchmark = ["startbenchmark"]
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.12.0"
@@ -44,7 +32,6 @@ pytest-asyncio = "^0.21.1"
 watchdog = "^3.0.0"
 mock = "^5.1.0"
 autoflake = "^2.2.0"
-pydevd-pycharm = "^233.6745.319"
 
 
 [build-system]

@@ -1,6 +1,6 @@
 {
     "command": "startbenchmark start",
-    "benchmark_git_commit_sha": "https://github.com/KhulnaSoft/Start-GPT-Benchmarks/tree/1d1728a800a4caaf3eea45bdfc733ae82bddc173",
+    "benchmark_git_commit_sha": "https://github.com/khulnasoft/Start-GPT-Benchmarks/tree/1d1728a800a4caaf3eea45bdfc733ae82bddc173",
     "agent_git_commit_sha": "https://github.com/e2b-dev/smol-developer/tree/a23d01369cea976e80b7889fdbf1096619471301",
     "completion_time": "2023-08-17T08:15:36+00:00",
     "benchmark_start_time": "2023-08-17T08:13:48+00:00",

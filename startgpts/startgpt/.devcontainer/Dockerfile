@@ -10,4 +10,4 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get install -y curl jq wget git
 
 # Declare working directory
-WORKDIR /workspace/StartGPT
+WORKDIR /workspace/Start-GPT

@@ -1,29 +1,18 @@
-name: StartGPTs smoke test CI
+name: Valid StartGPTs
 
 on:
   workflow_dispatch:
+    branches: [master]
   schedule:
     - cron: '0 8 * * *'
   push:
-    branches: [ master, development, ci-test* ]
+    branches: [master, ci-test*]
     paths:
-      - '.github/workflows/startgpts-ci.yml'
       - 'startgpts/**'
-      - 'benchmark/**'
-      - 'run'
-      - 'cli.py'
-      - 'setup.py'
-      - '!**/*.md'
   pull_request:
-    branches: [ master, development, release-* ]
+    branches: [stable, master, release-*]
     paths:
-      - '.github/workflows/startgpts-ci.yml'
       - 'startgpts/**'
-      - 'benchmark/**'
-      - 'run'
-      - 'cli.py'
-      - 'setup.py'
-      - '!**/*.md'
 
 jobs:
   run-tests:
@@ -33,13 +22,13 @@ jobs:
         agent-name: [ startgpt, forge ]
       fail-fast: false
     timeout-minutes: 20
-    env:
-      min-python-version: '3.10'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
           submodules: true
 
       - name: Set up Python ${{ env.min-python-version }}
@@ -53,11 +42,12 @@ jobs:
           curl -sSL https://install.python-poetry.org | python -
 
       - name: Run regression tests
+        working-directory: ./startgpts/${{ matrix.agent-name }}/
         run: |
-          ./run agent start ${{ matrix.agent-name }}
-          cd startgpts/${{ matrix.agent-name }}
-          poetry run startbenchmark --mock
-          poetry run startbenchmark --test=WriteFile
+          sh run
+          URL=http://127.0.0.1:8000 bash -c "$(curl -fsSL https://raw.githubusercontent.com/AI-Engineers-Foundation/agent-protocol/main/testing_suite/test.sh)"
+          poetry run startbenchmark start --mock
+          poetry run startbenchmark start --test=TestWriteFile
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           AGENT_NAME: ${{ matrix.agent-name }}

@@ -1,0 +1,16 @@
+{
+    "TestReadFile": false,
+    "TestWriteFile": false,
+    "TestRememberGoal_Simple": false,
+    "TestRememberGoalHard": false,
+    "TestThreeSum": false,
+    "TestPasswordGenerator_Easy": false,
+    "TestWritingCLI_FileOrganizer": false,
+    "TestUrlShortener": false,
+    "TestSearch": false,
+    "TestBasicRetrieval": false,
+    "TestRevenueRetrieval1.0": false,
+    "TestRevenueRetrieval1.1": false,
+    "TestRevenueRetrieval1.2": false,
+    "TestRetrieval3": false
+}

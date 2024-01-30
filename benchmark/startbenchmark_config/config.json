@@ -1,4 +1,4 @@
 {
-  "workspace": {"input":  "start_gpt_workspace", "output": "start_gpt_workspace"},
+  "workspace": {"input":  "auto_gpt_workspace", "output": "auto_gpt_workspace"},
   "host": "http://localhost:8000"
 }

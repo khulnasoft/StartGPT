@@ -10,7 +10,7 @@
 
 <!--
 Check out our contribution guide:
-https://github.com/KhulnaSoft/Nexus/wiki/Contributing
+https://github.com/khulnasoft/Nexus/wiki/Contributing
 
 1. Avoid duplicate work, issues, PRs etc.
 2. Also consider contributing something other than code; see the [contribution guide]
@@ -27,5 +27,5 @@ https://github.com/KhulnaSoft/Nexus/wiki/Contributing
 - [ ] Have you changed or added a feature? &ensp; `-4 pts`
   - [ ] Have you added/updated corresponding documentation? &ensp; `+4 pts`
   - [ ] Have you added/updated corresponding integration tests? &ensp; `+5 pts`
-- [ ] Have you changed the behavior of StartGPT? &ensp; `-5 pts`
+- [ ] Have you changed the behavior of Start-GPT? &ensp; `-5 pts`
   - [ ] Have you also run `startbenchmark` to verify that these changes do not regress performance? &ensp; `+10 pts`

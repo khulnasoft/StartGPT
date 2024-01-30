@@ -1,6 +1,6 @@
 # startbenchmark-frontend
 
-Frontend for https://github.com/KhulnaSoft/Start-GPT-Benchmarks
+Frontend for https://github.com/khulnasoft/Start-GPT-Benchmarks
 
 Objectively know how well your agent is performing in categories like code, retrieval, memory, and safety.
 

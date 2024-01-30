@@ -1,4 +1,5 @@
-import logging
+import glob
+import json
 import os
 import sys
 from datetime import datetime, timezone
@@ -6,97 +7,241 @@ from pathlib import Path
 from typing import Any, Optional
 
 import click
-from click_default_group import DefaultGroup
-from dotenv import load_dotenv
+import pytest
+import toml
+from helicone.lock import HeliconeLockManager
 
-from startbenchmark.config import AgentBenchmarkConfig
-from startbenchmark.utils.logging import configure_logging
+from startbenchmark.utils.data_types import AgentBenchmarkConfig
 
-load_dotenv()
-
-try:
-    if os.getenv("HELICONE_API_KEY"):
-        import helicone  # noqa
-
-        helicone_enabled = True
-    else:
-        helicone_enabled = False
-except ImportError:
-    helicone_enabled = False
-
-
-class InvalidInvocationError(ValueError):
-    pass
-
-
-logger = logging.getLogger(__name__)
+from .reports.ReportManager import ReportManager
+from .utils.data_types import AgentBenchmarkConfig
 
 BENCHMARK_START_TIME_DT = datetime.now(timezone.utc)
 BENCHMARK_START_TIME = BENCHMARK_START_TIME_DT.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+TEMP_FOLDER_ABS_PATH = Path(os.path.dirname(os.path.abspath(__file__))) / "temp_folder"
 
 
-if helicone_enabled:
-    from helicone.lock import HeliconeLockManager
+def get_agent_benchmark_config() -> AgentBenchmarkConfig:
+    agent_benchmark_config_path = str(Path.cwd() / "startbenchmark_config" / "config.json")
+    try:
+        with open(agent_benchmark_config_path, "r") as f:
+            agent_benchmark_config = AgentBenchmarkConfig(**json.load(f))
+            agent_benchmark_config.agent_benchmark_config_path = (
+                agent_benchmark_config_path
+            )
+            return agent_benchmark_config
+    except json.JSONDecodeError:
+        print("Error: benchmark_config.json is not a valid JSON file.")
+        raise
 
+
+def get_report_managers() -> tuple[ReportManager, ReportManager, ReportManager]:
+    agent_benchmark_config = get_agent_benchmark_config()
+    # tests that consistently pass are considered regression tests
+    REGRESSION_MANAGER = ReportManager(
+        agent_benchmark_config.get_regression_reports_path(), BENCHMARK_START_TIME_DT
+    )
+
+    # print(f"Using {REPORTS_PATH} for reports")
+    # user facing reporting information
+    INFO_MANAGER = ReportManager(
+        str(
+            agent_benchmark_config.get_reports_path(
+                benchmark_start_time=BENCHMARK_START_TIME_DT
+            )
+            / "report.json"
+        ),
+        BENCHMARK_START_TIME_DT,
+    )
+
+    # internal db step in replacement track pass/fail rate
+    INTERNAL_INFO_MANAGER = ReportManager(
+        agent_benchmark_config.get_success_rate_path(), BENCHMARK_START_TIME_DT
+    )
+
+    return REGRESSION_MANAGER, INFO_MANAGER, INTERNAL_INFO_MANAGER
+
+
+(REGRESSION_MANAGER, INFO_MANAGER, INTERNAL_INFO_MANAGER) = get_report_managers()
+
+
+if os.environ.get("HELICONE_API_KEY"):
     HeliconeLockManager.write_custom_property(
         "benchmark_start_time", BENCHMARK_START_TIME
     )
 
-
-@click.group(cls=DefaultGroup, default_if_no_args=True)
-@click.option("--debug", is_flag=True, help="Enable debug output")
-def cli(
-    debug: bool,
-) -> Any:
-    configure_logging(logging.DEBUG if debug else logging.INFO)
+with open(
+    Path(__file__).resolve().parent / "challenges" / "optional_categories.json"
+) as f:
+    OPTIONAL_CATEGORIES = json.load(f)["optional_categories"]
 
 
-@cli.command(hidden=True)
-def start():
-    raise DeprecationWarning(
-        "`startbenchmark start` is deprecated. Use `startbenchmark run` instead."
-    )
+def get_unique_categories() -> set[str]:
+    """Find all data.json files in the directory relative to this file and its subdirectories,
+    read the "category" field from each file, and return a set of unique categories."""
+    categories = set()
+
+    # Get the directory of this file
+    this_dir = os.path.dirname(os.path.abspath(__file__))
+
+    glob_path = os.path.join(this_dir, "./challenges/**/data.json")
+    # Use it as the base for the glob pattern
+    for data_file in glob.glob(glob_path, recursive=True):
+        with open(data_file, "r") as f:
+            try:
+                data = json.load(f)
+                categories.update(data.get("category", []))
+            except json.JSONDecodeError:
+                print(f"Error: {data_file} is not a valid JSON file.")
+                continue
+            except IOError:
+                print(f"IOError: file could not be read: {data_file}")
+                continue
+
+    return categories
 
 
-@cli.command(default=True)
-@click.option(
-    "-c",
-    "--category",
-    multiple=True,
-    help="(+) Select a category to run.",
-)
+def run_benchmark(
+    maintain: bool = False,
+    improve: bool = False,
+    explore: bool = False,
+    mock: bool = False,
+    no_dep: bool = False,
+    nc: bool = False,
+    keep_answers: bool = False,
+    category: Optional[list[str]] = None,
+    skip_category: Optional[list[str]] = None,
+    test: Optional[str] = None,
+    cutoff: Optional[int] = None,
+    server: bool = False,
+) -> int:
+    """Start the benchmark tests. If a category flag is provided, run the categories with that mark."""
+    # Check if configuration file exists and is not empty
+    agent_benchmark_config_path = str(Path.cwd() / "startbenchmark_config" / "config.json")
+    try:
+        with open(agent_benchmark_config_path, "r") as f:
+            agent_benchmark_config = AgentBenchmarkConfig(**json.load(f))
+            agent_benchmark_config.agent_benchmark_config_path = (
+                agent_benchmark_config_path
+            )
+    except json.JSONDecodeError:
+        print("Error: benchmark_config.json is not a valid JSON file.")
+        return 1
+
+    if maintain and improve and explore:
+        print(
+            "Error: You can't use --maintain, --improve or --explore at the same time. Please choose one."
+        )
+        return 1
+
+    if test and (category or skip_category or maintain or improve or explore):
+        print(
+            "Error: If you're running a specific test make sure no other options are selected. Please just pass the --test."
+        )
+        return 1
+
+    assert agent_benchmark_config.host, "Error: host needs to be added to the config."
+
+    print("Current configuration:")
+    for key, value in vars(agent_benchmark_config).items():
+        print(f"{key}: {value}")
+
+    pytest_args = ["-vs"]
+    if keep_answers:
+        pytest_args.append("--keep-answers")
+
+    if test:
+        print("Running specific test:", test)
+        pytest_args.extend(["-k", test, "--test"])
+    else:
+        # Categories that are used in the challenges
+        categories = get_unique_categories()
+        if category:
+            invalid_categories = set(category) - categories
+            assert (
+                not invalid_categories
+            ), f"Invalid categories: {invalid_categories}. Valid categories are: {categories}"
+
+        if category:
+            categories_to_run = set(category)
+            if skip_category:
+                categories_to_run = categories_to_run.difference(set(skip_category))
+                assert categories_to_run, "Error: You can't skip all categories"
+            pytest_args.extend(["-m", " or ".join(categories_to_run), "--category"])
+            print("Running tests of category:", categories_to_run)
+        elif skip_category:
+            categories_to_run = categories - set(skip_category)
+            assert categories_to_run, "Error: You can't skip all categories"
+            pytest_args.extend(["-m", " or ".join(categories_to_run), "--category"])
+            print("Running tests of category:", categories_to_run)
+        else:
+            print("Running all categories")
+
+        if maintain:
+            print("Running only regression tests")
+            pytest_args.append("--maintain")
+        elif improve:
+            print("Running only non-regression tests")
+            pytest_args.append("--improve")
+        elif explore:
+            print("Only attempt challenges that have never been beaten")
+            pytest_args.append("--explore")
+
+    if mock:
+        pytest_args.append("--mock")
+
+    if no_dep:
+        pytest_args.append("--no_dep")
+
+    if nc and cutoff:
+        print(
+            "Error: You can't use both --nc and --cutoff at the same time. Please choose one."
+        )
+        return 1
+
+    if nc:
+        pytest_args.append("--nc")
+    if cutoff:
+        pytest_args.append("--cutoff")
+        print(f"Setting cuttoff override to {cutoff} seconds.")
+    current_dir = Path(__file__).resolve().parent
+    print(f"Current directory: {current_dir}")
+    pytest_args.extend((str(current_dir), "--cache-clear"))
+    return pytest.main(pytest_args)
+
+
+@click.group()
+def cli() -> None:
+    pass
+
+
+@cli.command()
+@click.option("--backend", is_flag=True, help="If it's being run from the cli")
+@click.option("-c", "--category", multiple=True, help="Specific category to run")
 @click.option(
     "-s",
     "--skip-category",
     multiple=True,
-    help="(+) Exclude a category from running.",
+    help="Skips preventing the tests from this category from running",
 )
-@click.option("--test", multiple=True, help="(+) Select a test to run.")
-@click.option("--maintain", is_flag=True, help="Run only regression tests.")
-@click.option("--improve", is_flag=True, help="Run only non-regression tests.")
+@click.option("--test", help="Specific test to run")
+@click.option("--maintain", is_flag=True, help="Runs only regression tests")
+@click.option("--improve", is_flag=True, help="Run only non-regression tests")
 @click.option(
     "--explore",
     is_flag=True,
-    help="Run only challenges that have never been beaten.",
+    help="Only attempt challenges that have never been beaten",
 )
-@click.option(
-    "--no-dep",
-    is_flag=True,
-    help="Run all (selected) challenges, regardless of dependency success/failure.",
-)
-@click.option("--cutoff", type=int, help="Override the challenge time limit (seconds).")
-@click.option("--nc", is_flag=True, help="Disable the challenge time limit.")
 @click.option("--mock", is_flag=True, help="Run with mock")
-@click.option("--keep-answers", is_flag=True, help="Keep answers")
 @click.option(
-    "--backend",
+    "--no_dep",
     is_flag=True,
-    help="Write log output to a file instead of the terminal.",
+    help="Run without dependencies",
 )
-# @click.argument(
-#     "agent_path", type=click.Path(exists=True, file_okay=False), required=False
-# )
-def run(
+@click.option("--nc", is_flag=True, help="Run without cutoff")
+@click.option("--keep-answers", is_flag=True, help="Keep answers")
+@click.option("--cutoff", help="Set or override tests cutoff (seconds)")
+def start(
     maintain: bool,
     improve: bool,
     explore: bool,
@@ -104,37 +249,13 @@ def run(
     no_dep: bool,
     nc: bool,
     keep_answers: bool,
-    test: tuple[str],
-    category: tuple[str],
-    skip_category: tuple[str],
+    category: Optional[list[str]] = None,
+    skip_category: Optional[list[str]] = None,
+    test: Optional[str] = None,
     cutoff: Optional[int] = None,
     backend: Optional[bool] = False,
-    # agent_path: Optional[Path] = None,
-) -> None:
-    """
-    Run the benchmark on the agent in the current directory.
-
-    Options marked with (+) can be specified multiple times, to select multiple items.
-    """
-    from startbenchmark.main import run_benchmark, validate_args
-
-    startbenchmark_config = AgentBenchmarkConfig.load()
-    logger.debug(f"startbenchmark_config: {startbenchmark_config.startbenchmark_config_dir}")
-    try:
-        validate_args(
-            maintain=maintain,
-            improve=improve,
-            explore=explore,
-            tests=test,
-            categories=category,
-            skip_categories=skip_category,
-            no_cutoff=nc,
-            cutoff=cutoff,
-        )
-    except InvalidInvocationError as e:
-        logger.error("Error: " + "\n".join(e.args))
-        sys.exit(1)
-
+) -> Any:
+    # Redirect stdout if backend is True
     original_stdout = sys.stdout  # Save the original standard output
     exit_code = None
 
@@ -142,17 +263,16 @@ def run(
         with open("backend/backend_stdout.txt", "w") as f:
             sys.stdout = f
             exit_code = run_benchmark(
-                config=startbenchmark_config,
                 maintain=maintain,
                 improve=improve,
                 explore=explore,
                 mock=mock,
                 no_dep=no_dep,
-                no_cutoff=nc,
+                nc=nc,
                 keep_answers=keep_answers,
-                tests=test,
-                categories=category,
-                skip_categories=skip_category,
+                category=category,
+                skip_category=skip_category,
+                test=test,
                 cutoff=cutoff,
             )
 
@@ -160,17 +280,16 @@ def run(
 
     else:
         exit_code = run_benchmark(
-            config=startbenchmark_config,
             maintain=maintain,
             improve=improve,
             explore=explore,
             mock=mock,
             no_dep=no_dep,
-            no_cutoff=nc,
+            nc=nc,
             keep_answers=keep_answers,
-            tests=test,
-            categories=category,
-            skip_categories=skip_category,
+            category=category,
+            skip_category=skip_category,
+            test=test,
             cutoff=cutoff,
         )
 
@@ -178,44 +297,13 @@ def run(
 
 
 @cli.command()
-@click.option("--port", type=int, help="Port to run the API on.")
-def serve(port: Optional[int] = None):
-    """Serve the benchmark frontend and API on port 8080."""
-    import uvicorn
-
-    from startbenchmark.app import setup_fastapi_app
-
-    config = AgentBenchmarkConfig.load()
-    app = setup_fastapi_app(config)
-
-    # Run the FastAPI application using uvicorn
-    port = port or int(os.getenv("PORT", 8080))
-    uvicorn.run(app, host="0.0.0.0", port=port)
-
-
-@cli.command()
-def config():
-    """Displays info regarding the present STARTBenchmark config."""
-    try:
-        config = AgentBenchmarkConfig.load()
-    except FileNotFoundError as e:
-        click.echo(e, err=True)
-        return 1
-
-    k_col_width = max(len(k) for k in config.dict().keys())
-    for k, v in config.dict().items():
-        click.echo(f"{k: <{k_col_width}} = {v}")
-
-
-@cli.command()
 def version():
-    """Print version info for the STARTBenchmark application."""
-    import toml
-
-    package_root = Path(__file__).resolve().parent.parent
-    pyproject = toml.load(package_root / "pyproject.toml")
-    version = pyproject["tool"]["poetry"]["version"]
-    click.echo(f"STARTBenchmark version {version}")
+    """Print the version of the benchmark tool."""
+    current_directory = Path(__file__).resolve().parent
+    version = toml.load(current_directory / ".." / "pyproject.toml")["tool"]["poetry"][
+        "version"
+    ]
+    print(f"Benchmark Tool Version {version}")
 
 
 if __name__ == "__main__":

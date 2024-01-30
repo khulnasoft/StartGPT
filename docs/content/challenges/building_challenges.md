@@ -1,8 +1,8 @@
-# Creating Challenges for StartGPT
+# Creating Challenges for Start-GPT
 
 🏹 We're on the hunt for talented Challenge Creators! 🎯
 
-Join us in shaping the future of StartGPT by designing challenges that test its limits. Your input will be invaluable in guiding our progress and ensuring that we're on the right track. We're seeking individuals with a diverse skill set, including:
+Join us in shaping the future of Start-GPT by designing challenges that test its limits. Your input will be invaluable in guiding our progress and ensuring that we're on the right track. We're seeking individuals with a diverse skill set, including:
 
 🎨 UX Design: Your expertise will enhance the user experience for those attempting to conquer our challenges. With your help, we'll develop a dedicated section in our wiki, and potentially even launch a standalone website.
 
@@ -10,11 +10,11 @@ Join us in shaping the future of StartGPT by designing challenges that test its 
 
 ⚙️ DevOps Skills: Experience with CI pipelines in GitHub and possibly Google Cloud Platform will be instrumental in streamlining our operations.
 
-Are you ready to play a pivotal role in StartGPT's journey? Apply now to become a Challenge Creator by opening a PR! 🚀
+Are you ready to play a pivotal role in Start-GPT's journey? Apply now to become a Challenge Creator by opening a PR! 🚀
 
 
 # Getting Started
-Clone the original StartGPT repo and checkout to master branch
+Clone the original Start-GPT repo and checkout to master branch
 
 
 The challenges are not written using a specific framework. They try to be very agnostic
@@ -27,7 +27,7 @@ Output => Artifact (files, image, code, etc, etc...)
 
 ## Defining your Agent
 
-Go to https://github.com/KhulnaSoft/StartGPT/blob/master/startgpts/startgpt/tests/integration/agent_factory.py
+Go to https://github.com/khulnasoft/Start-GPT/blob/master/tests/integration/agent_factory.py
 
 Create your agent fixture.
 
@@ -42,21 +42,21 @@ def kubernetes_agent(
     command_registry.import_commands("startgpt.app")
 
     # Define all the settings of our challenged agent
-    ai_profile = AIProfile(
+    ai_config = AIConfig(
         ai_name="Kubernetes",
         ai_role="an autonomous agent that specializes in creating Kubernetes deployment templates.",
         ai_goals=[
             "Write a simple kubernetes deployment file and save it as a kube.yaml.",
         ],
     )
-    ai_profile.command_registry = command_registry
+    ai_config.command_registry = command_registry
 
-    system_prompt = ai_profile.construct_full_prompt()
+    system_prompt = ai_config.construct_full_prompt()
     agent_test_config.set_continuous_mode(False)
     agent = Agent(
         memory=memory_json_file,
         command_registry=command_registry,
-        config=ai_profile,
+        config=ai_config,
         next_action_count=0,
         triggering_prompt=DEFAULT_TRIGGERING_PROMPT,
     )

@@ -2,36 +2,33 @@
 
 from __future__ import annotations
 
-import logging
-from typing import TYPE_CHECKING
-
-from startgpt.agents.features.context import get_agent_context
-from startgpt.agents.utils.exceptions import AgentTerminated, InvalidArgumentError
-from startgpt.command_decorator import command
-from startgpt.core.utils.json_schema import JSONSchema
-
 COMMAND_CATEGORY = "system"
 COMMAND_CATEGORY_TITLE = "System"
 
+import logging
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from startgpt.agents.agent import Agent
 
+from startgpt.agents.features.context import get_agent_context
+from startgpt.agents.utils.exceptions import InvalidArgumentError
+from startgpt.command_decorator import command
 
 logger = logging.getLogger(__name__)
 
 
 @command(
     "finish",
-    "Use this to shut down once you have completed your task,"
+    "Use this to shut down once you have accomplished all of your goals,"
     " or when there are insurmountable problems that make it impossible"
     " for you to finish your task.",
     {
-        "reason": JSONSchema(
-            type=JSONSchema.Type.STRING,
-            description="A summary to the user of how the goals were accomplished",
-            required=True,
-        )
+        "reason": {
+            "type": "string",
+            "description": "A summary to the user of how the goals were accomplished",
+            "required": True,
+        }
     },
 )
 def finish(reason: str, agent: Agent) -> None:
@@ -44,18 +41,19 @@ def finish(reason: str, agent: Agent) -> None:
         A result string from create chat completion. A list of suggestions to
             improve the code.
     """
-    raise AgentTerminated(reason)
+    logger.info(reason, extra={"title": "Shutting down...\n"})
+    quit()
 
 
 @command(
     "hide_context_item",
     "Hide an open file, folder or other context item, to save memory.",
     {
-        "number": JSONSchema(
-            type=JSONSchema.Type.INTEGER,
-            description="The 1-based index of the context item to hide",
-            required=True,
-        )
+        "number": {
+            "type": "integer",
+            "description": "The 1-based index of the context item to hide",
+            "required": True,
+        }
     },
     available=lambda a: bool(get_agent_context(a)),
 )

@@ -1,8 +1,13 @@
+import abc
+
+from startgpt.core.configuration import SystemConfiguration
+from startgpt.core.planning.schema import (
+    LanguageModelClassification,
+    LanguageModelPrompt,
+)
+
 # class Planner(abc.ABC):
-#     """
-#     Manages the agent's planning and goal-setting
-#     by constructing language model prompts.
-#     """
+#     """Manages the agent's planning and goal-setting by constructing language model prompts."""
 #
 #     @staticmethod
 #     @abc.abstractmethod
@@ -52,3 +57,20 @@
 #
 #         """
 #         ...
+
+
+class PromptStrategy(abc.ABC):
+    default_configuration: SystemConfiguration
+
+    @property
+    @abc.abstractmethod
+    def model_classification(self) -> LanguageModelClassification:
+        ...
+
+    @abc.abstractmethod
+    def build_prompt(self, *_, **kwargs) -> LanguageModelPrompt:
+        ...
+
+    @abc.abstractmethod
+    def parse_response_content(self, response_content: dict) -> dict:
+        ...

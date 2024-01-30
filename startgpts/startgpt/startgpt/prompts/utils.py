@@ -6,6 +6,6 @@ def format_numbered_list(items: list[Any], start_at: int = 1) -> str:
 
 
 def indent(content: str, indentation: int | str = 4) -> str:
-    if type(indentation) is int:
+    if type(indentation) == int:
         indentation = " " * indentation
     return indentation + content.replace("\n", f"\n{indentation}")  # type: ignore

@@ -1,4 +1,4 @@
-name: StartGPT Docker Release
+name: Start-GPT Docker Release
 
 on:
   release:
@@ -15,12 +15,11 @@ defaults:
     working-directory: startgpts/startgpt
 
 env:
-  IMAGE_NAME: start-gpt
-  DEPLOY_IMAGE_NAME: ${{ secrets.DOCKER_USER }}/start-gpt
+  IMAGE_NAME: auto-gpt
+  DEPLOY_IMAGE_NAME: ${{ secrets.DOCKER_USER }}/auto-gpt
 
 jobs:
   build:
-    if: startsWith(github.ref, 'refs/tags/startgpt-')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -38,9 +37,7 @@ jobs:
       # slashes are not allowed in image tags, but can appear in git branch or tag names
     - id: sanitize_tag
       name: Sanitize image tag
-      run: |
-        tag=${raw_tag//\//-}
-        echo tag=${tag#startgpt-} >> $GITHUB_OUTPUT
+      run: echo tag=${raw_tag//\//-} >> $GITHUB_OUTPUT
       env:
         raw_tag: ${{ github.ref_name }}
 
@@ -71,10 +68,10 @@ jobs:
         event_ref_type: ${{ github.event.ref}}
         inputs_no_cache: ${{ inputs.no_cache }}
 
-        prod_branch: master
-        dev_branch: development
+        prod_branch: stable
+        dev_branch: master
         repository: ${{ github.repository }}
-        base_branch: ${{ github.ref_name != 'master' && github.ref_name != 'development' && 'development' || 'master' }}
+        base_branch: ${{ github.ref_name != 'master' && github.ref_name != 'stable' && 'master' || 'stable' }}
 
         ref_type: ${{ github.ref_type }}
         current_ref: ${{ github.ref_name }}

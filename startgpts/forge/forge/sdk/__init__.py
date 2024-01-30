@@ -3,23 +3,23 @@ The Forge SDK. This is the core of the Forge. It contains the agent protocol, wh
 core of the Forge.
 """
 from .agent import Agent
-from .db import AgentDB, Base
+from .db import AgentDB
 from .forge_log import ForgeLogger
-from ..llm import chat_completion_request, create_embedding_request, transcribe_audio
 from .prompting import PromptEngine
-from .model import (
+from .schema import (
     Artifact,
     ArtifactUpload,
     Pagination,
     Status,
     Step,
+    StepInput,
     StepOutput,
     StepRequestBody,
     Task,
     TaskArtifactsListResponse,
+    TaskInput,
     TaskListResponse,
     TaskRequestBody,
     TaskStepsListResponse,
 )
 from .workspace import LocalWorkspace, Workspace
-from .errors import *

@@ -3,7 +3,7 @@ import pathlib
 import click
 
 DEFAULT_SETTINGS_FILE = str(
-    pathlib.Path("~/start-gpt/default_agent_settings.yml").expanduser()
+    pathlib.Path("~/auto-gpt/default_agent_settings.yml").expanduser()
 )
 
 

@@ -1,5 +1,8 @@
 """Commands to execute code"""
 
+COMMAND_CATEGORY = "execute_code"
+COMMAND_CATEGORY_TITLE = "Execute Code"
+
 import logging
 import os
 import subprocess
@@ -7,7 +10,7 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 import docker
-from docker.errors import DockerException, ImageNotFound, NotFound
+from docker.errors import DockerException, ImageNotFound
 from docker.models.containers import Container as DockerContainer
 
 from startgpt.agents.agent import Agent
@@ -19,13 +22,8 @@ from startgpt.agents.utils.exceptions import (
 )
 from startgpt.command_decorator import command
 from startgpt.config import Config
-from startgpt.core.utils.json_schema import JSONSchema
 
 from .decorators import sanitize_path_arg
-
-COMMAND_CATEGORY = "execute_code"
-COMMAND_CATEGORY_TITLE = "Execute Code"
-
 
 logger = logging.getLogger(__name__)
 
@@ -38,26 +36,23 @@ DENYLIST_CONTROL = "denylist"
     "Executes the given Python code inside a single-use Docker container"
     " with access to your workspace folder",
     {
-        "code": JSONSchema(
-            type=JSONSchema.Type.STRING,
-            description="The Python code to run",
-            required=True,
-        ),
+        "code": {
+            "type": "string",
+            "description": "The Python code to run",
+            "required": True,
+        },
     },
 )
 def execute_python_code(code: str, agent: Agent) -> str:
-    """
-    Create and execute a Python file in a Docker container and return the STDOUT of the
-    executed code.
-
-    If the code generates any data that needs to be captured, use a print statement.
+    """Create and execute a Python file in a Docker container and return the STDOUT of the
+    executed code. If there is any data that needs to be captured use a print statement
 
     Args:
-        code (str): The Python code to run.
-        agent (Agent): The Agent executing the command.
+        code (str): The Python code to run
+        name (str): A name to be given to the Python file
 
     Returns:
-        str: The STDOUT captured from the code when it ran.
+        str: The STDOUT captured from the code when it ran
     """
 
     tmp_code_file = NamedTemporaryFile(
@@ -67,7 +62,7 @@ def execute_python_code(code: str, agent: Agent) -> str:
     tmp_code_file.flush()
 
     try:
-        return execute_python_file(tmp_code_file.name, agent)  # type: ignore
+        return execute_python_file(tmp_code_file.name, agent)
     except Exception as e:
         raise CommandExecutionError(*e.args)
     finally:
@@ -79,17 +74,16 @@ def execute_python_code(code: str, agent: Agent) -> str:
     "Execute an existing Python file inside a single-use Docker container"
     " with access to your workspace folder",
     {
-        "filename": JSONSchema(
-            type=JSONSchema.Type.STRING,
-            description="The name of the file to execute",
-            required=True,
-        ),
-        "args": JSONSchema(
-            type=JSONSchema.Type.ARRAY,
-            description="The (command line) arguments to pass to the script",
-            required=False,
-            items=JSONSchema(type=JSONSchema.Type.STRING),
-        ),
+        "filename": {
+            "type": "string",
+            "description": "The name of te file to execute",
+            "required": True,
+        },
+        "args": {
+            "type": "list[str]",
+            "description": "The (command line) arguments to pass to the script",
+            "required": False,
+        },
     },
 )
 @sanitize_path_arg("filename")
@@ -106,8 +100,7 @@ def execute_python_file(
         str: The output of the file
     """
     logger.info(
-        f"Executing python file '{filename}' "
-        f"in working directory '{agent.workspace.root}'"
+        f"Executing python file '{filename}' in working directory '{agent.config.workspace_path}'"
     )
 
     if isinstance(args, str):
@@ -118,16 +111,14 @@ def execute_python_file(
 
     file_path = filename
     if not file_path.is_file():
-        # Mimic the response that you get from the command line to make it
-        # intuitively understandable for the LLM
+        # Mimic the response that you get from the command line so that it's easier to identify
         raise FileNotFoundError(
             f"python: can't open file '{filename}': [Errno 2] No such file or directory"
         )
 
     if we_are_running_in_a_docker_container():
         logger.debug(
-            "StartGPT is running in a Docker container; "
-            f"executing {file_path} directly..."
+            f"Start-GPT is running in a Docker container; executing {file_path} directly..."
         )
         result = subprocess.run(
             ["python", "-B", str(file_path)] + args,
@@ -140,86 +131,63 @@ def execute_python_file(
         else:
             raise CodeExecutionError(result.stderr)
 
-    logger.debug("StartGPT is not running in a Docker container")
+    logger.debug("Start-GPT is not running in a Docker container")
     try:
-        assert agent.state.agent_id, "Need Agent ID to attach Docker container"
-
         client = docker.from_env()
         # You can replace this with the desired Python image/version
         # You can find available Python images on Docker Hub:
         # https://hub.docker.com/_/python
         image_name = "python:3-alpine"
-        container_is_fresh = False
-        container_name = f"{agent.state.agent_id}_sandbox"
         try:
-            container: DockerContainer = client.containers.get(
-                container_name
-            )  # type: ignore
-        except NotFound:
-            try:
-                client.images.get(image_name)
-                logger.debug(f"Image '{image_name}' found locally")
-            except ImageNotFound:
-                logger.info(
-                    f"Image '{image_name}' not found locally,"
-                    " pulling from Docker Hub..."
-                )
-                # Use the low-level API to stream the pull response
-                low_level_client = docker.APIClient()
-                for line in low_level_client.pull(image_name, stream=True, decode=True):
-                    # Print the status and progress, if available
-                    status = line.get("status")
-                    progress = line.get("progress")
-                    if status and progress:
-                        logger.info(f"{status}: {progress}")
-                    elif status:
-                        logger.info(status)
+            client.images.get(image_name)
+            logger.debug(f"Image '{image_name}' found locally")
+        except ImageNotFound:
+            logger.info(
+                f"Image '{image_name}' not found locally, pulling from Docker Hub..."
+            )
+            # Use the low-level API to stream the pull response
+            low_level_client = docker.APIClient()
+            for line in low_level_client.pull(image_name, stream=True, decode=True):
+                # Print the status and progress, if available
+                status = line.get("status")
+                progress = line.get("progress")
+                if status and progress:
+                    logger.info(f"{status}: {progress}")
+                elif status:
+                    logger.info(status)
 
-            logger.debug(f"Creating new {image_name} container...")
-            container: DockerContainer = client.containers.run(
-                image_name,
-                ["sleep", "60"],  # Max 60 seconds to prevent permanent hangs
-                volumes={
-                    str(agent.workspace.root): {
-                        "bind": "/workspace",
-                        "mode": "rw",
-                    }
-                },
-                working_dir="/workspace",
-                stderr=True,
-                stdout=True,
-                detach=True,
-                name=container_name,
-            )  # type: ignore
-            container_is_fresh = True
-
-        if not container.status == "running":
-            container.start()
-        elif not container_is_fresh:
-            container.restart()
-
-        logger.debug(f"Running {file_path} in container {container.name}...")
-        exec_result = container.exec_run(
+        logger.debug(f"Running {file_path} in a {image_name} container...")
+        container: DockerContainer = client.containers.run(
+            image_name,
             [
                 "python",
                 "-B",
                 file_path.relative_to(agent.workspace.root).as_posix(),
-            ]
-            + args,
+            ] + args,
+            volumes={
+                str(agent.workspace.root): {
+                    "bind": "/workspace",
+                    "mode": "rw",
+                }
+            },
+            working_dir="/workspace",
             stderr=True,
             stdout=True,
-        )
+            detach=True,
+        )  # type: ignore
 
-        if exec_result.exit_code != 0:
-            raise CodeExecutionError(exec_result.output.decode("utf-8"))
+        container.wait()
+        logs = container.logs().decode("utf-8")
+        container.remove()
 
-        return exec_result.output.decode("utf-8")
+        # print(f"Execution complete. Output: {output}")
+        # print(f"Logs: {logs}")
+
+        return logs
 
     except DockerException as e:
-        logger.warning(
-            "Could not run the script in a container. "
-            "If you haven't already, please install Docker: "
-            "https://docs.docker.com/get-docker/"
+        logger.warn(
+            "Could not run the script in a container. If you haven't already, please install Docker https://docs.docker.com/get-docker/"
         )
         raise CommandExecutionError(f"Could not run the script in a container: {e}")
 
@@ -249,11 +217,11 @@ def validate_command(command: str, config: Config) -> bool:
     "execute_shell",
     "Execute a Shell Command, non-interactive commands only",
     {
-        "command_line": JSONSchema(
-            type=JSONSchema.Type.STRING,
-            description="The command line to execute",
-            required=True,
-        )
+        "command_line": {
+            "type": "string",
+            "description": "The command line to execute",
+            "required": True,
+        }
     },
     enabled=lambda config: config.execute_local_commands,
     disabled_reason="You are not allowed to run local shell commands. To execute"
@@ -269,7 +237,7 @@ def execute_shell(command_line: str, agent: Agent) -> str:
     Returns:
         str: The output of the command
     """
-    if not validate_command(command_line, agent.legacy_config):
+    if not validate_command(command_line, agent.config):
         logger.info(f"Command '{command_line}' not allowed")
         raise OperationNotAllowedError("This shell command is not allowed.")
 
@@ -295,11 +263,11 @@ def execute_shell(command_line: str, agent: Agent) -> str:
     "execute_shell_popen",
     "Execute a Shell Command, non-interactive commands only",
     {
-        "command_line": JSONSchema(
-            type=JSONSchema.Type.STRING,
-            description="The command line to execute",
-            required=True,
-        )
+        "command_line": {
+            "type": "string",
+            "description": "The command line to execute",
+            "required": True,
+        }
     },
     lambda config: config.execute_local_commands,
     "You are not allowed to run local shell commands. To execute"
@@ -316,7 +284,7 @@ def execute_shell_popen(command_line: str, agent: Agent) -> str:
     Returns:
         str: Description of the fact that the process started and its id
     """
-    if not validate_command(command_line, agent.legacy_config):
+    if not validate_command(command_line, agent.config):
         logger.info(f"Command '{command_line}' not allowed")
         raise OperationNotAllowedError("This shell command is not allowed.")
 

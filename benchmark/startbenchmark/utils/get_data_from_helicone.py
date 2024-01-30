@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 from typing import Optional
 
@@ -7,8 +6,6 @@ import requests
 
 from startbenchmark.__main__ import BENCHMARK_START_TIME
 from startbenchmark.agent_interface import HELICONE_GRAPHQL_LOGS
-
-logger = logging.getLogger(__name__)
 
 
 def get_data_from_helicone(challenge: str) -> Optional[float]:
@@ -41,8 +38,8 @@ query ExampleQuery($properties: [PropertyFilter!]){
         ]
     }
     if HELICONE_GRAPHQL_LOGS:
-        logger.debug(f"Executing Helicone query:\n{query.strip()}")
-        logger.debug(f"Query variables:\n{json.dumps(variables, indent=4)}")
+        print(query)
+        print(json.dumps(variables, indent=4))
 
     operation_name = "ExampleQuery"
 
@@ -62,22 +59,24 @@ query ExampleQuery($properties: [PropertyFilter!]){
 
         data = response.json()
     except requests.HTTPError as http_err:
-        logger.error(f"Helicone returned an HTTP error: {http_err}")
-        return None
+        print(f"HTTP error occurred: {http_err}")
+        return None  # Re-raise the exception to stop execution
     except json.JSONDecodeError:
-        raw_response = response.text  # type: ignore
-        logger.error(
-            f"Helicone returned an invalid JSON response: '''{raw_response}'''"
-        )
+        print(f"Invalid JSON response: {response.text if response else 'No response'}")
         return None
     except Exception as err:
-        logger.error(f"Error while trying to get data from Helicone: {err}")
+        print(f"Other error occurred: {err}")
         return None
 
-    if data is None or data.get("data") is None:
-        logger.error("Invalid response received from Helicone: no data")
-        logger.error(f"Offending response: {response}")
+    try:
+        if data is None or data.get("data") is None:
+            print("Invalid response received from server: no data")
+            return None
+        return (
+            data.get("data", {})
+            .get("aggregatedHeliconeRequest", {})
+            .get("costUSD", None)
+        )
+    except Exception as err:
+        print(f"Error occurred while parsing response: {err}")
         return None
-    return (
-        data.get("data", {}).get("aggregatedHeliconeRequest", {}).get("costUSD", None)
-    )

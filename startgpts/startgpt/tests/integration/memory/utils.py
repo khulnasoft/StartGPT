@@ -5,7 +5,7 @@ from pytest_mock import MockerFixture
 import startgpt.memory.vector.memory_item as vector_memory_item
 import startgpt.memory.vector.providers.base as memory_provider_base
 from startgpt.config.config import Config
-from startgpt.core.resource.model_providers import OPEN_AI_EMBEDDING_MODELS
+from startgpt.llm.providers.openai import OPEN_AI_EMBEDDING_MODELS
 from startgpt.memory.vector import get_memory
 from startgpt.memory.vector.utils import Embedding
 
@@ -21,16 +21,16 @@ def mock_embedding(embedding_dimension: int) -> Embedding:
 
 
 @pytest.fixture
-def mock_get_embedding(mocker: MockerFixture, mock_embedding: Embedding):
+def mock_get_embedding(mocker: MockerFixture, embedding_dimension: int):
     mocker.patch.object(
         vector_memory_item,
         "get_embedding",
-        return_value=mock_embedding,
+        return_value=[0.0255] * embedding_dimension,
     )
     mocker.patch.object(
         memory_provider_base,
         "get_embedding",
-        return_value=mock_embedding,
+        return_value=[0.0255] * embedding_dimension,
     )
 
 

@@ -262,7 +262,7 @@
         }
     },
     "config": {
-        "workspace": "startgpt/workspace/start_gpt_workspace",
+        "workspace": "startgpt/workspace/auto_gpt_workspace",
         "entry_path": "startbenchmark.benchmarks"
     }
 }

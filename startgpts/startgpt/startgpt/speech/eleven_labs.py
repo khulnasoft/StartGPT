@@ -3,12 +3,13 @@ from __future__ import annotations
 
 import logging
 import os
+from typing import TYPE_CHECKING
 
 import requests
 from playsound import playsound
 
-from startgpt.core.configuration import SystemConfiguration, UserConfigurable
-
+if TYPE_CHECKING:
+    from startgpt.config import Config
 from .base import VoiceBase
 
 logger = logging.getLogger(__name__)
@@ -16,15 +17,10 @@ logger = logging.getLogger(__name__)
 PLACEHOLDERS = {"your-voice-id"}
 
 
-class ElevenLabsConfig(SystemConfiguration):
-    api_key: str = UserConfigurable(from_env="ELEVENLABS_API_KEY")
-    voice_id: str = UserConfigurable(from_env="ELEVENLABS_VOICE_ID")
-
-
 class ElevenLabsSpeech(VoiceBase):
     """ElevenLabs speech class"""
 
-    def _setup(self, config: ElevenLabsConfig) -> None:
+    def _setup(self, config: Config) -> None:
         """Set up the voices, API key, etc.
 
         Returns:
@@ -45,12 +41,12 @@ class ElevenLabsSpeech(VoiceBase):
         }
         self._headers = {
             "Content-Type": "application/json",
-            "xi-api-key": config.api_key,
+            "xi-api-key": config.elevenlabs_api_key,
         }
         self._voices = default_voices.copy()
-        if config.voice_id in voice_options:
-            config.voice_id = voice_options[config.voice_id]
-        self._use_custom_voice(config.voice_id, 0)
+        if config.elevenlabs_voice_id in voice_options:
+            config.elevenlabs_voice_id = voice_options[config.elevenlabs_voice_id]
+        self._use_custom_voice(config.elevenlabs_voice_id, 0)
 
     def _use_custom_voice(self, voice, voice_index) -> None:
         """Use a custom voice if provided and not a placeholder
@@ -88,6 +84,6 @@ class ElevenLabsSpeech(VoiceBase):
             os.remove("speech.mpeg")
             return True
         else:
-            logger.warning("Request failed with status code:", response.status_code)
+            logger.warn("Request failed with status code:", response.status_code)
             logger.info("Response content:", response.content)
             return False

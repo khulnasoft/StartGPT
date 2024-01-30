@@ -1,5 +1,5 @@
-.github/workflows/  @KhulnaSoft/maintainers
+.github/workflows/  @khulnasoft/maintainers
 startgpts/startgpt/   @Pwuts
-benchmark/  @KhulnaSoft/benchmarkers
+benchmark/  @khulnasoft/benchmarkers
 forge/      @Swiftyos
 frontend/   @hunteraraujo

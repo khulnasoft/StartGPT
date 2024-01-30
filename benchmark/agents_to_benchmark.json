@@ -1,6 +1,6 @@
 {
     "Start-GPT": {
-        "url": "https://github.com/KhulnaSoft/StartGPT",
+        "url": "https://github.com/khulnasoft/Start-GPT",
         "branch": "master",
         "commit": "3a2d08fb415071cc94dd6fcee24cfbdd1fb487dd"
     },
@@ -30,7 +30,7 @@
         "commit": "16f1b9519fea5543695203be0262a1b41c77cbba"
     },
     "beebot": {
-        "url": "https://github.com/AutoPackAI/beebot.git",
+        "url": "https://github.com/StartPackAI/beebot.git",
         "branch": "main",
         "commit": "59d4e93c133612a0319d135bb0eb08bbcead9fa2"
     },

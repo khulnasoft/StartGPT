@@ -30,8 +30,8 @@ startgpt.add_command(make_settings)
     type=click.INT,
 )
 def server(port: int) -> None:
-    """Run the StartGPT runner httpserver."""
-    click.echo("Running StartGPT runner httpserver...")
+    """Run the Start-GPT runner httpserver."""
+    click.echo("Running Start-GPT runner httpserver...")
     AgentProtocol.handle_task(task_handler).start(port)
 
 
@@ -43,15 +43,13 @@ def server(port: int) -> None:
 )
 @coroutine
 async def client(settings_file) -> None:
-    """Run the StartGPT runner client."""
+    """Run the Start-GPT runner client."""
     settings_file = pathlib.Path(settings_file)
     settings = {}
     if settings_file.exists():
         settings = yaml.safe_load(settings_file.read_text())
 
-    settings
-    # TODO: Call the API server with the settings and task,
-    #   using the Python API client for agent protocol.
+    # TODO: Call the API server with the settings and task, using the Python API client for agent protocol.
 
 
 if __name__ == "__main__":

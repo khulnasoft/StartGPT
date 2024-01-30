@@ -34,7 +34,7 @@ class SimpleWorkspace(Configurable, Workspace):
         description="The workspace is the root directory for all agent activity.",
         configuration=WorkspaceConfiguration(
             root="",
-            parent="~/start-gpt/agents",
+            parent="~/auto-gpt/agents",
             restrict_to_workspace=True,
         ),
     )
@@ -136,8 +136,7 @@ class SimpleWorkspace(Configurable, Workspace):
 
         if relative_path.is_absolute():
             raise ValueError(
-                f"Attempted to access absolute path '{relative_path}' "
-                f"in workspace '{root}'."
+                f"Attempted to access absolute path '{relative_path}' in workspace '{root}'."
             )
         full_path = root.joinpath(relative_path).resolve()
 

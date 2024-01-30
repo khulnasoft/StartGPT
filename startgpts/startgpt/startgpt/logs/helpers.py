@@ -53,9 +53,10 @@ def print_attribute(
 def request_user_double_check(additionalText: Optional[str] = None) -> None:
     if not additionalText:
         additionalText = (
-            "Please ensure you've setup and configured everything correctly. "
-            "Read https://docs.agpt.co/startgpt/setup/ to double check. "
-            "You can also create a github issue or join the discord and ask there!"
+            "Please ensure you've setup and configured everything"
+            " correctly. Read https://github.com/Torantulino/Start-GPT#readme to "
+            "double check. You can also create a github issue or join the discord"
+            " and ask there!"
         )
 
     user_friendly_output(

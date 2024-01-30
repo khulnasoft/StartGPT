@@ -10,18 +10,18 @@ from startgpt.core.configuration import (
     SystemSettings,
     UserConfigurable,
 )
-from startgpt.core.planning import prompt_strategies
-from startgpt.core.planning.schema import Task
-from startgpt.core.prompting import PromptStrategy
-from startgpt.core.prompting.schema import LanguageModelClassification
+from startgpt.core.planning import strategies
+from startgpt.core.planning.base import PromptStrategy
+from startgpt.core.planning.schema import (
+    LanguageModelClassification,
+    LanguageModelResponse,
+    Task,
+)
 from startgpt.core.resource.model_providers import (
-    ChatModelProvider,
-    ChatModelResponse,
-    CompletionModelFunction,
+    LanguageModelProvider,
     ModelProviderName,
     OpenAIModelName,
 )
-from startgpt.core.runner.client_lib.logging.helpers import dump_prompt
 from startgpt.core.workspace import Workspace
 
 
@@ -34,9 +34,9 @@ class LanguageModelConfiguration(SystemConfiguration):
 
 
 class PromptStrategiesConfiguration(SystemConfiguration):
-    name_and_goals: prompt_strategies.NameAndGoalsConfiguration
-    initial_plan: prompt_strategies.InitialPlanConfiguration
-    next_ability: prompt_strategies.NextAbilityConfiguration
+    name_and_goals: strategies.NameAndGoalsConfiguration
+    initial_plan: strategies.InitialPlanConfiguration
+    next_ability: strategies.NextAbilityConfiguration
 
 
 class PlannerConfiguration(SystemConfiguration):
@@ -53,17 +53,11 @@ class PlannerSettings(SystemSettings):
 
 
 class SimplePlanner(Configurable):
-    """
-    Manages the agent's planning and goal-setting
-    by constructing language model prompts.
-    """
+    """Manages the agent's planning and goal-setting by constructing language model prompts."""
 
     default_settings = PlannerSettings(
         name="planner",
-        description=(
-            "Manages the agent's planning and goal-setting "
-            "by constructing language model prompts."
-        ),
+        description="Manages the agent's planning and goal-setting by constructing language model prompts.",
         configuration=PlannerConfiguration(
             models={
                 LanguageModelClassification.FAST_MODEL: LanguageModelConfiguration(
@@ -78,9 +72,9 @@ class SimplePlanner(Configurable):
                 ),
             },
             prompt_strategies=PromptStrategiesConfiguration(
-                name_and_goals=prompt_strategies.NameAndGoals.default_configuration,
-                initial_plan=prompt_strategies.InitialPlan.default_configuration,
-                next_ability=prompt_strategies.NextAbility.default_configuration,
+                name_and_goals=strategies.NameAndGoals.default_configuration,
+                initial_plan=strategies.InitialPlan.default_configuration,
+                next_ability=strategies.NextAbility.default_configuration,
             ),
         ),
     )
@@ -89,30 +83,30 @@ class SimplePlanner(Configurable):
         self,
         settings: PlannerSettings,
         logger: logging.Logger,
-        model_providers: dict[ModelProviderName, ChatModelProvider],
+        model_providers: dict[ModelProviderName, LanguageModelProvider],
         workspace: Workspace = None,  # Workspace is not available during bootstrapping.
     ) -> None:
         self._configuration = settings.configuration
         self._logger = logger
         self._workspace = workspace
 
-        self._providers: dict[LanguageModelClassification, ChatModelProvider] = {}
+        self._providers: dict[LanguageModelClassification, LanguageModelProvider] = {}
         for model, model_config in self._configuration.models.items():
             self._providers[model] = model_providers[model_config.provider_name]
 
         self._prompt_strategies = {
-            "name_and_goals": prompt_strategies.NameAndGoals(
+            "name_and_goals": strategies.NameAndGoals(
                 **self._configuration.prompt_strategies.name_and_goals.dict()
             ),
-            "initial_plan": prompt_strategies.InitialPlan(
+            "initial_plan": strategies.InitialPlan(
                 **self._configuration.prompt_strategies.initial_plan.dict()
             ),
-            "next_ability": prompt_strategies.NextAbility(
+            "next_ability": strategies.NextAbility(
                 **self._configuration.prompt_strategies.next_ability.dict()
             ),
         }
 
-    async def decide_name_and_goals(self, user_objective: str) -> ChatModelResponse:
+    async def decide_name_and_goals(self, user_objective: str) -> LanguageModelResponse:
         return await self.chat_with_model(
             self._prompt_strategies["name_and_goals"],
             user_objective=user_objective,
@@ -124,7 +118,7 @@ class SimplePlanner(Configurable):
         agent_role: str,
         agent_goals: list[str],
         abilities: list[str],
-    ) -> ChatModelResponse:
+    ) -> LanguageModelResponse:
         return await self.chat_with_model(
             self._prompt_strategies["initial_plan"],
             agent_name=agent_name,
@@ -136,19 +130,19 @@ class SimplePlanner(Configurable):
     async def determine_next_ability(
         self,
         task: Task,
-        ability_specs: list[CompletionModelFunction],
+        ability_schema: list[dict],
     ):
         return await self.chat_with_model(
             self._prompt_strategies["next_ability"],
             task=task,
-            ability_specs=ability_specs,
+            ability_schema=ability_schema,
         )
 
     async def chat_with_model(
         self,
         prompt_strategy: PromptStrategy,
         **kwargs,
-    ) -> ChatModelResponse:
+    ) -> LanguageModelResponse:
         model_classification = prompt_strategy.model_classification
         model_configuration = self._configuration.models[model_classification].dict()
         self._logger.debug(f"Using model configuration: {model_configuration}")
@@ -159,14 +153,14 @@ class SimplePlanner(Configurable):
         template_kwargs.update(kwargs)
         prompt = prompt_strategy.build_prompt(**template_kwargs)
 
-        self._logger.debug(f"Using prompt:\n{dump_prompt(prompt)}\n")
-        response = await provider.create_chat_completion(
+        self._logger.debug(f"Using prompt:\n{prompt}\n\n")
+        response = await provider.create_language_completion(
             model_prompt=prompt.messages,
             functions=prompt.functions,
             **model_configuration,
             completion_parser=prompt_strategy.parse_response_content,
         )
-        return response
+        return LanguageModelResponse.parse_obj(response.dict())
 
     def _make_template_kwargs_for_strategy(self, strategy: PromptStrategy):
         provider = self._providers[strategy.model_classification]

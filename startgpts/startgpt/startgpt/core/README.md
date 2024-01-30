@@ -1,48 +1,50 @@
-# StartGPT Core
+# Start-GPT Core
 
 This subpackage contains the ongoing work for the 
-[StartGPT Re-arch](https://github.com/KhulnaSoft/StartGPT/issues/4770). It is 
+[Start-GPT Re-arch](https://github.com/khulnasoft/Start-GPT/issues/4770). It is 
 a work in progress and is not yet feature complete.  In particular, it does not yet
-have many of the StartGPT commands implemented and is pending ongoing work to 
-[re-incorporate vector-based memory and knowledge retrieval](https://github.com/KhulnaSoft/StartGPT/issues/3536).
+have many of the Start-GPT commands implemented and is pending ongoing work to 
+[re-incorporate vector-based memory and knowledge retrieval](https://github.com/khulnasoft/Start-GPT/issues/3536).
 
 ## [Overview](ARCHITECTURE_NOTES.md)
 
-The StartGPT Re-arch is a re-implementation of the StartGPT agent that is designed to be more modular,
-more extensible, and more maintainable than the original StartGPT agent.  It is also designed to be
+The Start-GPT Re-arch is a re-implementation of the Start-GPT agent that is designed to be more modular,
+more extensible, and more maintainable than the original Start-GPT agent.  It is also designed to be
 more accessible to new developers and to be easier to contribute to. The re-arch is a work in progress
 and is not yet feature complete.  It is also not yet ready for production use.
 
 ## Running the Re-arch Code
 
-1. Open the `startgpt/core` folder in a terminal
+There are two client applications for Start-GPT included. 
 
-2. Set up a dedicated virtual environment:  
-   `python -m venv .venv`
+Unlike the main version of Start-GPT, the re-arch requires you to actually install Start-GPT in your python 
+environment to run this application.  To do so, run
 
-3. Install everything needed to run the project:  
-   `poetry install`
+```
+pip install -e REPOSITORY_ROOT
+```
 
+where `REPOSITORY_ROOT` is the root of the Start-GPT repository on your machine. The `REPOSITORY_ROOT` 
+is the directory that contains the `setup.py` file and is the main, top-level directory of the repository 
+when you clone it.
 
 ## CLI Application
-
-There are two client applications for StartGPT included.
 
 :star2: **This is the reference application I'm working with for now** :star2: 
 
 The first app is a straight CLI application.  I have not done anything yet to port all the friendly display stuff from the ~~`logger.typewriter_log`~~`user_friendly_output` logic.  
 
-- [Entry Point](https://github.com/KhulnaSoft/StartGPT/blob/master/startgpts/startgpt/startgpt/core/runner/cli_app/cli.py)
-- [Client Application](https://github.com/KhulnaSoft/StartGPT/blob/master/startgpts/startgpt/startgpt/core/runner/cli_app/main.py)
+- [Entry Point](https://github.com/khulnasoft/Start-GPT/blob/master/startgpt/core/runner/cli_app/cli.py)
+- [Client Application](https://github.com/khulnasoft/Start-GPT/blob/master/startgpt/core/runner/cli_app/main.py)
 
 You'll then need a settings file.  Run
 
 ```
-poetry run cli make-settings
-```
+ python REPOSITORY_ROOT/startgpt/core/runner/cli_app/cli.py make-settings
+ ```
 
 This will write a file called `default_agent_settings.yaml` with all the user-modifiable 
-configuration keys to `~/start-gpt/default_agent_settings.yml` and make the `start-gpt` directory 
+configuration keys to `~/auto-gpt/default_agent_settings.yml` and make the `auto-gpt` directory 
 in your user directory if it doesn't exist). Your user directory is located in different places 
 depending on your operating system:
 
@@ -53,10 +55,10 @@ depending on your operating system:
 At a bare minimum, you'll need to set `openai.credentials.api_key` to your OpenAI API Key to run 
 the model.
 
-You can then run StartGPT with 
+You can then run Start-GPT with 
 
 ```
-poetry run cli run
+python REPOSITORY_ROOT/startgpt/core/runner/cli_app/cli.py run
 ```
 
 to launch the interaction loop.
@@ -71,14 +73,14 @@ The second app is still a CLI, but it sets up a local webserver that the client 
 rather than invoking calls to the Agent library code directly.  This application is essentially a sketch 
 at this point as the folks who were driving it have had less time (and likely not enough clarity) to proceed.
 
-- [Entry Point](https://github.com/KhulnaSoft/StartGPT/blob/master/startgpts/startgpt/startgpt/core/runner/cli_web_app/cli.py)
-- [Client Application](https://github.com/KhulnaSoft/StartGPT/blob/master/startgpts/startgpt/startgpt/core/runner/cli_web_app/client/client.py)
-- [Server API](https://github.com/KhulnaSoft/StartGPT/blob/master/startgpts/startgpt/startgpt/core/runner/cli_web_app/server/api.py)
+- [Entry Point](https://github.com/khulnasoft/Start-GPT/blob/master/startgpt/core/runner/cli_web_app/cli.py)
+- [Client Application](https://github.com/khulnasoft/Start-GPT/blob/master/startgpt/core/runner/cli_web_app/client/client.py)
+- [Server API](https://github.com/khulnasoft/Start-GPT/blob/master/startgpt/core/runner/cli_web_app/server/api.py)
 
 To run, you still need to generate a default configuration.  You can do 
 
 ```
-poetry run cli-web make-settings
+python REPOSITORY_ROOT/startgpt/core/runner/cli_web_app/cli.py make-settings
 ```
 
 It invokes the same command as the bare CLI app, so follow the instructions above about setting your API key.
@@ -86,7 +88,7 @@ It invokes the same command as the bare CLI app, so follow the instructions abov
 To run, do 
 
 ```
-poetry run cli-web client
+python REPOSITORY_ROOT/startgpt/core/runner/cli_web_app/cli.py client
 ```
 
 This will launch a webserver and then start the client cli application to communicate with it.

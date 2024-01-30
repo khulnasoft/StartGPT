@@ -6,6 +6,7 @@ from typing import Any, Dict, Union
 from .config import LOG_DIR
 
 DEFAULT_PREFIX = "agent"
+FULL_MESSAGE_HISTORY_FILE_NAME = "full_message_history.json"
 CURRENT_CONTEXT_FILE_NAME = "current_context.json"
 NEXT_ACTION_FILE_NAME = "next_action.json"
 PROMPT_SUMMARY_FILE_NAME = "prompt_summary.json"
@@ -25,7 +26,7 @@ class LogCycleHandler:
 
     def create_outer_directory(self, ai_name: str, created_at: str) -> Path:
         if os.environ.get("OVERWRITE_DEBUG") == "1":
-            outer_folder_name = "start_gpt"
+            outer_folder_name = "auto_gpt"
         else:
             ai_name_short = self.get_agent_short_name(ai_name)
             outer_folder_name = f"{created_at}_{ai_name_short}"

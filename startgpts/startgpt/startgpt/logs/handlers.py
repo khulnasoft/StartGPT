@@ -11,7 +11,7 @@ from startgpt.logs.utils import remove_color_codes
 from startgpt.speech import TextToSpeechProvider
 
 if TYPE_CHECKING:
-    from startgpt.speech import TTSConfig
+    from startgpt.config import Config
 
 
 class TypingConsoleHandler(logging.StreamHandler):
@@ -50,7 +50,7 @@ class TypingConsoleHandler(logging.StreamHandler):
 class TTSHandler(logging.Handler):
     """Output messages to the configured TTS engine (if any)"""
 
-    def __init__(self, config: TTSConfig):
+    def __init__(self, config: Config):
         super().__init__()
         self.config = config
         self.tts_provider = TextToSpeechProvider(config)

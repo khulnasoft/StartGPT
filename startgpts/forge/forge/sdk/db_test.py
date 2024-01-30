@@ -14,7 +14,7 @@ from forge.sdk.db import (
     convert_to_task,
 )
 from forge.sdk.errors import NotFoundError as DataNotFoundError
-from startgpts.forge.forge.sdk.model import *
+from forge.sdk.schema import *
 
 
 @pytest.mark.asyncio

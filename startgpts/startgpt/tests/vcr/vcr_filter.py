@@ -4,7 +4,6 @@ import os
 import re
 from io import BytesIO
 from typing import Any, Dict, List
-from urllib.parse import urlparse, urlunparse
 
 from vcr.request import Request
 
@@ -50,7 +49,7 @@ def freeze_request_body(json_body: str | bytes) -> bytes:
     try:
         body = json.loads(json_body)
     except ValueError:
-        return json_body if type(json_body) is bytes else json_body.encode()
+        return json_body if type(json_body) == bytes else json_body.encode()
 
     if "messages" not in body:
         return json.dumps(body, sort_keys=True).encode()
@@ -97,6 +96,9 @@ def before_record_request(request: Request) -> Request | None:
 
     filtered_request_without_dynamic_data = freeze_request(filtered_request)
     return filtered_request_without_dynamic_data
+
+
+from urllib.parse import urlparse, urlunparse
 
 
 def replace_request_hostname(

@@ -8,20 +8,21 @@ from unittest import mock
 from unittest.mock import patch
 
 import pytest
-from pydantic import SecretStr
 
-from startgpt.app.configurator import GPT_3_MODEL, GPT_4_MODEL, apply_overrides_to_config
+from startgpt.app.configurator import GPT_3_MODEL, GPT_4_MODEL, create_config
 from startgpt.config import Config, ConfigBuilder
+from startgpt.workspace.workspace import Workspace
 
 
 def test_initial_values(config: Config) -> None:
     """
     Test if the initial values of the config class attributes are set correctly.
     """
-    assert config.continuous_mode is False
-    assert config.tts_config.speak_mode is False
+    assert config.debug_mode == False
+    assert config.continuous_mode == False
+    assert config.speak_mode == False
     assert config.fast_llm == "gpt-3.5-turbo-16k"
-    assert config.smart_llm.startswith("gpt-4")
+    assert config.smart_llm == "gpt-4-0314"
 
 
 def test_set_continuous_mode(config: Config) -> None:
@@ -32,7 +33,7 @@ def test_set_continuous_mode(config: Config) -> None:
     continuous_mode = config.continuous_mode
 
     config.continuous_mode = True
-    assert config.continuous_mode is True
+    assert config.continuous_mode == True
 
     # Reset continuous mode
     config.continuous_mode = continuous_mode
@@ -43,13 +44,13 @@ def test_set_speak_mode(config: Config) -> None:
     Test if the set_speak_mode() method updates the speak_mode attribute.
     """
     # Store speak mode to reset it after the test
-    speak_mode = config.tts_config.speak_mode
+    speak_mode = config.speak_mode
 
-    config.tts_config.speak_mode = True
-    assert config.tts_config.speak_mode is True
+    config.speak_mode = True
+    assert config.speak_mode == True
 
     # Reset speak mode
-    config.tts_config.speak_mode = speak_mode
+    config.speak_mode = speak_mode
 
 
 def test_set_fast_llm(config: Config) -> None:
@@ -80,10 +81,24 @@ def test_set_smart_llm(config: Config) -> None:
     config.smart_llm = smart_llm
 
 
+def test_set_debug_mode(config: Config) -> None:
+    """
+    Test if the set_debug_mode() method updates the debug_mode attribute.
+    """
+    # Store debug mode to reset it after the test
+    debug_mode = config.debug_mode
+
+    config.debug_mode = True
+    assert config.debug_mode == True
+
+    # Reset debug mode
+    config.debug_mode = debug_mode
+
+
 @patch("openai.Model.list")
 def test_smart_and_fast_llms_set_to_gpt4(mock_list_models: Any, config: Config) -> None:
     """
-    Test if models update to gpt-3.5-turbo if gpt-4 is not available.
+    Test if models update to gpt-3.5-turbo if both are set to gpt-4.
     """
     fast_llm = config.fast_llm
     smart_llm = config.smart_llm
@@ -93,10 +108,21 @@ def test_smart_and_fast_llms_set_to_gpt4(mock_list_models: Any, config: Config) 
 
     mock_list_models.return_value = {"data": [{"id": "gpt-3.5-turbo"}]}
 
-    apply_overrides_to_config(
+    create_config(
         config=config,
+        continuous=False,
+        continuous_limit=False,
+        ai_settings_file="",
+        prompt_settings_file="",
+        skip_reprompt=False,
+        speak=False,
+        debug=False,
         gpt3only=False,
         gpt4only=False,
+        memory_type="",
+        browser_name="",
+        allow_downloads=False,
+        skip_news=False,
     )
 
     assert config.fast_llm == "gpt-3.5-turbo"
@@ -107,81 +133,73 @@ def test_smart_and_fast_llms_set_to_gpt4(mock_list_models: Any, config: Config) 
     config.smart_llm = smart_llm
 
 
-def test_missing_azure_config(config: Config) -> None:
-    assert config.openai_credentials is not None
-
-    config_file = config.app_data_dir / "azure_config.yaml"
+def test_missing_azure_config(workspace: Workspace) -> None:
+    config_file = workspace.get_path("azure_config.yaml")
     with pytest.raises(FileNotFoundError):
-        config.openai_credentials.load_azure_config(config_file)
+        ConfigBuilder.load_azure_config(str(config_file))
 
     config_file.write_text("")
-    with pytest.raises(ValueError):
-        config.openai_credentials.load_azure_config(config_file)
+    azure_config = ConfigBuilder.load_azure_config(str(config_file))
 
-    assert config.openai_credentials.api_type != "azure"
-    assert config.openai_credentials.api_version == ""
-    assert config.openai_credentials.azure_model_to_deploy_id_map is None
+    assert azure_config["openai_api_type"] == "azure"
+    assert azure_config["openai_api_base"] == ""
+    assert azure_config["openai_api_version"] == "2023-03-15-preview"
+    assert azure_config["azure_model_to_deployment_id_map"] == {}
 
 
-def test_azure_config(config: Config) -> None:
-    config_file = config.app_data_dir / "azure_config.yaml"
-    config_file.write_text(
-        f"""
+def test_azure_config(config: Config, workspace: Workspace) -> None:
+    config_file = workspace.get_path("azure_config.yaml")
+    yaml_content = f"""
 azure_api_type: azure
 azure_api_base: https://dummy.openai.azure.com
 azure_api_version: 2023-06-01-preview
 azure_model_map:
-    {config.fast_llm}: FAST-LLM_ID
-    {config.smart_llm}: SMART-LLM_ID
-    {config.embedding_model}: embedding-deployment-id-for-azure
+    fast_llm_deployment_id: FAST-LLM_ID
+    smart_llm_deployment_id: SMART-LLM_ID
+    embedding_model_deployment_id: embedding-deployment-id-for-azure
 """
-    )
+    config_file.write_text(yaml_content)
 
     os.environ["USE_AZURE"] = "True"
     os.environ["AZURE_CONFIG_FILE"] = str(config_file)
-    config = ConfigBuilder.build_config_from_env(project_root=config.project_root)
+    config = ConfigBuilder.build_config_from_env(workspace.root.parent)
 
-    assert (credentials := config.openai_credentials) is not None
-    assert credentials.api_type == "azure"
-    assert credentials.api_base == SecretStr("https://dummy.openai.azure.com")
-    assert credentials.api_version == "2023-06-01-preview"
-    assert credentials.azure_model_to_deploy_id_map == {
-        config.fast_llm: "FAST-LLM_ID",
-        config.smart_llm: "SMART-LLM_ID",
-        config.embedding_model: "embedding-deployment-id-for-azure",
+    assert config.openai_api_type == "azure"
+    assert config.openai_api_base == "https://dummy.openai.azure.com"
+    assert config.openai_api_version == "2023-06-01-preview"
+    assert config.azure_model_to_deployment_id_map == {
+        "fast_llm_deployment_id": "FAST-LLM_ID",
+        "smart_llm_deployment_id": "SMART-LLM_ID",
+        "embedding_model_deployment_id": "embedding-deployment-id-for-azure",
     }
 
     fast_llm = config.fast_llm
     smart_llm = config.smart_llm
     assert (
-        credentials.get_api_access_kwargs(config.fast_llm)["deployment_id"]
-        == "FAST-LLM_ID"
+        config.get_azure_credentials(config.fast_llm)["deployment_id"] == "FAST-LLM_ID"
     )
     assert (
-        credentials.get_api_access_kwargs(config.smart_llm)["deployment_id"]
+        config.get_azure_credentials(config.smart_llm)["deployment_id"]
         == "SMART-LLM_ID"
     )
 
     # Emulate --gpt4only
     config.fast_llm = smart_llm
     assert (
-        credentials.get_api_access_kwargs(config.fast_llm)["deployment_id"]
-        == "SMART-LLM_ID"
+        config.get_azure_credentials(config.fast_llm)["deployment_id"] == "SMART-LLM_ID"
     )
     assert (
-        credentials.get_api_access_kwargs(config.smart_llm)["deployment_id"]
+        config.get_azure_credentials(config.smart_llm)["deployment_id"]
         == "SMART-LLM_ID"
     )
 
     # Emulate --gpt3only
     config.fast_llm = config.smart_llm = fast_llm
     assert (
-        credentials.get_api_access_kwargs(config.fast_llm)["deployment_id"]
-        == "FAST-LLM_ID"
+        config.get_azure_credentials(config.fast_llm)["deployment_id"] == "FAST-LLM_ID"
     )
     assert (
-        credentials.get_api_access_kwargs(config.smart_llm)["deployment_id"]
-        == "FAST-LLM_ID"
+        config.get_azure_credentials(config.smart_llm)["deployment_id"] == "FAST-LLM_ID"
     )
 
     del os.environ["USE_AZURE"]
@@ -191,9 +209,21 @@ azure_model_map:
 def test_create_config_gpt4only(config: Config) -> None:
     with mock.patch("startgpt.llm.api_manager.ApiManager.get_models") as mock_get_models:
         mock_get_models.return_value = [{"id": GPT_4_MODEL}]
-        apply_overrides_to_config(
+        create_config(
             config=config,
+            continuous=False,
+            continuous_limit=None,
+            ai_settings_file=None,
+            prompt_settings_file=None,
+            skip_reprompt=False,
+            speak=False,
+            debug=False,
+            gpt3only=False,
             gpt4only=True,
+            memory_type=None,
+            browser_name=None,
+            allow_downloads=False,
+            skip_news=False,
         )
         assert config.fast_llm == GPT_4_MODEL
         assert config.smart_llm == GPT_4_MODEL
@@ -202,9 +232,21 @@ def test_create_config_gpt4only(config: Config) -> None:
 def test_create_config_gpt3only(config: Config) -> None:
     with mock.patch("startgpt.llm.api_manager.ApiManager.get_models") as mock_get_models:
         mock_get_models.return_value = [{"id": GPT_3_MODEL}]
-        apply_overrides_to_config(
+        create_config(
             config=config,
+            continuous=False,
+            continuous_limit=None,
+            ai_settings_file=None,
+            prompt_settings_file=None,
+            skip_reprompt=False,
+            speak=False,
+            debug=False,
             gpt3only=True,
+            gpt4only=False,
+            memory_type=None,
+            browser_name=None,
+            allow_downloads=False,
+            skip_news=False,
         )
         assert config.fast_llm == GPT_3_MODEL
         assert config.smart_llm == GPT_3_MODEL

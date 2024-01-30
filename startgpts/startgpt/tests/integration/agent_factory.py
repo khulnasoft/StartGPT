@@ -1,7 +1,7 @@
 import pytest
 
-from startgpt.agents.agent import Agent, AgentConfiguration, AgentSettings
-from startgpt.config import AIProfile, Config
+from startgpt.agents import Agent
+from startgpt.config import AIConfig, Config
 from startgpt.memory.vector import get_memory
 from startgpt.models.command_registry import CommandRegistry
 
@@ -19,10 +19,10 @@ def memory_json_file(config: Config):
 
 
 @pytest.fixture
-def dummy_agent(config: Config, llm_provider, memory_json_file):
+def dummy_agent(config: Config, memory_json_file):
     command_registry = CommandRegistry()
 
-    ai_profile = AIProfile(
+    ai_config = AIConfig(
         ai_name="Dummy Agent",
         ai_role="Dummy Role",
         ai_goals=[
@@ -30,27 +30,12 @@ def dummy_agent(config: Config, llm_provider, memory_json_file):
         ],
     )
 
-    agent_prompt_config = Agent.default_settings.prompt_config.copy(deep=True)
-    agent_prompt_config.use_functions_api = config.openai_functions
-    agent_settings = AgentSettings(
-        name=Agent.default_settings.name,
-        description=Agent.default_settings.description,
-        ai_profile=ai_profile,
-        config=AgentConfiguration(
-            fast_llm=config.fast_llm,
-            smart_llm=config.smart_llm,
-            use_functions_api=config.openai_functions,
-            plugins=config.plugins,
-        ),
-        prompt_config=agent_prompt_config,
-        history=Agent.default_settings.history.copy(deep=True),
-    )
-
     agent = Agent(
-        settings=agent_settings,
-        llm_provider=llm_provider,
+        memory=memory_json_file,
         command_registry=command_registry,
-        legacy_config=config,
+        ai_config=ai_config,
+        config=config,
+        triggering_prompt="dummy triggering prompt",
     )
 
     return agent

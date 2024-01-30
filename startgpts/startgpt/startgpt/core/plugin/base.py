@@ -10,15 +10,15 @@ if TYPE_CHECKING:
     from startgpt.core.ability import Ability, AbilityRegistry
     from startgpt.core.memory import Memory
     from startgpt.core.resource.model_providers import (
-        ChatModelProvider,
         EmbeddingModelProvider,
+        LanguageModelProvider,
     )
 
     # Expand to other types as needed
     PluginType = (
         Type[Ability]  # Swappable now
         | Type[AbilityRegistry]  # Swappable maybe never
-        | Type[ChatModelProvider]  # Swappable soon
+        | Type[LanguageModelProvider]  # Swappable soon
         | Type[EmbeddingModelProvider]  # Swappable soon
         | Type[Memory]  # Swappable now
         #    | Type[Planner]  # Swappable soon
@@ -34,19 +34,12 @@ class PluginStorageFormat(str, enum.Enum):
 
     INSTALLED_PACKAGE = "installed_package"  # Required now, loads system defaults
     WORKSPACE = "workspace"  # Required now
-
-    # Soon (requires some tooling we don't have yet).
-    # OPENAPI_URL = "open_api_url"
-
+    # OPENAPI_URL = "open_api_url"           # Soon (requires some tooling we don't have yet).
     # OTHER_FILE_PATH = "other_file_path"    # Maybe later (maybe now)
     # GIT = "git"                            # Maybe later (or soon)
     # PYPI = "pypi"                          # Maybe later
-
-    # Long term solution, requires design
-    # STARTGPT_PLUGIN_SERVICE = "startgpt_plugin_service"
-
-    # Feature for later maybe, automatically find plugin.
-    # AUTO = "auto"
+    # STARTGPT_PLUGIN_SERVICE = "startgpt_plugin_service"  # Long term solution, requires design
+    # START = "auto"                          # Feature for later maybe, automatically find plugin.
 
 
 # Installed package example

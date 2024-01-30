@@ -1,5 +1,4 @@
 ## Original ignores
-.github_access_token
 startgpt/keys.py
 startgpt/*.json
 start_gpt_workspace/*
@@ -29,6 +28,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+build/
 develop-eggs/
 dist/
 downloads/
@@ -159,7 +159,7 @@ openai/
 # news
 CURRENT_BULLETIN.md
 
-# StartBenchmark
+# startbenchmark
 startbenchmark/reports/
 
 # Nodejs
@@ -171,9 +171,3 @@ package.json
 pri* 
 # ignore
 ig*
-.github_access_token
-arena/TestAgent.json
-
-# evo.ninja
-startgpts/evo.ninja/*
-!startgpts/evo.ninja/setup

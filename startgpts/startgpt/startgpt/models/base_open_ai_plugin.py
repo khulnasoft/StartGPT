@@ -1,7 +1,7 @@
 """Handles loading of plugins."""
 from typing import Any, Dict, List, Optional, Tuple, TypedDict, TypeVar
 
-from start_gpt_plugin_template import StartGPTPluginTemplate
+from auto_gpt_plugin_template import StartGPTPluginTemplate
 
 PromptGenerator = TypeVar("PromptGenerator")
 
@@ -13,7 +13,7 @@ class Message(TypedDict):
 
 class BaseOpenAIPlugin(StartGPTPluginTemplate):
     """
-    This is a BaseOpenAIPlugin class for generating StartGPT plugins.
+    This is a BaseOpenAIPlugin class for generating Start-GPT plugins.
     """
 
     def __init__(self, manifests_specs_clients: dict):

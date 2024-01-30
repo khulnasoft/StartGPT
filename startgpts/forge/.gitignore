@@ -1,6 +1,7 @@
 ## Original ignores
 startgpt/keys.py
 startgpt/*.json
+**/auto_gpt_workspace/*
 *.mpeg
 .env
 azure.yaml
@@ -8,7 +9,7 @@ ai_settings.yaml
 last_run_ai_settings.yaml
 .vscode
 .idea/*
-start-gpt.json
+auto-gpt.json
 log.txt
 log-ingestion.txt
 logs
@@ -171,6 +172,3 @@ startbenchmark_config/reports
 .vscode
 ig_*
 agent.db
-startbenchmark_config/updates.json
-startbenchmark_config/challenges_already_beaten.json
-startbenchmark_config/temp_folder/*

@@ -56,13 +56,13 @@ class CommandRegistry:
 
     def register(self, cmd: Command) -> None:
         if cmd.name in self.commands:
-            logger.warning(
+            logger.warn(
                 f"Command '{cmd.name}' already registered and will be overwritten!"
             )
         self.commands[cmd.name] = cmd
 
         if cmd.name in self.commands_aliases:
-            logger.warning(
+            logger.warn(
                 f"Command '{cmd.name}' will overwrite alias with the same name of "
                 f"'{self.commands_aliases[cmd.name]}'!"
             )
@@ -116,14 +116,11 @@ class CommandRegistry:
                 yield cmd
 
     # def command_specs(self) -> str:
-    #     """
-    #     Returns a technical declaration of all commands in the registry,
-    #     for use in a prompt.
-    #     """
+    #     """Returns a technical declaration of all commands in the registry for use in a prompt"""
     #
-    #     Declaring functions or commands should be done in a model-specific way to
-    #     achieve optimal results. For this reason, it should NOT be implemented here,
-    #     but in an LLM provider module.
+    #     Declaring functions or commands should be done in a model-specific way to achieve
+    #     optimal results. For this reason, it should NOT be implemented here, but in an
+    #     LLM provider module.
     #     MUST take command AVAILABILITY into account.
 
     @staticmethod
@@ -131,8 +128,7 @@ class CommandRegistry:
         new_registry = CommandRegistry()
 
         logger.debug(
-            "The following command categories are disabled: "
-            f"{config.disabled_command_categories}"
+            f"The following command categories are disabled: {config.disabled_command_categories}"
         )
         enabled_command_modules = [
             x for x in modules if x not in config.disabled_command_categories

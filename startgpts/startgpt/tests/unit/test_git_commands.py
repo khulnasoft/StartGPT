@@ -12,13 +12,13 @@ def mock_clone_from(mocker):
     return mocker.patch.object(Repo, "clone_from")
 
 
-def test_clone_start_gpt_repository(workspace, mock_clone_from, agent: Agent):
+def test_clone_auto_gpt_repository(workspace, mock_clone_from, agent: Agent):
     mock_clone_from.return_value = None
 
-    repo = "github.com/KhulnaSoft/Start-GPT.git"
+    repo = "github.com/khulnasoft/Start-GPT.git"
     scheme = "https://"
     url = scheme + repo
-    clone_path = workspace.get_path("start-gpt-repo")
+    clone_path = workspace.get_path("auto-gpt-repo")
 
     expected_output = f"Cloned {url} to {clone_path}"
 
@@ -26,7 +26,7 @@ def test_clone_start_gpt_repository(workspace, mock_clone_from, agent: Agent):
 
     assert clone_result == expected_output
     mock_clone_from.assert_called_once_with(
-        url=f"{scheme}{agent.legacy_config.github_username}:{agent.legacy_config.github_api_key}@{repo}",  # noqa: E501
+        url=f"{scheme}{agent.config.github_username}:{agent.config.github_api_key}@{repo}",
         to_path=clone_path,
     )
 

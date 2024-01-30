@@ -1,4 +1,4 @@
-# Netlify config for StartGPT docs
+# Netlify config for Start-GPT docs
 
 [build]
   publish = "public/"
