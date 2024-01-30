@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from startgpt.config import Config
 
 
-from startgpt.command_decorator import AUTO_GPT_COMMAND_IDENTIFIER
+from startgpt.command_decorator import START_GPT_COMMAND_IDENTIFIER
 from startgpt.models.command import Command
 
 logger = logging.getLogger(__name__)
@@ -161,7 +161,7 @@ class CommandRegistry:
         Imports the specified Python module containing command plugins.
 
         This method imports the associated module and registers any functions or
-        classes that are decorated with the `AUTO_GPT_COMMAND_IDENTIFIER` attribute
+        classes that are decorated with the `START_GPT_COMMAND_IDENTIFIER` attribute
         as `Command` objects. The registered `Command` objects are then added to the
         `commands` dictionary of the `CommandRegistry` object.
 
@@ -179,7 +179,7 @@ class CommandRegistry:
             command = None
 
             # Register decorated functions
-            if getattr(attr, AUTO_GPT_COMMAND_IDENTIFIER, False):
+            if getattr(attr, START_GPT_COMMAND_IDENTIFIER, False):
                 command = attr.command
 
             # Register command classes

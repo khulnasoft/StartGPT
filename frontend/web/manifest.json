@@ -1,6 +1,6 @@
 {
-    "name": "auto_gpt_flutter_client",
-    "short_name": "auto_gpt_flutter_client",
+    "name": "start_gpt_flutter_client",
+    "short_name": "start_gpt_flutter_client",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

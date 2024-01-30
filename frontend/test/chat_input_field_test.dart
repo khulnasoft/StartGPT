@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:auto_gpt_flutter_client/views/chat/chat_input_field.dart';
+import 'package:start_gpt_flutter_client/views/chat/chat_input_field.dart';
 
 void main() {
   // Test if the ChatInputField widget renders correctly

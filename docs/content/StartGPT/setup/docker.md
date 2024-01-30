@@ -38,7 +38,7 @@
           - .env
         profiles: ["exclude-from-up"]
         volumes:
-          - ./auto_gpt_workspace:/app/auto_gpt_workspace
+          - ./start_gpt_workspace:/app/start_gpt_workspace
           - ./data:/app/data
           ## allow start-gpt to write logs to disk
           - ./logs:/app/logs

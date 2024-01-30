@@ -17,10 +17,10 @@ from startgpt.logs.utils import remove_color_codes
         (
             "{'Schaue dir meine Projekte auf github () an, als auch meine Webseiten': "
             "'https://github.com/KhulnaSoft/StartGPT,"
-            " https://discord.gg/startgpt und https://twitter.com/Auto_GPT'}",
+            " https://discord.gg/startgpt und https://twitter.com/Start_GPT'}",
             "{'Schaue dir meine Projekte auf github () an, als auch meine Webseiten': "
             "'https://github.com/KhulnaSoft/StartGPT,"
-            " https://discord.gg/startgpt und https://twitter.com/Auto_GPT'}",
+            " https://discord.gg/startgpt und https://twitter.com/Start_GPT'}",
         ),
         ("", ""),
         ("hello", "hello"),

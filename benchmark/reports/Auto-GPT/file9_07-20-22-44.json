@@ -117,7 +117,7 @@
             "metrics": {
                 "difficulty": "basic",
                 "success": false,
-                "fail_reason": "[Errno 2] No such file or directory: '/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/Start-GPT/startgpt/workspace/auto_gpt_workspace/result.txt'",
+                "fail_reason": "[Errno 2] No such file or directory: '/home/runner/work/Start-GPT-Benchmarks/Start-GPT-Benchmarks/agent/Start-GPT/startgpt/workspace/start_gpt_workspace/result.txt'",
                 "success_%": 0.0,
                 "run_time": "71.351 seconds"
             },
@@ -259,6 +259,6 @@
         }
     },
     "config": {
-        "workspace": "startgpt/workspace/auto_gpt_workspace"
+        "workspace": "startgpt/workspace/start_gpt_workspace"
     }
 }

@@ -12,7 +12,7 @@ from startgpt.core.utils.json_schema import JSONSchema
 from startgpt.models.command import Command, CommandOutput, CommandParameter
 
 # Unique identifier for StartGPT commands
-AUTO_GPT_COMMAND_IDENTIFIER = "auto_gpt_command"
+START_GPT_COMMAND_IDENTIFIER = "start_gpt_command"
 
 P = ParamSpec("P")
 CO = TypeVar("CO", bound=CommandOutput)
@@ -63,7 +63,7 @@ def command(
                 return func(*args, **kwargs)
 
         setattr(wrapper, "command", cmd)
-        setattr(wrapper, AUTO_GPT_COMMAND_IDENTIFIER, True)
+        setattr(wrapper, START_GPT_COMMAND_IDENTIFIER, True)
 
         return wrapper
 

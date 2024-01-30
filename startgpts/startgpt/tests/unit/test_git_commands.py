@@ -12,7 +12,7 @@ def mock_clone_from(mocker):
     return mocker.patch.object(Repo, "clone_from")
 
 
-def test_clone_auto_gpt_repository(workspace, mock_clone_from, agent: Agent):
+def test_clone_start_gpt_repository(workspace, mock_clone_from, agent: Agent):
     mock_clone_from.return_value = None
 
     repo = "github.com/KhulnaSoft/Start-GPT.git"

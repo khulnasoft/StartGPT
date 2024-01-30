@@ -172,9 +172,9 @@ def run(
     existing agent.
     """
     # Put imports inside function to avoid importing everything when starting the CLI
-    from startgpt.app.main import run_auto_gpt
+    from startgpt.app.main import run_start_gpt
 
-    run_auto_gpt(
+    run_start_gpt(
         continuous=continuous,
         continuous_limit=continuous_limit,
         ai_settings=ai_settings,
@@ -263,9 +263,9 @@ def serve(
     every task.
     """
     # Put imports inside function to avoid importing everything when starting the CLI
-    from startgpt.app.main import run_auto_gpt_server
+    from startgpt.app.main import run_start_gpt_server
 
-    run_auto_gpt_server(
+    run_start_gpt_server(
         prompt_settings=prompt_settings,
         debug=debug,
         log_level=log_level,

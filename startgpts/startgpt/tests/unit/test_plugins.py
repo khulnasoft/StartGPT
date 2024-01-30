@@ -9,7 +9,7 @@ from startgpt.plugins.plugins_config import PluginsConfig
 
 PLUGINS_TEST_DIR = "tests/unit/data/test_plugins"
 PLUGIN_TEST_ZIP_FILE = "Start-GPT-Plugin-Test-master.zip"
-PLUGIN_TEST_INIT_PY = "Start-GPT-Plugin-Test-master/src/auto_gpt_vicuna/__init__.py"
+PLUGIN_TEST_INIT_PY = "Start-GPT-Plugin-Test-master/src/start_gpt_vicuna/__init__.py"
 PLUGIN_TEST_OPENAI = "https://weathergpt.vercel.app/"
 
 
@@ -28,8 +28,8 @@ def test_scan_plugins_openai(config: Config):
 def test_scan_plugins_generic(config: Config):
     # Test that the function returns the correct number of plugins
     plugins_config = config.plugins_config
-    plugins_config.plugins["auto_gpt_guanaco"] = PluginConfig(
-        name="auto_gpt_guanaco", enabled=True
+    plugins_config.plugins["start_gpt_guanaco"] = PluginConfig(
+        name="start_gpt_guanaco", enabled=True
     )
     plugins_config.plugins["StartGPTPVicuna"] = PluginConfig(
         name="StartGPTPVicuna", enabled=True
@@ -45,11 +45,11 @@ def test_scan_plugins_generic(config: Config):
 def test_scan_plugins_not_enabled(config: Config):
     # Test that the function returns the correct number of plugins
     plugins_config = config.plugins_config
-    plugins_config.plugins["auto_gpt_guanaco"] = PluginConfig(
-        name="auto_gpt_guanaco", enabled=True
+    plugins_config.plugins["start_gpt_guanaco"] = PluginConfig(
+        name="start_gpt_guanaco", enabled=True
     )
-    plugins_config.plugins["auto_gpt_vicuna"] = PluginConfig(
-        name="auto_gptp_vicuna", enabled=False
+    plugins_config.plugins["start_gpt_vicuna"] = PluginConfig(
+        name="start_gptp_vicuna", enabled=False
     )
     result = scan_plugins(config)
     plugin_class_names = [plugin.__class__.__name__ for plugin in result]

@@ -15,7 +15,7 @@ from zipimport import ZipImportError, zipimporter
 
 import openapi_python_client
 import requests
-from auto_gpt_plugin_template import StartGPTPluginTemplate
+from start_gpt_plugin_template import StartGPTPluginTemplate
 from openapi_python_client.config import Config as OpenAPIConfig
 
 if TYPE_CHECKING:

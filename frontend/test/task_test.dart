@@ -1,4 +1,4 @@
-import 'package:auto_gpt_flutter_client/models/task.dart';
+import 'package:start_gpt_flutter_client/models/task.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

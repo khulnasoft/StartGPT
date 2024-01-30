@@ -1,5 +1,5 @@
-import 'package:auto_gpt_flutter_client/viewmodels/task_viewmodel.dart';
-import 'package:auto_gpt_flutter_client/viewmodels/mock_data.dart';
+import 'package:start_gpt_flutter_client/viewmodels/task_viewmodel.dart';
+import 'package:start_gpt_flutter_client/viewmodels/mock_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -640,7 +640,7 @@
         }
     },
     "config": {
-        "workspace": "auto_gpt_workspace",
+        "workspace": "start_gpt_workspace",
         "entry_path": "startbenchmark.benchmarks"
     }
 }

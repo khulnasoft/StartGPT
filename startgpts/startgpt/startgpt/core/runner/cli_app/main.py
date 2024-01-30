@@ -13,7 +13,7 @@ from startgpt.core.runner.client_lib.parser import (
 )
 
 
-async def run_auto_gpt(user_configuration: dict):
+async def run_start_gpt(user_configuration: dict):
     """Run the StartGPT CLI client."""
 
     configure_root_logger()

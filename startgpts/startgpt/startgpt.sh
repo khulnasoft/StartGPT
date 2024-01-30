@@ -25,5 +25,5 @@ if $PYTHON_CMD -c "import sys; sys.exit(sys.version_info < (3, 10))"; then
     fi
     poetry run startgpt "$@"
 else
-    echo "Python 3.10 or higher is required to run Auto GPT."
+    echo "Python 3.10 or higher is required to run Start GPT."
 fi

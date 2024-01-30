@@ -51,7 +51,7 @@ from .utils import (
 
 
 @coroutine
-async def run_auto_gpt(
+async def run_start_gpt(
     continuous: bool = False,
     continuous_limit: Optional[int] = None,
     ai_settings: Optional[Path] = None,
@@ -315,7 +315,7 @@ async def run_auto_gpt(
 
 
 @coroutine
-async def run_auto_gpt_server(
+async def run_start_gpt_server(
     prompt_settings: Optional[Path] = None,
     debug: bool = False,
     log_level: Optional[str] = None,

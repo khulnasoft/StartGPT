@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="auto_gpt_flutter_client"
+        android:label="start_gpt_flutter_client"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

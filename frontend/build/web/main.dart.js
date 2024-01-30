@@ -51036,7 +51036,7 @@ A.am1.prototype={
 $0(){return this.a.me("https://discord.gg/startgpt")},
 $S:0}
 A.am2.prototype={
-$0(){return this.a.me("https://twitter.com/Auto_GPT")},
+$0(){return this.a.me("https://twitter.com/Start_GPT")},
 $S:0}
 A.Eg.prototype={
 ae(){return new A.a06(B.i)}}

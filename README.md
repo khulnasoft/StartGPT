@@ -1,7 +1,7 @@
 # StartGPT: build & use AI agents
 
 [![Discord Follow](https://dcbadge.vercel.app/api/server/startgpt?style=flat)](https://discord.gg/startgpt) &ensp;
-[![Twitter Follow](https://img.shields.io/twitter/follow/Auto_GPT?style=social)](https://twitter.com/Auto_GPT) &ensp;
+[![Twitter Follow](https://img.shields.io/twitter/follow/Start_GPT?style=social)](https://twitter.com/Start_GPT) &ensp;
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **StartGPT** is the vision of the power of AI accessible to everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters:
