@@ -1,5 +1,5 @@
 {
-  "command": "agbenchmark start --test TestRetrieval2.0",
+  "command": "startbenchmark start --test TestRetrieval2.0",
   "completion_time": "2023-07-17-17:10",
   "metrics": {
     "run_time": "66.81 seconds",
@@ -7,7 +7,7 @@
   },
   "tests": {
     "TestRetrieval2.0": {
-      "data_path": "agbenchmark/challenges/retrieval/r2_tesla_revenue",
+      "data_path": "startbenchmark/challenges/retrieval/r2_tesla_revenue",
       "is_regression": false,
       "reached_cutoff": true,
       "answer": "It was $81.462 billion in 2022.",

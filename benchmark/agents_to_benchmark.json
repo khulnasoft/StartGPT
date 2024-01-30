@@ -1,5 +1,5 @@
 {
-    "Auto-GPT": {
+    "Start-GPT": {
         "url": "https://github.com/KhulnaSoft/StartGPT",
         "branch": "master",
         "commit": "3a2d08fb415071cc94dd6fcee24cfbdd1fb487dd"
@@ -39,8 +39,8 @@
         "branch": "nerfzael-use-local-wrap-library",
         "commit": "d621adf5f54cc0f9a6d191139fb67ac3d1436d7b"
     },
-    "Auto-GPT-Turbo": {
-        "url": "https://github.com/lc0rp/Auto-GPT-Turbo.git",
+    "Start-GPT-Turbo": {
+        "url": "https://github.com/lc0rp/Start-GPT-Turbo.git",
         "branch": "main",
         "commit": "8469e09ae204f2d5f41d489b217551544597ee14"
     }

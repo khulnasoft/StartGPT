@@ -8,7 +8,7 @@ from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
 from pydantic import BaseModel, Field
 
-# from agbenchmark.reports.processing.report_types import Report, SuiteTest
+# from startbenchmark.reports.processing.report_types import Report, SuiteTest
 
 
 class Metrics(BaseModel):

@@ -1,4 +1,4 @@
-from agbenchmark.utils.dependencies.graphs import get_roots
+from startbenchmark.utils.dependencies.graphs import get_roots
 
 
 def test_get_roots():

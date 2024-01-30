@@ -1,5 +1,5 @@
 {
-  "command": "agbenchmark start --test TestReadFile",
+  "command": "startbenchmark start --test TestReadFile",
   "completion_time": "2023-07-15-22:13",
   "metrics": {
     "run_time": "31.2 seconds",
@@ -7,7 +7,7 @@
   },
   "tests": {
     "TestReadFile": {
-      "data_path": "agbenchmark/challenges/interface/read_file",
+      "data_path": "startbenchmark/challenges/interface/read_file",
       "is_regression": true,
       "reached_cutoff": false,
       "metrics": {

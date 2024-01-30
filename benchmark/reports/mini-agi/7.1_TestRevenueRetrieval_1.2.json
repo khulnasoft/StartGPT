@@ -1,5 +1,5 @@
 {
-  "command": "agbenchmark start --test TestRetrieval2.2",
+  "command": "startbenchmark start --test TestRetrieval2.2",
   "completion_time": "2023-07-17-17:57",
   "metrics": {
     "run_time": "31.1 seconds",
@@ -7,7 +7,7 @@
   },
   "tests": {
     "TestRetrieval2.2": {
-      "data_path": "agbenchmark/challenges/retrieval/r2.2_formatting",
+      "data_path": "startbenchmark/challenges/retrieval/r2.2_formatting",
       "is_regression": false,
       "task": "Write tesla's exact revenue in 2022 into a .txt file. Use the US notation, with a precision rounded to the nearest million dollars (for instance, $31,578 billion).",
       "answer": "It was $81.462 billion in 2022. In millions the answer is 81,462.",

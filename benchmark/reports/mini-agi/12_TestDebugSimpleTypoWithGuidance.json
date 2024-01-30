@@ -1,5 +1,5 @@
 {
-  "command": "agbenchmark start --test TestDebugSimpleTypoWithGuidance",
+  "command": "startbenchmark start --test TestDebugSimpleTypoWithGuidance",
   "completion_time": "2023-07-18-07:27",
   "metrics": {
     "run_time": "59.13 seconds",
@@ -7,7 +7,7 @@
   },
   "tests": {
     "TestDebugSimpleTypoWithGuidance": {
-      "data_path": "agbenchmark/challenges/code/d1_debug",
+      "data_path": "startbenchmark/challenges/code/d1_debug",
       "is_regression": false,
       "task": "1- Run test.py.\n2- Read code.py.\n3- Modify code.py.\nRepeat step 1, 2 and 3 until test.py runs without errors.\n",
       "answer": "[0, 1] [2, 5] [0, 3]",

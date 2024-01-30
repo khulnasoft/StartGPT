@@ -1,0 +1,8 @@
+{
+  "workspace": {
+    "input": "startbenchmark_config/workspace",
+    "output": "startbenchmark_config/workspace"
+  },
+  "entry_path": "startbenchmark.benchmarks",
+  "host": "http://localhost:8000"
+}

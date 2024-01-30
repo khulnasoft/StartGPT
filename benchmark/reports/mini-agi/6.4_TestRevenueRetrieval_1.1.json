@@ -1,5 +1,5 @@
 {
-  "command": "agbenchmark start --test TestRetrieval2.1",
+  "command": "startbenchmark start --test TestRetrieval2.1",
   "completion_time": "2023-07-17-17:56",
   "metrics": {
     "run_time": "23.64 seconds",
@@ -7,7 +7,7 @@
   },
   "tests": {
     "TestRetrieval2.1": {
-      "data_path": "agbenchmark/challenges/retrieval/r2.1_specific",
+      "data_path": "startbenchmark/challenges/retrieval/r2.1_specific",
       "is_regression": false,
       "task": "Write Tesla's precise revenue in 2022 into a .txt file.",
       "answer": "It was $81.462 billion in 2022.",

@@ -1,5 +1,5 @@
 {
-  "command": "agbenchmark start --test TestRetrieval2.1",
+  "command": "startbenchmark start --test TestRetrieval2.1",
   "completion_time": "2023-07-17-14:03",
   "metrics": {
     "run_time": "68.39 seconds",
@@ -7,7 +7,7 @@
   },
   "tests": {
     "TestRetrieval2.1": {
-      "data_path": "agbenchmark/challenges/retrieval/r2.1_specific",
+      "data_path": "startbenchmark/challenges/retrieval/r2.1_specific",
       "is_regression": false,
       "reached_cutoff": true,
       "answer": "It was $81.462 billion in 2022.",

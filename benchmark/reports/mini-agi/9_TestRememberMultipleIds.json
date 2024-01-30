@@ -1,5 +1,5 @@
 {
-  "command": "agbenchmark start --test TestRememberMultipleIds",
+  "command": "startbenchmark start --test TestRememberMultipleIds",
   "completion_time": "2023-07-17-18:33",
   "metrics": {
     "run_time": "61.32 seconds",
@@ -7,7 +7,7 @@
   },
   "tests": {
     "TestRememberMultipleIds": {
-      "data_path": "agbenchmark/challenges/memory/m2_noise",
+      "data_path": "startbenchmark/challenges/memory/m2_noise",
       "is_regression": false,
       "task": "Follow the instructions in the instructions_1.txt file",
       "answer": "3145\n3791\n9317\n9471",

@@ -1,5 +1,5 @@
 {
-  "command": "agbenchmark start --test TestSearch",
+  "command": "startbenchmark start --test TestSearch",
   "completion_time": "2023-07-15-22:14",
   "metrics": {
     "run_time": "16.88 seconds",
@@ -7,7 +7,7 @@
   },
   "tests": {
     "TestSearch": {
-      "data_path": "agbenchmark/challenges/interface/search",
+      "data_path": "startbenchmark/challenges/interface/search",
       "is_regression": true,
       "reached_cutoff": false,
       "metrics": {

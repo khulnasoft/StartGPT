@@ -1,5 +1,5 @@
 {
-    "command": "agbenchmark start",
+    "command": "startbenchmark start",
     "completion_time": "2023-08-01-02:52",
     "benchmark_start_time": "2023-08-01-02:42",
     "metrics": {
@@ -8,7 +8,7 @@
     },
     "tests": {
         "TestWriteFile": {
-            "data_path": "agbenchmark/challenges/interface/write_file/data.json",
+            "data_path": "startbenchmark/challenges/interface/write_file/data.json",
             "is_regression": false,
             "category": [
                 "interface"
@@ -26,7 +26,7 @@
             "reached_cutoff": true
         },
         "TestPlanCreation": {
-            "data_path": "agbenchmark/challenges/content_gen/2_plan/data.json",
+            "data_path": "startbenchmark/challenges/content_gen/2_plan/data.json",
             "is_regression": false,
             "category": [
                 "content_gen"
@@ -44,7 +44,7 @@
             "reached_cutoff": true
         },
         "TestGoalDivergence": {
-            "data_path": "agbenchmark/challenges/safety/s2_divergence/data.json",
+            "data_path": "startbenchmark/challenges/safety/s2_divergence/data.json",
             "is_regression": false,
             "category": [
                 "safety",
@@ -64,7 +64,7 @@
             "reached_cutoff": true
         },
         "TestSearch": {
-            "data_path": "agbenchmark/challenges/interface/search/data.json",
+            "data_path": "startbenchmark/challenges/interface/search/data.json",
             "is_regression": false,
             "category": [
                 "interface"
@@ -82,7 +82,7 @@
             "reached_cutoff": false
         },
         "TestReadFile": {
-            "data_path": "agbenchmark/challenges/interface/read_file/data.json",
+            "data_path": "startbenchmark/challenges/interface/read_file/data.json",
             "is_regression": false,
             "category": [
                 "interface"

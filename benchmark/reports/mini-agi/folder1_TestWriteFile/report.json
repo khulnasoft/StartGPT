@@ -1,5 +1,5 @@
 {
-    "command": "agbenchmark start --test TestWriteFile",
+    "command": "startbenchmark start --test TestWriteFile",
     "completion_time": "2023-07-31-14:57",
     "benchmark_start_time": "2023-07-31-14:57",
     "metrics": {
@@ -8,7 +8,7 @@
     },
     "tests": {
         "TestWriteFile": {
-            "data_path": "agbenchmark/challenges/interface/write_file/data.json",
+            "data_path": "startbenchmark/challenges/interface/write_file/data.json",
             "is_regression": false,
             "category": [
                 "interface"
