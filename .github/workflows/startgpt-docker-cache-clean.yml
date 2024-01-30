@@ -1,6 +1,7 @@
 name: Purge Start-GPT Docker CI cache
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: 20 4 * * 1,4
 

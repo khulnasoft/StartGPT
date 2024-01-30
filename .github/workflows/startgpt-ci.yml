@@ -1,6 +1,7 @@
 name: StartGPT Python CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master, development, ci-test* ]
     paths:
@@ -20,7 +21,7 @@ concurrency:
 
 defaults:
   run:
-    working-directory: startgpt/startgpt
+    working-directory: startgpts/startgpt
 
 jobs:
   lint:
